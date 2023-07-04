@@ -2,21 +2,21 @@ import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import LoginSignupScreen from "./LoginSignup/LoginSignupScreen";
-import LoginScreen from "./LoginSignup/LoginScreen";
-import SignupScreen from "./LoginSignup/SignupScreen";
+import LoginSignupScreen from "@screens/LoginSignup/LoginSignupScreen";
+import LoginScreen from "@screens/LoginSignup/LoginScreen";
+import SignupScreen from "@screens/LoginSignup/SignupScreen";
 
-import MainTab from "./MainTab/MainTab";
+import MainTab from "@screens/MainTab/MainTab";
 
-import UserInfoMainScreen from "./UserInfo/UserInfoMainScreen";
-import UserInfoEditScreen from "./UserInfo/UserInfoEditScreen";
-import SetGoalScreen from "./UserInfo/SetGoalScreen";
-import CalculateGoalScreen from "./UserInfo/CaculateGoalScreen";
-import SetFoodScreen from "./UserInfo/SetFoodScreen";
-import SearchFoodScreen from "./UserInfo/SearchFoodScreen";
+import UserInfoMainScreen from "@screens/UserInfo/UserInfoMainScreen";
+import UserInfoEditScreen from "@screens/UserInfo/UserInfoEditScreen";
+import SetGoalScreen from "@screens/UserInfo/SetGoalScreen";
+import CalculateGoalScreen from "@screens/UserInfo/CaculateGoalScreen";
+import SetFoodScreen from "@screens/UserInfo/SetFoodScreen";
+import SearchFoodScreen from "@screens/UserInfo/SearchFoodScreen";
 
-import NotificationScreen from "./Notification/NotificationScreen";
-import NotificationSettingScreen from "./Notification/NotificationSettingScreen";
+import NotificationScreen from "@screens/Notification/NotificationScreen";
+import NotificationSettingScreen from "@screens/Notification/NotificationSettingScreen";
 
 const Stack = createNativeStackNavigator();
 
