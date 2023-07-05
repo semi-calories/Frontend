@@ -2,27 +2,27 @@ import React from "react";
 
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 
-import LoginSignupScreen from "@screens/LoginSignup/LoginSignupScreen";
-import LoginScreen from "@screens/LoginSignup/LoginScreen";
-import SignupScreen from "@screens/LoginSignup/SignupScreen";
+import LoginSignupScreen from "~/screens/LoginSignup/LoginSignupScreen";
+import LoginScreen from "~/screens/LoginSignup/LoginScreen";
+import SignupScreen from "~/screens/LoginSignup/SignupScreen";
 
-import MainTab from "@screens/MainTab/MainTab";
+import MainTab from "~/screens/MainTab/MainTab";
 
-import UserInfoMainScreen from "@screens/UserInfo/UserInfoMainScreen";
-import UserInfoEditScreen from "@screens/UserInfo/UserInfoEditScreen";
-import SetGoalScreen from "@screens/UserInfo/SetGoalScreen";
-import CalculateGoalScreen from "@screens/UserInfo/CaculateGoalScreen";
-import SetFoodScreen from "@screens/UserInfo/SetFoodScreen";
-import SearchFoodScreen from "@screens/UserInfo/SearchFoodScreen";
+import UserInfoMainScreen from "~/screens/UserInfo/UserInfoMainScreen";
+import UserInfoEditScreen from "~/screens/UserInfo/UserInfoEditScreen";
+import SetGoalScreen from "~/screens/UserInfo/SetGoalScreen";
+import CalculateGoalScreen from "~/screens/UserInfo/CaculateGoalScreen";
+import SetFoodScreen from "~/screens/UserInfo/SetFoodScreen";
+import SearchFoodScreen from "~/screens/UserInfo/SearchFoodScreen";
 
-import NotificationScreen from "@screens/Notification/NotificationScreen";
-import NotificationSettingScreen from "@screens/Notification/NotificationSettingScreen";
+import NotificationScreen from "~/screens/Notification/NotificationScreen";
+import NotificationSettingScreen from "~/screens/Notification/NotificationSettingScreen";
 
 const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
     return (
-        <Stack.Navigator>
+        <Stack.Navigator screenOptions={{ headerShown : false }}>
             <Stack.Screen name="LoginSignupScreen" component={LoginSignupScreen} />
             <Stack.Screen name="LoginScreen" component={LoginScreen} />
             <Stack.Screen name="SignupScreen" component={SignupScreen} />

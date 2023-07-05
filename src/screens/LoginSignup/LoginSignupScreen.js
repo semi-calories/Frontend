@@ -1,19 +1,54 @@
+//
+// 로그인/회원가입 화면
+//
+
 import React from "react";
 
-import { Text, StyleSheet, Button } from "react-native";
+import { Image, StyleSheet, View } from "react-native";
 
-import { RootView } from "@components/rootView";
+import { RootView } from "~/components/rootView";
+import { PrimaryButton } from "~/components/button";
 
-const LoginSignupScreen = ({navigation}) => {
+import { scale, verticalScale } from "~/constants/globalSizes"; 
+
+const Logo = require('@assets/Logo.png');
+
+const LoginSignupScreen = ({ navigation }) => {
     return (
-        <RootView>
-            <Text>로그인, 회원가입 화면</Text>
-            <Button title = "로그인" onPress={() => navigation.navigate('LoginScreen')}/>
-            <Button title = "회원가입" onPress={() => navigation.navigate('SignupScreen')}/>
+        <RootView viewStyle={styles.container}>
+            <View style={styles.imageView}>
+            <Image source={Logo} style={styles.image}/>
+            </View>
+            <View style={styles.btnView}>
+                <PrimaryButton text='로그인' onPress={() => navigation.navigate('LoginScreen')} btnStyle={styles.btn}/>
+                <PrimaryButton text='회원가입' onPress={() => navigation.navigate('SignupScreen')} btnStyle={styles.btn}/>
+            </View>
+
         </RootView>
     );
 }
 
 export default LoginSignupScreen;
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+    container: {
+        alignItems: 'center',
+    },
+
+    imageView:{
+        paddingTop:verticalScale(310),
+    },
+
+    image:{
+        width:scale(120),
+        height:verticalScale(120),
+    },
+
+    btnView:{
+        padding:verticalScale(100),
+    },
+
+    btn:{
+        margin:scale(10),
+    }
+});
