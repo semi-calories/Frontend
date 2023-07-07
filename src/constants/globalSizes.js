@@ -21,3 +21,4 @@ export const verticalScale = size => (dHeight / guidelineBaseHeight) * size;
 export const moderateScale = (size, factor = 0.5) => size + (scale(size) - size) * factor;
 //높이 관한 scale (factor로 크기 조정 요소)
 export const moderateVerticalScale = (size, factor= 0.5 ) => size + (verticalScale(size) - size) * factor
+

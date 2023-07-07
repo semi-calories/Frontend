@@ -51,6 +51,7 @@ const styles = StyleSheet.create({
     container: {
         width:dWidth,
         height: verticalScale(60),
+        color:colors.white,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: scale(26),
