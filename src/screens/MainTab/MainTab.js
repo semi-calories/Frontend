@@ -4,9 +4,9 @@ import { StyleSheet, Button, View } from "react-native";
 import { HeaderButtons } from "react-navigation-header-buttons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
-import HomeScreen from "@screens/MainTab/HomeScreen";
-import DietRecordScreen from "@screens/MainTab/DietRecordScreen";
-import RecommendScreen from "@screens/MainTab/RecommendScreen";
+import HomeScreen from "~/screens/MainTab/HomeScreen";
+import DietRecordScreen from "~/screens/MainTab/DietRecordScreen";
+import RecommendScreen from "~/screens/MainTab/RecommendScreen";
 
 const Tab = createBottomTabNavigator();
 
