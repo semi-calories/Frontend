@@ -1,13 +1,28 @@
-import React from "react";
+//
+//로그인 화면
+//
 
-import { View, Text, StyleSheet ,Button} from "react-native";
+import React, { useLayoutEffect } from "react";
+
+import { Text, StyleSheet ,Button} from "react-native";
+
+import { RootView } from "~/components/rootView";
+import { BackHeader } from "~/components/header";
+import { HeaderType } from "~/constants/type";
 
 const LoginScreen = ({navigation}) => {
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            header:  () => <BackHeader back backPress={() => navigation.goBack()}/>
+        });
+      }, [navigation]);
+
     return (
-        <View>
+        <RootView>
             <Text>로그인 화면</Text>
             <Button title="로그인" onPress={()=>navigation.navigate('MainTab')}/>
-        </View>
+        </RootView>
     );
 }
 

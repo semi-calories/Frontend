@@ -22,9 +22,9 @@ const Stack = createNativeStackNavigator();
 
 const RootStack = () => {
     return (
-        <Stack.Navigator screenOptions={{ headerShown : false }}>
-            <Stack.Screen name="LoginSignupScreen" component={LoginSignupScreen} />
-            <Stack.Screen name="LoginScreen" component={LoginScreen} />
+        <Stack.Navigator>
+            <Stack.Screen name="LoginSignupScreen" component={LoginSignupScreen} options={{ headerShown: false }} />
+            <Stack.Screen name="LoginScreen" component={LoginScreen}/>
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
 
             <Stack.Screen name="MainTab" component={MainTab} />
@@ -36,7 +36,7 @@ const RootStack = () => {
             <Stack.Screen name="SetFoodScreen" component={SetFoodScreen} />
             <Stack.Screen name="SearchFoodScreen" component={SearchFoodScreen} />
 
-            <Stack.Screen name="NotificationScreen" component={NotificationScreen}/>
+            <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             <Stack.Screen name="NotificationSettingScreen" component={NotificationSettingScreen} />
         </Stack.Navigator>
     );

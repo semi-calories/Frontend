@@ -1,5 +1,5 @@
 //
-// global하게 쓰이는 버튼 모아놓은 파일
+// 버튼 컴포넌트 모아놓은 파일
 //
 
 import React from "react";
