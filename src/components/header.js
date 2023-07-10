@@ -15,7 +15,7 @@ const RightTypefunc = ({ type, rightPress }) => {
     switch (type) {
         case HeaderType.skip:
             return (
-                <TouchableOpacity onPress={rightPress}>
+                <TouchableOpacity onPress={rightPress} style={{flex:1, alignItems:'flex-end'}}>
                     <Text style={styles.skip}>건너뛰기</Text>
                 </TouchableOpacity>
             )

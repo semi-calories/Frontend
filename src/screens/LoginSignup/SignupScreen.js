@@ -30,7 +30,7 @@ const SignupScreen = ({navigation}) => {
             <BasicTextInput type="light" text={email} onChangeText={onChangeEmail} placeholder="이메일" width = {scale(298)}/>
             <BasicTextInput type="light" text={password} onChangeText={onChangePassword} placeholder="비밀번호" width = {scale(298)}/>
             <BasicTextInput type="light" text={nickname} onChangeText={onChangeNickname} placeholder="닉네임" width = {scale(298)}/>
-            <PrimaryButton text='회원가입' onPress={() => navigation.navigate('UserInfoEditScreen')} btnStyle={styles.btn}/>
+            <PrimaryButton text='회원가입' onPress={() => navigation.navigate('UserInfoEditScreen',{nickname})} btnStyle={styles.btn}/>
         </RootView>
     );
 }

@@ -17,6 +17,14 @@ export function PrimaryButton({ text, onPress, btnStyle}) {
     );
 }
 
+export function MoveButton({text, onPress, btnStyle}) {
+    return (
+        <TouchableOpacity style={[styles.moveBtn, btnStyle]} onPress={onPress}>
+            <Text style={styles.whiteText}>{text}</Text>
+        </TouchableOpacity>
+    );
+}
+
 const styles = StyleSheet.create({
     primaryBtn: {
         width: scale(298),
@@ -28,9 +36,19 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
+    moveBtn:{
+        width: scale(320),
+        height:verticalScale(50),
+        borderRadius: 20,
+        backgroundColor: colors.black,
+
+        alignItems: "center",
+        justifyContent: 'center',
+    },
+
     whiteText: {
         color: colors.white,
         fontSize: scale(20),
         fontFamily: fonts.bold,
-    }
+    },
 });
