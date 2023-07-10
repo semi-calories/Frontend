@@ -15,15 +15,17 @@ const RightTypefunc = ({ type, rightPress }) => {
     switch (type) {
         case HeaderType.skip:
             return (
-                <TouchableOpacity onPress={rightPress} style={{flex:1, alignItems:'flex-end'}}>
-                    <Text style={styles.skip}>건너뛰기</Text>
-                </TouchableOpacity>
+                <View style={{ flex: 1, alignItems: 'flex-end' }}>
+                    <TouchableOpacity onPress={rightPress}>
+                        <Text style={styles.skip}>건너뛰기</Text>
+                    </TouchableOpacity>
+                </View>
             )
         case HeaderType.setting:
             return (
-            <TouchableOpacity onPress={rightPress}>
-                <Ionicons name="settings-outline" size={40} color={colors.textGrey} />
-            </TouchableOpacity>
+                <TouchableOpacity onPress={rightPress}>
+                    <Ionicons name="settings-outline" size={40} color={colors.textGrey} />
+                </TouchableOpacity>
             )
         default:
             return null
@@ -49,9 +51,9 @@ export function BackHeader({ back, title, rightType, backPress, rightPress }) {
 
 const styles = StyleSheet.create({
     container: {
-        width:dWidth,
+        width: dWidth,
         height: verticalScale(60),
-        color:colors.white,
+        color: colors.white,
         flexDirection: 'row',
         alignItems: 'center',
         paddingHorizontal: scale(26),
@@ -59,7 +61,7 @@ const styles = StyleSheet.create({
 
     titleView: {
         flex: 1,
-        paddingLeft:scale(120),
+        paddingLeft: scale(120),
     },
 
     title: {

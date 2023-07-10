@@ -9,7 +9,7 @@ import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
-import { Gender,Gender_ko, UserInfo, UserInfo_ko, Activity, Activity_ko } from "~/constants/UserInfo";
+import { Gender,Gender_ko,Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/UserInfo";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -18,7 +18,7 @@ const GenderFunc = ({ label, onPress, gender }) => {
     return (
         <View style={{ alignItems: 'center' }}>
             <Pressable style={styles.genderIconView} onPress={onPress}>
-                <MaterialCommunityIcons name={label == Gender.female ? 'gender-female' : 'gender-male'} size={60} color={gender == label ? gender == Gender.female ? colors.pink : colors.blue : colors.textGrey} />
+                <MaterialCommunityIcons name={Gender_icon[label]} size={60} color={gender == label ? gender == Gender.female ? colors.pink : colors.blue : colors.textGrey} />
             </Pressable>
             <Text style={[styles.smallLabelText, {color: colors.borderGrey}]}>{Gender_ko[label]}</Text>
         </View>
@@ -28,7 +28,7 @@ const GenderFunc = ({ label, onPress, gender }) => {
 const ActivityFunc = ({ label, onPress, activity }) => {
     return (
         <Pressable onPress={onPress} style={{alignItems:'center'}}>
-            <MaterialCommunityIcons name={label==Activity.less ? "emoticon-neutral-outline" : label == Activity.normal ? "emoticon-happy-outline" : "emoticon-excited-outline"} size={scale(50)} color={label == activity ? colors.primary : colors.textGrey} />
+            <MaterialCommunityIcons name={Activity_icon[label]} size={scale(50)} color={label == activity ? colors.primary : colors.textGrey} />
             <Text style={[styles.smallLabelText,{color: label == activity ? colors.primary : colors.textGrey }]}>{Activity_ko[label]}</Text>
         </Pressable>
     )
