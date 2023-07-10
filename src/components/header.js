@@ -4,7 +4,7 @@
 
 import React from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Pressable } from "react-native";
 import { MaterialIcons, Ionicons } from '@expo/vector-icons';
 
 import { colors, fonts } from "~/constants/globalStyles"
@@ -49,6 +49,27 @@ export function BackHeader({ back, title, rightType, backPress, rightPress }) {
     );
 }
 
+export function SearchHeader({ backPress, text, onChangeText, clearText}) {
+    return (
+        <View style={styles.container}>
+            <TouchableOpacity onPress={backPress}>
+                <MaterialIcons name="arrow-back-ios" size={26} color={colors.textGrey} />
+            </TouchableOpacity>
+            <View style={styles.searchView}>
+                <MaterialIcons name="search" size={24} color={colors.borderGrey} />
+                <TextInput 
+                    style={styles.searchInput}
+                    value={text}
+                    onChangeText={onChangeText}
+                />
+                <Pressable onPress={clearText}>
+                    <Ionicons name="close-circle" size={24} color={colors.borderGrey}  />
+                </Pressable>
+            </View>
+        </View>
+    )
+}
+
 const styles = StyleSheet.create({
     container: {
         width: dWidth,
@@ -74,5 +95,24 @@ const styles = StyleSheet.create({
         color: colors.textGrey,
         fontSize: scale(18),
         fontFamily: fonts.regular,
+    },
+
+    searchView:{
+        width:scale(300),
+        height:verticalScale(40),
+        flexDirection:'row',
+
+        borderWidth:scale(2),
+        borderColor:colors.textGrey,
+        borderRadius:10,
+
+        marginLeft:scale(10),
+        paddingHorizontal:scale(12),
+        paddingVertical:verticalScale(6),
+    },
+
+    searchInput:{
+        flex:1,
+        marginLeft:scale(10)
     }
 });
