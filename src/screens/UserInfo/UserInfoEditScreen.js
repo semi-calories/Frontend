@@ -68,11 +68,11 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputStyle={styles.inputStyle} />
+                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.height]} text={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.weight]} text={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputStyle={styles.inputStyle} />
+                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.weight]} text={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.targetWeight]} text={targetWeight} onChangeText={setTargetWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
                 </View>
 
@@ -146,7 +146,7 @@ const styles = StyleSheet.create({
         marginVertical: verticalScale(5),
     },
 
-    inputStyle: {
+    inputViewStyle: {
         marginRight: scale(15),
     },
 });
