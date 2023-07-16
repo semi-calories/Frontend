@@ -13,7 +13,7 @@ import { RootView } from "~/components/rootView";
 import { MoveButton } from "~/components/button";
 
 import { HeaderType } from "~/constants/type";
-import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/UserInfo";
+import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";

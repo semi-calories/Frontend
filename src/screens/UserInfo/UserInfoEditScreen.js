@@ -13,7 +13,7 @@ import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
-import { Gender,Gender_ko,Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/UserInfo";
+import { Gender,Gender_ko,Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/userInfo";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";

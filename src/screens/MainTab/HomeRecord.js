@@ -10,13 +10,30 @@ import { Entypo, Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import RBSheet from "react-native-raw-bottom-sheet";
 
+import { DonutChart } from "~/components/chart";
+
+import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 
 const days = ["일", "월", "화", "수", "목", "금", "토"];
 
+// test용 칼로리 섭취량, 목표량
+const spentAmount = 859;
+const targetAmount = 1929;
 
+const spentNutri = {
+    [Nutrition.carbo]:82,
+    [Nutrition.protein]:53,
+    [Nutrition.fat]:36
+}
+const targetNutri = {
+    [Nutrition.carbo]:198,
+    [Nutrition.protein]:198,
+    [Nutrition.fat]:43
+}
 
 const CalculateDays = (type, date, days) => {
     const clone = new Date(date);
@@ -30,11 +47,35 @@ const CalculateDays = (type, date, days) => {
 }
 
 const HomeRecord = () => {
+
     const refRBSheet = useRef();
     const [selectDate, setSelectDate] = useState(new Date())
 
+
+    //요일 계산
     let day = useMemo(() => days[selectDate.getDay()], [selectDate]);
+    //날짜 포맷; YYYY-MM-DD 형식
     let formatDate = useMemo(() => moment(selectDate).format('YYYY-MM-DD'), [selectDate]);
+
+    const NutritionFunc = ({name}) => {
+        const spent = spentNutri[Nutrition[name]];
+        const target = targetNutri[Nutrition[name]];
+        const ratio = Math.round(spent / target * 100);
+
+        return (
+            <View style={[styles.flexRow, { marginVertical: verticalScale(17), justifyContent: 'space-between' }]}>
+                <Text style={[styles.text, { width: scale(67) }]}>{Nutrition_ko[name]}</Text>
+                <View style={[styles.flexRow,{ width: scale(72)}]}>
+                    <Text style={[styles.text, { fontFamily: fonts.bold }]}>{spent}</Text>
+                    <Text style={styles.greyText}> / {target} g</Text>
+                </View>
+                <View style={[styles.flexRow,{width: scale(38)}]}>
+                    <Text style={[styles.text, { fontFamily: fonts.bold }]}>{ratio}</Text>
+                    <Text style={styles.greyText}> %</Text>
+                </View>
+            </View>
+        )
+    }
 
     return (
         <View>
@@ -44,7 +85,7 @@ const HomeRecord = () => {
                     <Entypo name="chevron-left" size={35} color="black" />
                 </Pressable>
                 <Pressable onPress={() => refRBSheet.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.dateText}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
+                    <Text style={styles.text}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
                     <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
                 </Pressable>
                 <Pressable onPress={() => setSelectDate(CalculateDays('add', selectDate, 1))}>
@@ -53,8 +94,15 @@ const HomeRecord = () => {
             </View>
 
             {/* 차트 및 기록 뷰 */}
-            <View style={styles.donutContainer}>
-               
+            <View style={styles.graphWrapper}>
+                <DonutChart spentAmount={spentAmount} targetAmount={targetAmount} />
+            </View>
+
+            {/* 탄단지 영양성분 뷰 */}
+            <View style={styles.nutritionView}>
+                <NutritionFunc name={Nutrition.carbo} />
+                <NutritionFunc name={Nutrition.protein} />
+                <NutritionFunc name={Nutrition.fat} />
             </View>
 
             {/* 캘린더 */}
@@ -107,7 +155,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
     },
 
-    dateText: {
+    text: {
         fontFamily: fonts.medium,
         fontSize: scale(18),
         color: colors.black,
@@ -118,6 +166,33 @@ const styles = StyleSheet.create({
         fontSize: scale(15)
     },
 
+    graphWrapper: {
+        paddingTop: verticalScale(60),
+        paddingBottom: verticalScale(35),
+    },
+
+    nutritionView: {
+        width: scale(280),
+        height: verticalScale(202),
+        borderWidth: scale(2),
+        borderRadius: 10,
+        borderColor: colors.textGrey,
+        marginHorizontal: scale(55),
+
+        paddingHorizontal: scale(22),
+        paddingVertical: verticalScale(10),
+    },
+
+    flexRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    greyText: {
+        fontFamily: fonts.medium,
+        fontSize: scale(16),
+        color: colors.borderGrey,
+    },
 })
 
 
