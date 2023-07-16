@@ -12,6 +12,7 @@ import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
+import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
@@ -45,15 +46,15 @@ const CalculateGoalScreen = ({ navigation }) => {
                     <LabelTextInput type="dark" label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={targetIntake.kcal.toString()} inputStyle={styles.inputStyle} />
                     <View style={{ marginTop: verticalScale(40) }}>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label='탄수화물' unit="g" width={scale(180)} defaultValue={targetIntake.carb.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={targetIntake.carb.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{targetIntake.carb * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label='단백질' unit="g" width={scale(180)} defaultValue={targetIntake.protein.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={targetIntake.protein.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{targetIntake.protein * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label='지방' unit="g" width={scale(180)} defaultValue={targetIntake.fat.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={targetIntake.fat.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{targetIntake.fat * 9} kcal</Text>
                         </View>
                     </View>
