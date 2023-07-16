@@ -1,3 +1,7 @@
+//
+//유저 성별, 나이, 키, 몸무게 등 설정할 수 있는 화면
+//
+
 import React, { useLayoutEffect, useState } from "react";
 
 import { Text, StyleSheet, ScrollView, View, Pressable } from "react-native";

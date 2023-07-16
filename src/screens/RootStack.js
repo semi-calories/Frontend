@@ -27,7 +27,7 @@ const RootStack = () => {
             <Stack.Screen name="LoginScreen" component={LoginScreen}/>
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
 
-            <Stack.Screen name="MainTab" component={MainTab} />
+            <Stack.Screen name="MainTab" component={MainTab}options={{ headerShown: false }} />
 
             <Stack.Screen name="UserInfoMainScreen" component={UserInfoMainScreen} />
             <Stack.Screen name="UserInfoEditScreen" component={UserInfoEditScreen} />
