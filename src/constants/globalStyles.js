@@ -14,6 +14,11 @@ export const colors = {
 
     pink: '#FFA3A3',
     blue:'#7DD7E3',
+
+    carbo:'#4BC769',
+    protein:'#F37F33',
+    fat:'#D8D8D8',
+    label:'#595959'
 };
 
 export const fonts = {

@@ -4,14 +4,51 @@
 
 import React, { useState, useMemo, useRef } from "react";
 
-import { StyleSheet, Text, View, Pressable } from "react-native";
+import { StyleSheet, Text, View, Pressable, ScrollView } from "react-native";
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
 import RBSheet from "react-native-raw-bottom-sheet";
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
+import { StackedBarChart } from "react-native-chart-kit";
+
+import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
+
+const weekData = {
+    labels: ["1주차", "2주차", "3주차", "4주차", "5주차"],
+    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+    data: [
+        [30, 20, 25],
+        [40, 40, 20],
+        [35, 20, 20],
+        [20, 30, 20],
+        [20, 20, 20]
+
+    ],
+    barColors: [colors.carbo, colors.protein, colors.fat]
+};
+
+const monthData = {
+    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+    data: [
+        [30, 20, 25],
+        [40, 40, 20],
+        [35, 20, 20],
+        [20, 30, 20],
+        [20, 20, 20],
+        [30, 20, 25],
+        [40, 40, 20],
+        [35, 20, 20],
+        [20, 30, 20],
+        [20, 20, 20],
+        [40, 40, 20],
+        [35, 20, 20],
+    ],
+    barColors: [colors.carbo, colors.protein, colors.fat]
+};
 
 const HomeStatisticPeriod = ({ type }) => {
 
@@ -63,8 +100,6 @@ const HomeStatisticPeriod = ({ type }) => {
     const yearArray = YearFunc();
 
     const handlePicker = value => {
-        console.log(value)
-
         if (type == '주간') {
             const year = value.substr(0, 4);
             const month = value.slice(6, -1);
@@ -92,8 +127,27 @@ const HomeStatisticPeriod = ({ type }) => {
                 </Pressable>
             </View>
 
+            {/* 통계 뷰 */}
+            <ScrollView horizontal>
+                <StackedBarChart
+                    style={styles.chartView}
+                    data={type == '주간' ? weekData : monthData}
+                    width={type == '주간' ? scale(350) : scale(600)}
+                    height={verticalScale(350)}
+                    chartConfig={styles.chartConfig}
+                    hideLegend={true}
+                />
+            </ScrollView>
+            <View style={styles.labelView}>
+                <View style={[styles.label, { backgroundColor: colors.carbo }]} />
+                <Text style={styles.labelText}>탄수화물</Text>
+                <View style={[styles.label, { backgroundColor: colors.protein }]} />
+                <Text style={styles.labelText}>단백질</Text>
+                <View style={[styles.label, { backgroundColor: colors.fat }]} />
+                <Text style={styles.labelText}>지방</Text>
+            </View>
 
-            {/* 캘린더 */}
+            {/* 날짜 선택 bottomSheet */}
             <RBSheet
                 ref={refRBSheet}
                 height={verticalScale(320)}
@@ -156,4 +210,36 @@ const styles = StyleSheet.create({
         paddingHorizontal: scale(20),
         alignItems: 'flex-end'
     },
+
+    chartView: {
+        marginTop: verticalScale(40),
+        paddingHorizontal: scale(20),
+        alignItems: 'center'
+    },
+
+    chartConfig: {
+        backgroundColor: "#ffffff",
+        backgroundGradientFrom: "#ffffff",
+        backgroundGradientTo: "#ffffff",
+        color: (opacity = 1) => `rgba(0, 0, 0, ${opacity})`
+    },
+
+    labelView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: scale(95),
+    },
+
+    label: {
+        width: scale(12),
+        height: verticalScale(12),
+        borderRadius: 30,
+    },
+
+    labelText: {
+        fontFamily: fonts.regular,
+        fontSize: scale(12),
+        color: colors.label,
+    }
 })
