@@ -1,13 +1,29 @@
-import React from "react";
+//
+// 알림 보여주는 화면
+//
 
-import { View, Text, StyleSheet, Button} from "react-native";
+import React, { useLayoutEffect } from "react";
 
-const NotificationScreen = ({navigation}) => {
+import { View, Text, StyleSheet } from "react-native";
+
+import { BackHeader } from "~/components/header";
+import { RootView } from "~/components/rootView";
+
+import { HeaderType } from "~/constants/type";
+
+const NotificationScreen = ({ navigation }) => {
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            header: () => <BackHeader back title="알림" backPress={() => navigation.goBack()} rightType={HeaderType.setting} rightPress={() => navigation.navigate('NotificationSettingScreen')} />
+        });
+    }, [navigation]);
+
+
     return (
-        <View>
+        <RootView>
             <Text>알림화면</Text>
-            <Button title="알림 설정" onPress={()=>navigation.navigate('NotificationSettingScreen')}/>
-        </View>
+        </RootView>
     );
 }
 

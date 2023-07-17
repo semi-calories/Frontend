@@ -5,4 +5,5 @@
 export const HeaderType = {
     skip : 'skip',
     setting: 'setting',
+    save:'save'
 }

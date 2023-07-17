@@ -18,7 +18,9 @@ export const colors = {
     carbo:'#4BC769',
     protein:'#F37F33',
     fat:'#D8D8D8',
-    label:'#595959'
+    label:'#595959',
+
+    switch:'#76EE59',
 };
 
 export const fonts = {

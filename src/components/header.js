@@ -29,6 +29,12 @@ const RightTypefunc = ({ type, rightPress }) => {
                     <Ionicons name="settings-outline" size={40} color={colors.textGrey} />
                 </TouchableOpacity>
             )
+        case HeaderType.save:
+            return (
+                <TouchableOpacity onPress={rightPress}>
+                    <Text style={styles.save}>저장</Text>
+                </TouchableOpacity>
+            )
         default:
             return null
     }
@@ -72,7 +78,7 @@ export function SearchHeader({ backPress, text, onChangeText, clearText }) {
     )
 }
 
-export function MainHeader({notiPress, userInfoPress}) {
+export function MainHeader({ notiPress, userInfoPress }) {
     return (
         <View style={[styles.container, styles.paddingLogo]}>
             <Image source={LogoTitle} style={styles.logoTitle} />
@@ -96,6 +102,7 @@ const styles = StyleSheet.create({
         backgroundColor: colors.white,
         flexDirection: 'row',
         alignItems: 'center',
+        justifyContent: 'space-between'
     },
 
     paddingBack: {
@@ -108,8 +115,6 @@ const styles = StyleSheet.create({
     },
 
     titleView: {
-        flex: 1,
-        paddingLeft: scale(120),
     },
 
     title: {
@@ -122,6 +127,12 @@ const styles = StyleSheet.create({
         color: colors.textGrey,
         fontSize: scale(18),
         fontFamily: fonts.regular,
+    },
+
+    save: {
+        color: colors.black,
+        fontSize: scale(18),
+        fontFamily: fonts.medium,
     },
 
     searchView: {
@@ -152,4 +163,6 @@ const styles = StyleSheet.create({
     logoRight: {
         flexDirection: 'row',
     },
+
+
 });
