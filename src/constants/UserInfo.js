@@ -3,6 +3,7 @@
 //
 
 export const UserInfo = {
+    name:'name',
     gender: 'gender',
     age: 'age',
     height: 'height',
@@ -11,6 +12,7 @@ export const UserInfo = {
     activity: 'activity',
 }
 export const UserInfo_ko = {
+    [UserInfo.name]:'이름',
     [UserInfo.gender]: '성별',
     [UserInfo.age]: '나이',
     [UserInfo.height]: '키',

@@ -7,3 +7,8 @@ export const HeaderType = {
     setting: 'setting',
     save:'save'
 }
+
+export const UserInfoType = {
+    init:'init',
+    edit:'edit',
+}

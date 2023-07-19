@@ -12,10 +12,8 @@ import { BackHeader } from "~/components/header";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
-
-//test용
-const null_img = require('@assets/null_img.png');
-const UserName = '김건국';
+import { UserInfoType } from "~/constants/type";
+import { Null_img, UserName } from "~/constants/test";
 
 const UserInfoMainScreen = ({ navigation }) => {
 
@@ -29,12 +27,12 @@ const UserInfoMainScreen = ({ navigation }) => {
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
             <View style={styles.profile}>
-                <Image source={null_img} style={styles.img} />
+                <Image source={Null_img} style={styles.img} />
                 <Text style={styles.boldText}>{UserName}</Text>
             </View>
 
             {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('UserInfoEditScreen', { nickname: UserName })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('UserInfoEditScreen', { userName: UserName, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
