@@ -10,10 +10,10 @@ import moment from "moment";
 
 import { RootView } from "~/components/rootView";
 import { BackHeader } from "~/components/header";
+import { MoveButton } from "~/components/button";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
-import { HeaderType } from "~/constants/type";
 
 const NotificationSettingScreen = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(false);
@@ -24,7 +24,7 @@ const NotificationSettingScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            header: () => <BackHeader back title="알림설정" backPress={() => navigation.goBack()} rightType={HeaderType.save} rightPress={handleSave}/>
+            header: () => <BackHeader back title="알림설정" backPress={() => navigation.goBack()} />
         });
     }, [navigation]);
 
@@ -39,6 +39,7 @@ const NotificationSettingScreen = ({ navigation }) => {
    
     return (
         <RootView viewStyle={styles.container}>
+            <View style={{flex:1}}>
             <View style={styles.flexRow}>
                 <Text style={styles.text}>식단 알림 설정</Text>
                 <Switch
@@ -65,6 +66,8 @@ const NotificationSettingScreen = ({ navigation }) => {
                     </View>
                 </View>
             )}
+            </View>
+            <MoveButton text="완료" onPress={()=>console.log('알림 시간 저장')} />
         </RootView>
     );
 }

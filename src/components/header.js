@@ -51,7 +51,10 @@ export function BackHeader({ back, title, rightType, backPress, rightPress }) {
                 <View style={styles.titleView}>
                     <Text style={styles.title}>{title}</Text>
                 </View>}
-            {rightType && <RightTypefunc type={rightType} rightPress={rightPress} />}
+            {rightType ?
+                <RightTypefunc type={rightType} rightPress={rightPress} />
+                : <View style={{ width: scale(26.3) }} />
+            }
         </View>
 
     );
