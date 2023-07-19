@@ -74,7 +74,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     const handleMove = () => {
         const userInfoInputs = { name, gender, age, height, weight, targetWeight, activity };
         // 서버에 저장
-        navigation.navigate('SetGoalScreen');
+        navigation.navigate('SetGoalScreen', {infoType: UserInfoType.init});
     }
 
     const handleComplete = () => {

@@ -2,7 +2,7 @@
 //목표 설정하는 Screen
 //
 
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState} from "react";
 
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
@@ -14,6 +14,7 @@ import { MoveButton } from "~/components/button";
 
 import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
+import { UserInfoType } from "~/constants/type";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
@@ -32,19 +33,36 @@ const GoalFunc = ({ label, onPress, goal }) => {
     )
 }
 
-const SetGoalScreen = ({ navigation }) => {
+const SetGoalScreen = ({ navigation, route }) => {
+    const { infoType } = route.params;
+
 
     const [userGoal, setGoal] = useState(Goal.healthy);
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
-        });
-    }, [navigation]);
+        if(infoType==UserInfoType.init){
+            navigation.setOptions({
+                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+            });
+        }else if(infoType==UserInfoType.edit){
+            navigation.setOptions({
+                header: () => <BackHeader back title="목표 설정" backPress={() => navigation.goBack()} />
+            });
+        }
+    }, [navigation, infoType]);
+
+    useEffect(()=>{
+        // 서버에서 데이터 get해서 변수들 set해주기
+    },[route.params])
 
     const handleMove = () => {
-        // params로 넘겨주기, 혹은 서버에 저장
+        // 서버에 저장
         navigation.navigate('CalculateGoalScreen');
+    }
+
+    const handleComplete = () => {
+        // 변경 내용 서버에 저장
+        navigation.goBack();
     }
 
     return (
@@ -55,7 +73,10 @@ const SetGoalScreen = ({ navigation }) => {
                 <GoalFunc label={Goal.weightLoss} onPress={() => setGoal(Goal.weightLoss)} goal={userGoal} />
                 <GoalFunc label={Goal.weightGain} onPress={() => setGoal(Goal.weightGain)} goal={userGoal} />
             </View>
-            <MoveButton text="다음" onPress={handleMove} />
+            {infoType == UserInfoType.init
+                ? <MoveButton text="다음" onPress={handleMove} />
+                : <MoveButton text="완료" onPress={handleComplete} />
+            }
         </RootView>
     );
 }
