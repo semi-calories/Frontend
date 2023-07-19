@@ -16,14 +16,7 @@ import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
-
-// test용 목표 섭취량
-const targetIntake = {
-    kcal: 1929,
-    carb: 198,
-    protein: 193,
-    fat: 43,
-}
+import { TargetIntake } from "~/constants/test";
 
 const CalculateGoalScreen = ({ navigation }) => {
 
@@ -47,15 +40,15 @@ const CalculateGoalScreen = ({ navigation }) => {
                     <View style={{ marginTop: verticalScale(40) }}>
                         <View style={styles.contentView}>
                             <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={targetIntake.carb.toString()} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{targetIntake.carb * 4} kcal</Text>
+                            <Text style={styles.calText}>{TargetIntake.carb * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
                             <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={targetIntake.protein.toString()} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{targetIntake.protein * 4} kcal</Text>
+                            <Text style={styles.calText}>{TargetIntake.protein * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
                             <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={targetIntake.fat.toString()} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{targetIntake.fat * 9} kcal</Text>
+                            <Text style={styles.calText}>{TargetIntake.fat * 9} kcal</Text>
                         </View>
                     </View>
                 </View>

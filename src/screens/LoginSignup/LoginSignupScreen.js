@@ -11,13 +11,13 @@ import { PrimaryButton } from "~/components/button";
 
 import { scale, verticalScale } from "~/constants/globalSizes"; 
 
-const Logo = require('@assets/Logo.png');
+const LOGO = require('@assets/Logo.png');
 
 const LoginSignupScreen = ({ navigation }) => {
     return (
         <RootView viewStyle={styles.container}>
             <View style={styles.imageView}>
-            <Image source={Logo} style={styles.image}/>
+            <Image source={LOGO} style={styles.image}/>
             </View>
             <View style={styles.btnView}>
                 <PrimaryButton text='로그인' onPress={() => navigation.navigate('LoginScreen')} btnStyle={styles.btn}/>

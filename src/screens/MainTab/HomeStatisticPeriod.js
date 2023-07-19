@@ -11,44 +11,11 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import { StackedBarChart } from "react-native-chart-kit";
 
-import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+import { WeekData, MonthData } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-const weekData = {
-    labels: ["1주차", "2주차", "3주차", "4주차", "5주차"],
-    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
-    data: [
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20]
-
-    ],
-    barColors: [colors.carbo, colors.protein, colors.fat]
-};
-
-const monthData = {
-    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
-    data: [
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20],
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20],
-        [40, 40, 20],
-        [35, 20, 20],
-    ],
-    barColors: [colors.carbo, colors.protein, colors.fat]
-};
 
 const HomeStatisticPeriod = ({ type }) => {
 
@@ -131,7 +98,7 @@ const HomeStatisticPeriod = ({ type }) => {
             <ScrollView horizontal>
                 <StackedBarChart
                     style={styles.chartView}
-                    data={type == '주간' ? weekData : monthData}
+                    data={type == '주간' ? WeekData : MonthData}
                     width={type == '주간' ? scale(350) : scale(600)}
                     height={verticalScale(350)}
                     chartConfig={styles.chartConfig}

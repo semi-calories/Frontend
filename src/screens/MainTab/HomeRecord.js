@@ -13,27 +13,13 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { DonutChart } from "~/components/chart";
 
 import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+import { SpentAmount, TargetAmount, SpentNutri, TargetNutri } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 
-const days = ["일", "월", "화", "수", "목", "금", "토"];
-
-// test용 칼로리 섭취량, 목표량
-const spentAmount = 859;
-const targetAmount = 1929;
-
-const spentNutri = {
-    [Nutrition.carbo]: 82,
-    [Nutrition.protein]: 53,
-    [Nutrition.fat]: 36
-}
-const targetNutri = {
-    [Nutrition.carbo]: 198,
-    [Nutrition.protein]: 198,
-    [Nutrition.fat]: 43
-}
+const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
 const HomeRecord = () => {
 
@@ -41,7 +27,7 @@ const HomeRecord = () => {
     const [selectDate, setSelectDate] = useState(new Date())
 
     //요일 계산
-    let day = useMemo(() => days[selectDate.getDay()], [selectDate]);
+    let day = useMemo(() => DAYS[selectDate.getDay()], [selectDate]);
     //날짜 포맷; YYYY-MM-DD 형식
     let formatDate = useMemo(() => moment(selectDate).format('YYYY-MM-DD'), [selectDate]);
 
@@ -57,8 +43,8 @@ const HomeRecord = () => {
     }
 
     const NutritionFunc = ({ name }) => {
-        const spent = spentNutri[Nutrition[name]];
-        const target = targetNutri[Nutrition[name]];
+        const spent = SpentNutri[Nutrition[name]];
+        const target = TargetNutri[Nutrition[name]];
         const ratio = Math.round(spent / target * 100);
 
         return (
@@ -94,7 +80,7 @@ const HomeRecord = () => {
 
             {/* 차트 및 기록 뷰 */}
             <View style={styles.graphWrapper}>
-                <DonutChart spentAmount={spentAmount} targetAmount={targetAmount} />
+                <DonutChart spentAmount={SpentAmount} targetAmount={TargetAmount} />
             </View>
 
             {/* 탄단지 영양성분 뷰 */}
