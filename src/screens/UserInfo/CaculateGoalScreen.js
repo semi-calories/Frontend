@@ -13,22 +13,35 @@ import { LabelTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
 import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+import { UserInfoType } from "~/constants/type";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 import { TargetIntake } from "~/constants/test";
 
-const CalculateGoalScreen = ({ navigation }) => {
+const CalculateGoalScreen = ({ navigation, route }) => {
+    const { infoType } = route.params;
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
-        });
-    }, [navigation]);
+        if (infoType == UserInfoType.init) {
+            navigation.setOptions({
+                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+            });
+        } else if (infoType == UserInfoType.edit) {
+            navigation.setOptions({
+                header: () => <BackHeader back title="목표 설정" backPress={() => navigation.goBack()} />
+            });
+        }
+    }, [navigation, infoType]);
 
     const handleMove = () => {
-        // params로 넘겨주기, 혹은 서버에 저장
+        //서버에 저장
         navigation.navigate('SetFoodScreen');
+    }
+
+    const handleComplete =() =>{
+        //변경된 내용 서버에 저장
+        navigation.pop(2);
     }
 
     return (
@@ -36,24 +49,27 @@ const CalculateGoalScreen = ({ navigation }) => {
             <View style={{ flex: 1 }}>
                 <Text style={styles.text}>목표량을 계산했어요</Text>
                 <View style={styles.inputViewStyle}>
-                    <LabelTextInput type="dark" label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={targetIntake.kcal.toString()} inputStyle={styles.inputStyle} />
+                    <LabelTextInput type="dark" label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={TargetIntake.kcal.toString()} inputStyle={styles.inputStyle} />
                     <View style={{ marginTop: verticalScale(40) }}>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={targetIntake.carb.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={TargetIntake.carb.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{TargetIntake.carb * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={targetIntake.protein.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={TargetIntake.protein.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{TargetIntake.protein * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={targetIntake.fat.toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={TargetIntake.fat.toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{TargetIntake.fat * 9} kcal</Text>
                         </View>
                     </View>
                 </View>
             </View>
-            <MoveButton text="다음" onPress={handleMove} />
+            {infoType == UserInfoType.init
+                ? <MoveButton text="다음" onPress={handleMove} />
+                : <MoveButton text="완료" onPress={handleComplete} />
+            }
         </RootView>
     );
 }
@@ -82,16 +98,16 @@ const styles = StyleSheet.create({
         fontSize: scale(20),
     },
 
-    contentView:{ 
+    contentView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical:verticalScale(10),
+        marginVertical: verticalScale(10),
     },
 
-    calText:{
+    calText: {
         fontFamily: fonts.bold,
         fontSize: scale(20),
-        marginTop:verticalScale(47),
-        marginRight:scale(15),
+        marginTop: verticalScale(47),
+        marginRight: scale(15),
     }
 });
