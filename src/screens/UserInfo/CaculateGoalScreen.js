@@ -36,10 +36,10 @@ const CalculateGoalScreen = ({ navigation, route }) => {
 
     const handleMove = () => {
         //서버에 저장
-        navigation.navigate('SetFoodScreen');
+        navigation.navigate('SetFoodScreen', { infoType: UserInfoType.init });
     }
 
-    const handleComplete =() =>{
+    const handleComplete = () => {
         //변경된 내용 서버에 저장
         navigation.pop(2);
     }

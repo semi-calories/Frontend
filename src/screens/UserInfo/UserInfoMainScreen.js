@@ -36,11 +36,11 @@ const UserInfoMainScreen = ({ navigation }) => {
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetGoalScreen', {infoType : UserInfoType.edit})}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetGoalScreen', { infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>목표 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetFoodScreen')}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetFoodScreen', { infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>선호 / 비선호 음식 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>

@@ -13,6 +13,8 @@ import { RootView } from "~/components/rootView";
 import { MoveButton } from "~/components/button";
 
 import { HeaderType } from "~/constants/type";
+import { SearchFoodType } from "~/constants/type";
+import { UserInfoType } from "~/constants/type";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -26,32 +28,44 @@ const AddFunc = ({ onPress }) => {
 }
 
 const SetFoodScreen = ({ navigation, route }) => {
-    let preferFood = new Set(['사과','계란후라이','연어']);
-    let nonPreferFood = new Set(['가지','콩','당근']);
+    let preferFood = new Set(['사과', '계란후라이', '연어']);
+    let dislikeFood = new Set(['가지', '콩', '당근']);
 
 
     useLayoutEffect(() => {
-        navigation.setOptions({
-            header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
-        });
-    }, [navigation]);
+        if (route.params?.infoType == UserInfoType.init) {
+            navigation.setOptions({
+                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+            });
+        } else if (route.params?.infoType == UserInfoType.edit) {
+            navigation.setOptions({
+                header: () => <BackHeader back title="선호 / 비선호 음식 설정" backPress={() => navigation.goBack()} />
+            });
+        }
 
-    useEffect(()=>{
-        if(route.params?.selectFood) {
-            if(route.params?.type=='prefer'){
+    }, [navigation, route.params?.infoType]);
+
+    useEffect(() => {
+        if (route.params?.selectFood) {
+            if (route.params?.type == SearchFoodType.prefer) {
                 console.log(route.params?.selectFood)
                 preferFood = new Set([...preferFood, ...route.params?.selectFood])
-            }else if(route.params?.type=='nonPrefer'){
+            } else if (route.params?.type == SearchFoodType.dislike) {
                 console.log(route.params?.selectFood)
-                nonPreferFood = new Set([...nonPreferFood, ...route.params?.selectFood])
+                dislikeFood = new Set([...dislikeFood, ...route.params?.selectFood])
             }
         }
 
-    },[route.params?.type, route.params?.selectFood])
+    }, [route.params?.type, route.params?.selectFood])
 
-    const handleComplete = () => {
-        // params로 넘겨주기, 혹은 서버에 저장
+    const handleInitComplete = () => {
+        //서버에 저장
         navigation.navigate('MainTab');
+    }
+
+    const handleEditComplete = () => {
+        //서버에 저장
+        navigation.goBack();
     }
 
     return (
@@ -59,17 +73,20 @@ const SetFoodScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.titleText}>선호음식</Text>
                 <View style={styles.chipView}>
-                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food+idx} mode="outlined" onClose={() => preferFood.delete(food)} style={styles.chip}>{food}</Chip> )}
-                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: 'prefer' })} />
+                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => preferFood.delete(food)} style={styles.chip}>{food}</Chip>)}
+                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.prefer })} />
                 </View>
 
                 <Text style={styles.titleText}>비선호음식</Text>
                 <View style={styles.chipView}>
-                    {nonPreferFood && [...nonPreferFood].map((food,idx) => <Chip key={food+idx} mode="outlined" onClose={() => nonPreferFood.delete(food)} style={styles.chip}>{food}</Chip> )}
-                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: 'nonPrefer' })} />
+                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => dislikeFood.delete(food)} style={styles.chip}>{food}</Chip>)}
+                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike })} />
                 </View>
             </ScrollView>
-            <MoveButton text="완료" onPress={handleComplete} />
+            {route.params?.infoType == UserInfoType.init
+                ? <MoveButton text="완료" onPress={handleInitComplete} />
+                : <MoveButton text="완료" onPress={handleEditComplete} />
+            }
         </RootView>
     );
 }

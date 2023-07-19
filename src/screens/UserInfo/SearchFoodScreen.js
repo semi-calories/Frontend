@@ -11,6 +11,8 @@ import { SearchHeader } from "~/components/header";
 import { RootView } from "~/components/rootView";
 import { PrimaryButton } from "~/components/button";
 
+import { SearchFoodType } from "~/constants/type";
+
 import { colors } from "~/constants/globalStyles";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 
@@ -18,6 +20,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
     const { type } = route.params;
 
     const [text, setText] = useState('')
+
     const selectFood = new Set(['계란', '사과']);
 
     useLayoutEffect(() => {
@@ -28,7 +31,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
 
     const handleSelect = () =>{
         // 이전 화면에 선택한 food 업데이트 해줘야함
-        navigation.navigate('SetFoodScreen',{type:type, selectFood})
+        navigation.navigate('SetFoodScreen',{type:type, selectFood : selectFood})
     }
 
     return (
@@ -40,7 +43,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
                 <ScrollView horizontal style={styles.chipView}>
                     {selectFood && [...selectFood].map((food,idx) => <Chip key={food+idx} mode="outlined" onClose={() => selectFood.delete(food)} style={styles.chip}>{food}</Chip> )}
                 </ScrollView>
-                <PrimaryButton text={`${selectFood.size}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == 'prefer' ? colors.primary : colors.pink }} onPress={handleSelect}/>
+                <PrimaryButton text={`${selectFood.size}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.prefer ? colors.primary : colors.pink }} onPress={handleSelect}/>
             </View>
         </RootView>
     );

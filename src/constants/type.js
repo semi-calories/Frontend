@@ -12,3 +12,8 @@ export const UserInfoType = {
     init:'init',
     edit:'edit',
 }
+
+export const SearchFoodType = {
+    prefer:'prefer',
+    dislike:'dislike',
+}
