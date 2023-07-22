@@ -2,10 +2,12 @@
 // header 컴포넌트 모아놓은 파일
 //
 
-import React from "react";
+import React, { useRef, useEffect } from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Pressable, Image } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Pressable, Image, Animated } from "react-native";
 import { MaterialIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+
+import { useTabMenu } from "~/context/TabContext";
 
 import { colors, fonts } from "~/constants/globalStyles"
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
@@ -82,8 +84,27 @@ export function SearchHeader({ backPress, text, onChangeText, clearText }) {
 }
 
 export function MainHeader({ notiPress, userInfoPress }) {
+    const { opened } = useTabMenu();
+
+    const animation = useRef(new Animated.Value(0)).current
+
+    useEffect(() => {
+        Animated.timing(animation, {
+            toValue: opened ? 1 : 0,
+            duration: 300,
+            friction: 2,
+            useNativeDriver: false,
+        }).start();
+    }, [opened, animation])
+
     return (
         <View style={[styles.container, styles.paddingLogo]}>
+            {opened && <Animated.View style={[styles.overlay, {
+                backgroundColor: animation.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["transparent", colors.black]
+                })
+            }]} />}
             <Image source={LogoTitle} style={styles.logoTitle} />
 
             <View style={styles.logoRight}>
@@ -167,5 +188,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
     },
 
-
+    overlay: {
+        position: 'absolute',
+        top: 0,
+        left: 0,
+        right: 0,
+        bottom: 0,
+        zIndex: 1,
+        opacity: 0.3,
+    }
 });

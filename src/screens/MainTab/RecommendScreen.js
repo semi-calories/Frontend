@@ -2,11 +2,15 @@ import React from "react";
 
 import { View, Text, StyleSheet } from "react-native";
 
+import { TabContainer } from "~/components/container";
+
 const RecommendScreen = () => {
     return (
-        <View>
-            <Text>추천화면</Text>
-        </View>
+        <TabContainer>
+            <View>
+                <Text>추천화면</Text>
+            </View>
+        </TabContainer>
     );
 }
 

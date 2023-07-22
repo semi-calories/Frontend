@@ -16,4 +16,5 @@ export const UserInfoType = {
 export const SearchFoodType = {
     prefer:'prefer',
     dislike:'dislike',
+    add:'add'
 }

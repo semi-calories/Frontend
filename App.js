@@ -7,6 +7,7 @@ import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
 
 import RootStack from "~/screens/RootStack";
+import { TabContextProvider } from '~/context/TabContext';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -32,11 +33,13 @@ export default function App() {
     return null;
   } else {
     return (
-        <SafeAreaView style={{ flex: 1 }}>
+      <SafeAreaView style={{ flex: 1 }}>
+        <TabContextProvider>
           <NavigationContainer>
             <RootStack />
           </NavigationContainer>
-        </SafeAreaView>
+        </TabContextProvider>
+      </SafeAreaView>
     );
   }
 }

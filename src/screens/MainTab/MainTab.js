@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useState} from "react";
 
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -8,21 +8,17 @@ import HomeScreen from "~/screens/MainTab/HomeScreen";
 import AddDietScreen from "~/screens/MainTab/AddDietScreen";
 import RecommendScreen from "~/screens/MainTab/RecommendScreen";
 
+import { useTabMenu } from "~/context/TabContext";
+import { TabBarButton } from "~/components/button";
+
 import { colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 const Tab = createBottomTabNavigator();
 
-const CustomTabBarButton = ({ children, onPress }) => {
-    return (
-        <TouchableOpacity style={[styles.btn, styles.shadow]} onPress={onPress}>
-            {children}
-        </TouchableOpacity>
-    )
-
-}
-
 const MainTab = ({ navigation }) => {
+    const {opened, toggleOpened} = useTabMenu();
+
     return (
         <Tab.Navigator
             screenOptions={{
@@ -42,8 +38,6 @@ const MainTab = ({ navigation }) => {
                     borderBottomColor: colors.white,
                     borderTopLeftRadius: 10,
                     borderTopRightRadius: 10,
-
-                    paddingVertical: verticalScale(12)
                 },
             }}
         >
@@ -54,14 +48,17 @@ const MainTab = ({ navigation }) => {
                         <Foundation name="home" size={40} color={color} />
                     )
                 }}
+                listeners={{
+                    tabPress: e => opened && e.preventDefault()
+                }}
             />
             <Tab.Screen name="AddDietScreen" component={AddDietScreen}
                 options={{
-                    tabBarIcon: ({ focused }) => (
-                        <FontAwesome name="plus" size={30} color={colors.white} />
-                    ),
-                    tabBarButton: (props) => (
-                        <CustomTabBarButton {...props} />
+                    tabBarItemStyle:{
+                        height:0
+                    },
+                    tabBarButton: () => (
+                        <TabBarButton opened={opened} toggleOpened={toggleOpened} navigation={navigation}/>
                     )
                 }}
             />
@@ -71,6 +68,9 @@ const MainTab = ({ navigation }) => {
                     tabBarIcon: ({ color }) => (
                         <MaterialIcons name="thumb-up" size={40} color={color} />
                     )
+                }}
+                listeners={{
+                    tabPress: e => opened && e.preventDefault()
                 }}
             />
         </Tab.Navigator>

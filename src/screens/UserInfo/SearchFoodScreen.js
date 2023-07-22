@@ -29,9 +29,13 @@ const SearchFoodScreen = ({ navigation, route }) => {
         });
     }, [navigation, text]);
 
-    const handleSelect = () =>{
-        // 이전 화면에 선택한 food 업데이트 해줘야함
-        navigation.navigate('SetFoodScreen',{type:type, selectFood : selectFood})
+    const handleSelect = () => {
+        if (type == SearchFoodType.add) {
+
+        } else {
+            // 이전 화면에 선택한 food 업데이트 해줘야함
+            navigation.navigate('SetFoodScreen', { type: type, selectFood: selectFood })
+        }
     }
 
     return (
@@ -41,9 +45,9 @@ const SearchFoodScreen = ({ navigation, route }) => {
             </ScrollView>
             <View style={styles.selectBtnView}>
                 <ScrollView horizontal style={styles.chipView}>
-                    {selectFood && [...selectFood].map((food,idx) => <Chip key={food+idx} mode="outlined" onClose={() => selectFood.delete(food)} style={styles.chip}>{food}</Chip> )}
+                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => selectFood.delete(food)} style={styles.chip}>{food}</Chip>)}
                 </ScrollView>
-                <PrimaryButton text={`${selectFood.size}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.prefer ? colors.primary : colors.pink }} onPress={handleSelect}/>
+                <PrimaryButton text={`${selectFood.size}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleSelect} />
             </View>
         </RootView>
     );
@@ -71,6 +75,6 @@ const styles = StyleSheet.create({
 
     chip: {
         marginHorizontal: scale(3),
-        borderRadius:20
+        borderRadius: 20
     },
 });

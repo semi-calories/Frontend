@@ -21,6 +21,8 @@ export const colors = {
     label:'#595959',
 
     switch:'#76EE59',
+
+    btnBackground:"#D9D9D9",
 };
 
 export const fonts = {

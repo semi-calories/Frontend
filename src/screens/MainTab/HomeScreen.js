@@ -9,7 +9,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import HomeRecord from "~/screens/MainTab/HomeRecord";
 import HomeStatistic from "~/screens/MainTab/HomeStatistic";
 
-import { RootView } from "~/components/container";
+import { RootView, TabContainer } from "~/components/container";
 import { MainHeader } from "~/components/header";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
@@ -28,22 +28,24 @@ const HomeScreen = ({ navigation }) => {
     }, [navigation]);
 
     return (
-        <RootView>
-            {/* 상단 탭 */}
-            <View style={styles.tab}>
-                {tabs.map(tab => (
-                    <Pressable key={tab} onPress={() => setTabLabel(tab)}>
-                        <Text key={tab} style={[styles.tabLabel, {color : tab===tabLabel ? colors.black : colors.textGrey}]}>{tab}</Text>
-                    </Pressable>
-                ))}
-            </View>
+        <TabContainer>
+            <RootView>
+                {/* 상단 탭 */}
+                <View style={styles.tab}>
+                    {tabs.map(tab => (
+                        <Pressable key={tab} onPress={() => setTabLabel(tab)}>
+                            <Text key={tab} style={[styles.tabLabel, { color: tab === tabLabel ? colors.black : colors.textGrey }]}>{tab}</Text>
+                        </Pressable>
+                    ))}
+                </View>
 
-            {/* 기록 화면 */}
-            {tabLabel==tabs[0] && <HomeRecord />}
+                {/* 기록 화면 */}
+                {tabLabel == tabs[0] && <HomeRecord />}
 
-            {/* 통계 화면 */}
-            {tabLabel==tabs[1] && <HomeStatistic />}
-        </RootView>
+                {/* 통계 화면 */}
+                {tabLabel == tabs[1] && <HomeStatistic />}
+            </RootView>
+        </TabContainer>
     );
 }
 
@@ -54,7 +56,7 @@ const styles = StyleSheet.create({
         width: dWidth,
         height: verticalScale(40),
         flexDirection: 'row',
-        alignItems:'center',
+        alignItems: 'center',
 
         paddingHorizontal: scale(14),
     },
