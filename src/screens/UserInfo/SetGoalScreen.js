@@ -9,7 +9,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 import { BackHeader } from "~/components/header";
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 
 import { HeaderType } from "~/constants/type";

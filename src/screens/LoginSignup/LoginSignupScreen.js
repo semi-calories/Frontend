@@ -6,7 +6,7 @@ import React from "react";
 
 import { Image, StyleSheet, View } from "react-native";
 
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
 import { scale, verticalScale } from "~/constants/globalSizes"; 

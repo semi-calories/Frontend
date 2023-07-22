@@ -1,4 +1,4 @@
-// 전체 화면에 기본적으로 쓰는 View
+// 공통적으로 쓰이는 Container
 
 import React from "react";
 

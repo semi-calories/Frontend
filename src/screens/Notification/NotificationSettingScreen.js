@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, Switch } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
 

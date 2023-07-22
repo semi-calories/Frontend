@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, ScrollView } from "react-native";
 import { Chip } from 'react-native-paper';
 
 import { SearchHeader } from "~/components/header";
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
 import { SearchFoodType } from "~/constants/type";

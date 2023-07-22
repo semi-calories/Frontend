@@ -9,7 +9,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import HomeRecord from "~/screens/MainTab/HomeRecord";
 import HomeStatistic from "~/screens/MainTab/HomeStatistic";
 
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { MainHeader } from "~/components/header";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";

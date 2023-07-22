@@ -7,7 +7,7 @@ import React, { useLayoutEffect } from "react";
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 
 import { scale, verticalScale } from "~/constants/globalSizes";

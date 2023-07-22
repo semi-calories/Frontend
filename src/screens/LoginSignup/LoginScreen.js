@@ -6,7 +6,7 @@ import React, { useLayoutEffect, useState } from "react";
 
 import {StyleSheet} from "react-native";
 
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";

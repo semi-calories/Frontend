@@ -7,7 +7,7 @@ import React, { useLayoutEffect } from "react";
 import { View, Text, StyleSheet, } from "react-native";
 
 import { BackHeader } from "~/components/header";
-import { RootView } from "~/components/rootView";
+import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
