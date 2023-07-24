@@ -15,6 +15,7 @@ import { MoveButton } from "~/components/button";
 import { HeaderType } from "~/constants/type";
 import { SearchFoodType } from "~/constants/type";
 import { UserInfoType } from "~/constants/type";
+import { FoodTemp } from "~/constants/test";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -28,8 +29,8 @@ const AddFunc = ({ onPress }) => {
 }
 
 const SetFoodScreen = ({ navigation, route }) => {
-    let preferFood = new Set(['사과', '계란후라이', '연어']);
-    let dislikeFood = new Set(['가지', '콩', '당근']);
+    let preferFood = new Set(FoodTemp);
+    let dislikeFood = new Set(FoodTemp);
 
 
     useLayoutEffect(() => {
@@ -46,17 +47,17 @@ const SetFoodScreen = ({ navigation, route }) => {
     }, [navigation, route.params?.infoType]);
 
     useEffect(() => {
-        if (route.params?.selectFood) {
+        if (route.params?.foodParam) {
             if (route.params?.type == SearchFoodType.prefer) {
-                console.log(route.params?.selectFood)
-                preferFood = new Set([...preferFood, ...route.params?.selectFood])
+                console.log(route.params?.foodParam)
+                preferFood = new Set([...preferFood, ...route.params?.foodParam])
             } else if (route.params?.type == SearchFoodType.dislike) {
-                console.log(route.params?.selectFood)
-                dislikeFood = new Set([...dislikeFood, ...route.params?.selectFood])
+                console.log(route.params?.foodParam)
+                dislikeFood = new Set([...dislikeFood, ...route.params?.foodParam])
             }
         }
 
-    }, [route.params?.type, route.params?.selectFood])
+    }, [route.params?.type, route.params?.foodParam])
 
     const handleInitComplete = () => {
         //서버에 저장
@@ -73,13 +74,13 @@ const SetFoodScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.titleText}>선호음식</Text>
                 <View style={styles.chipView}>
-                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => preferFood.delete(food)} style={styles.chip}>{food}</Chip>)}
+                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food.name + idx} mode="outlined" onClose={() => preferFood.delete(food)} style={styles.chip}>{food.name}</Chip>)}
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.prefer })} />
                 </View>
 
                 <Text style={styles.titleText}>비선호음식</Text>
                 <View style={styles.chipView}>
-                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => dislikeFood.delete(food)} style={styles.chip}>{food}</Chip>)}
+                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food.name + idx} mode="outlined" onClose={() => dislikeFood.delete(food)} style={styles.chip}>{food.name}</Chip>)}
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike })} />
                 </View>
             </ScrollView>

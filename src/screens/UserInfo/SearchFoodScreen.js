@@ -12,6 +12,7 @@ import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
 import { SearchFoodType } from "~/constants/type";
+import { FoodTemp } from "~/constants/test";
 
 import { colors } from "~/constants/globalStyles";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
@@ -21,7 +22,8 @@ const SearchFoodScreen = ({ navigation, route }) => {
 
     const [text, setText] = useState('')
 
-    const selectFood = new Set(['계란', '사과']);
+    let selectFood = new Set(FoodTemp);
+    //console.log('SearchFoodScreen', selectFood)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -31,10 +33,10 @@ const SearchFoodScreen = ({ navigation, route }) => {
 
     const handleSelect = () => {
         if (type == SearchFoodType.add) {
-
+            navigation.navigate('MealtimeScreen', { foodParam: selectFood})
         } else {
             // 이전 화면에 선택한 food 업데이트 해줘야함
-            navigation.navigate('SetFoodScreen', { type: type, selectFood: selectFood })
+            navigation.navigate('SetFoodScreen', { type: type, foodParam: selectFood })
         }
     }
 
@@ -45,7 +47,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
             </ScrollView>
             <View style={styles.selectBtnView}>
                 <ScrollView horizontal style={styles.chipView}>
-                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => selectFood.delete(food)} style={styles.chip}>{food}</Chip>)}
+                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food.name + idx} mode="outlined" onClose={() => selectFood.delete(food)} style={styles.chip}>{food.name}</Chip>)}
                 </ScrollView>
                 <PrimaryButton text={`${selectFood.size}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleSelect} />
             </View>

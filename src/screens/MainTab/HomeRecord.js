@@ -12,7 +12,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 
 import { DonutChart } from "~/components/chart";
 
-import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { SpentAmount, TargetAmount, SpentNutri, TargetNutri } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";

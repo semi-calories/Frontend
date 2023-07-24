@@ -26,7 +26,7 @@ export function LabelTextInput(props) {
   const { type, label, text, onChangeText, unit, width, inputViewStyle ,inputStyle, ...restProps } = props
   return (
     <View style={inputViewStyle}>
-      <Text style={styles.labelText}>{label}</Text>
+      {label && <Text style={styles.labelText}>{label}</Text>}
       <View style={[styles.input, type == 'light' ? styles.light : styles.dark,{ width:width, flexDirection: 'row' }]}>
         <TextInput
           style={[{ flex : 1 }, inputStyle]}

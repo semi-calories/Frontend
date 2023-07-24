@@ -1,7 +1,7 @@
 //
 //하드코딩된 test용 정보들
 //
-import { Nutrition } from '~/constants/nutrition'
+import { Nutrition } from '~/constants/food'
 
 //User 정보
 export const Null_img = require('@assets/null_img.png');
@@ -51,4 +51,26 @@ export const MonthData = [
     [20, 20, 20],
     [40, 40, 20],
     [35, 20, 20],
+]
+
+//영양성분
+export const FoodTemp = [
+    { 
+        name: '사과',
+        [Nutrition.serving]:230,
+        [Nutrition.kcal]:110,
+        [Nutrition.carbo]:29.3,
+        [Nutrition.protein]:0.6,
+        [Nutrition.fat]:0.4,
+        satisfaction:'',
+    },
+    { 
+        name: '계란후라이',
+        [Nutrition.serving]:46,
+        [Nutrition.kcal]:89,
+        [Nutrition.carbo]:0.4,
+        [Nutrition.protein]:6.2,
+        [Nutrition.fat]:6.8,
+        satisfaction:'',
+    },
 ]

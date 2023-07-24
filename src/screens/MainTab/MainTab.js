@@ -5,7 +5,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { Foundation, MaterialIcons, FontAwesome } from '@expo/vector-icons';
 
 import HomeScreen from "~/screens/MainTab/HomeScreen";
-import AddDietScreen from "~/screens/MainTab/AddDietScreen";
+import DietRecordScreen from "~/screens/MainTab/DietRecordScreen";
 import RecommendScreen from "~/screens/MainTab/RecommendScreen";
 
 import { useTabMenu } from "~/context/TabContext";
@@ -52,7 +52,7 @@ const MainTab = ({ navigation }) => {
                     tabPress: e => opened && e.preventDefault()
                 }}
             />
-            <Tab.Screen name="AddDietScreen" component={AddDietScreen}
+            <Tab.Screen name="DietRecordScreen" component={DietRecordScreen}
                 options={{
                     tabBarItemStyle:{
                         height:0

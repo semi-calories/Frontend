@@ -7,6 +7,7 @@ import LoginScreen from "~/screens/LoginSignup/LoginScreen";
 import SignupScreen from "~/screens/LoginSignup/SignupScreen";
 
 import MainTab from "~/screens/MainTab/MainTab";
+import MealtimeScreen from "./MainTab/MealtimeScreen";
 
 import UserInfoMainScreen from "~/screens/UserInfo/UserInfoMainScreen";
 import UserInfoEditScreen from "~/screens/UserInfo/UserInfoEditScreen";
@@ -28,6 +29,7 @@ const RootStack = () => {
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
 
             <Stack.Screen name="MainTab" component={MainTab}options={{ headerShown: false }} />
+            <Stack.Screen name="MealtimeScreen" component={MealtimeScreen} />
 
             <Stack.Screen name="UserInfoMainScreen" component={UserInfoMainScreen} />
             <Stack.Screen name="UserInfoEditScreen" component={UserInfoEditScreen} />

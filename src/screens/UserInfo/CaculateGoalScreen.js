@@ -12,7 +12,7 @@ import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
-import { Nutrition, Nutrition_ko } from "~/constants/nutrition";
+import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { UserInfoType } from "~/constants/type";
 
 import { scale, verticalScale } from "~/constants/globalSizes";

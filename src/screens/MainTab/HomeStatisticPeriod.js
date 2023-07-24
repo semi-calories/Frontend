@@ -12,7 +12,7 @@ import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import { StackedBarChart } from "react-native-chart-kit";
 
 import { WeekData, MonthData } from "~/constants/test";
-import { Nutrition, Nutrition_ko} from '~/constants/nutrition'
+import { Nutrition, Nutrition_ko} from '~/constants/food'
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";

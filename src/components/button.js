@@ -35,6 +35,14 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
+    const opacity = {
+        opacity: animation.interpolate({
+            inputRange: [0, 0.5, 1],
+            outputRange: [0, 0, 1]
+
+        })
+    }
+
     useEffect(() => {
         Animated.timing(animation, {
             toValue: opened ? 1 : 0,
@@ -44,12 +52,14 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         }).start()
     }, [opened, animation])
 
-    const opacity = {
-        opacity: animation.interpolate({
-            inputRange: [0, 0.5, 1],
-            outputRange: [0, 0, 1]
+    const onPressRecord =()=>{
+        navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add });
+        toggleOpened()
+    }
 
-        })
+    const onPressCamera =()=>{
+        //사진찍기
+        toggleOpened()
     }
 
 
@@ -59,7 +69,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 <TouchableWithoutFeedback>
                     <AnimatedTouchable
                         activeOpacity={0.8}
-                        onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add })}
+                        onPress={onPressRecord}
                         style={[styles.item, opacity, {
                             transform: [
                                 {
@@ -82,7 +92,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 <TouchableWithoutFeedback>
                     <AnimatedTouchable 
                     activeOpacity={0.8} 
-                    onPress={() => console.log('사진찍기')}
+                    onPress={onPressCamera}
                     style={[styles.item, opacity, {
                         transform: [
                             {
