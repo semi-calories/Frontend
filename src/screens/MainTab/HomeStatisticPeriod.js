@@ -12,10 +12,25 @@ import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import { StackedBarChart } from "react-native-chart-kit";
 
 import { WeekData, MonthData } from "~/constants/test";
+import { Nutrition, Nutrition_ko} from '~/constants/nutrition'
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
+
+const ChartWeekData = {
+    labels: ["1주차", "2주차", "3주차", "4주차", "5주차"],
+    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+    data: WeekData,
+    barColors: [colors.carbo, colors.protein, colors.fat]
+};
+
+export const ChartMonthData = {
+    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
+    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+    data: MonthData,
+    barColors: [colors.carbo, colors.protein, colors.fat]
+};
 
 const HomeStatisticPeriod = ({ type }) => {
 
@@ -98,7 +113,7 @@ const HomeStatisticPeriod = ({ type }) => {
             <ScrollView horizontal>
                 <StackedBarChart
                     style={styles.chartView}
-                    data={type == '주간' ? WeekData : MonthData}
+                    data={type == '주간' ? ChartWeekData : ChartMonthData}
                     width={type == '주간' ? scale(350) : scale(600)}
                     height={verticalScale(350)}
                     chartConfig={styles.chartConfig}

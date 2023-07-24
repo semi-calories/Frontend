@@ -1,8 +1,7 @@
 //
 //하드코딩된 test용 정보들
 //
-import { Nutrition, Nutrition_ko} from '~/constants/nutrition'
-import { colors } from '~/constants/globalStyles';
+import { Nutrition } from '~/constants/nutrition'
 
 //User 정보
 export const Null_img = require('@assets/null_img.png');
@@ -31,36 +30,25 @@ export const TargetNutri = {
 }
 
 //통계
-export const WeekData = {
-    labels: ["1주차", "2주차", "3주차", "4주차", "5주차"],
-    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
-    data: [
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20]
+export const WeekData = [
+    [30, 20, 25],
+    [40, 40, 20],
+    [35, 20, 20],
+    [20, 30, 20],
+    [20, 20, 20],
+]
 
-    ],
-    barColors: [colors.carbo, colors.protein, colors.fat]
-};
-
-export const MonthData = {
-    labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-    legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
-    data: [
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20],
-        [30, 20, 25],
-        [40, 40, 20],
-        [35, 20, 20],
-        [20, 30, 20],
-        [20, 20, 20],
-        [40, 40, 20],
-        [35, 20, 20],
-    ],
-    barColors: [colors.carbo, colors.protein, colors.fat]
-};
+export const MonthData = [
+    [30, 20, 25],
+    [40, 40, 20],
+    [35, 20, 20],
+    [20, 30, 20],
+    [20, 20, 20],
+    [30, 20, 25],
+    [40, 40, 20],
+    [35, 20, 20],
+    [20, 30, 20],
+    [20, 20, 20],
+    [40, 40, 20],
+    [35, 20, 20],
+]
