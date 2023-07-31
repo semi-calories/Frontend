@@ -2,9 +2,11 @@
 // 버튼 컴포넌트 모아놓은 파일
 //
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
-import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Pressable } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
+import ActionSheet from 'react-native-actionsheet'
+import { Camera } from 'expo-camera';
 
 import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -35,6 +37,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
+
     const opacity = {
         opacity: animation.interpolate({
             inputRange: [0, 0.5, 1],
@@ -52,16 +55,34 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         }).start()
     }, [opened, animation])
 
-    const onPressRecord =()=>{
+    const onPressRecord = () => {
         navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add });
         toggleOpened()
     }
 
-    const onPressCamera =()=>{
-        //사진찍기
+    const onPressCameraIcon = () => {
+        this.ActionSheet.show()
         toggleOpened()
     }
 
+    const onPressCameraMenu = async (index) => {
+        switch (index) {
+            case 0:  //사진선택
+                const { status } = await Camera.requestCameraPermissionsAsync();
+                // 권한을 획득하면 status가 granted 상태
+                if (status === 'granted') {
+                    navigation.navigate('CameraScreen', {
+                        nextScreen: 'MealtimeScreen'
+                    });
+                } else {
+                    Alert.alert('카메라 접근 허용은 필수입니다.');
+                }
+
+            case 1:  //앨범에서 선택
+
+            default:
+        }
+    }
 
     return (
         <View style={styles.container}>
@@ -90,25 +111,25 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                     </AnimatedTouchable>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback>
-                    <AnimatedTouchable 
-                    activeOpacity={0.8} 
-                    onPress={onPressCamera}
-                    style={[styles.item, opacity, {
-                        transform: [
-                            {
-                                translateX: animation.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [0, 60]
-                                })
-                            },
-                            {
-                                translateY: animation.interpolate({
-                                    inputRange: [0, 1],
-                                    outputRange: [0, -70]
-                                })
-                            },
-                        ]
-                    }]}>
+                    <AnimatedTouchable
+                        activeOpacity={0.8}
+                        onPress={onPressCameraIcon}
+                        style={[styles.item, opacity, {
+                            transform: [
+                                {
+                                    translateX: animation.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0, 60]
+                                    })
+                                },
+                                {
+                                    translateY: animation.interpolate({
+                                        inputRange: [0, 1],
+                                        outputRange: [0, -70]
+                                    })
+                                },
+                            ]
+                        }]}>
                         <Image source={cameraIcon} resizeMode="contain" style={styles.itemIcon} />
                     </AnimatedTouchable>
                 </TouchableWithoutFeedback>
@@ -125,6 +146,13 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                     </Animated.View>
                 </TouchableWithoutFeedback>
             </View>
+            <ActionSheet
+                ref={o => this.ActionSheet = o}
+                options={['사진찍기', '앨범에서 선택', '취소']}
+                cancelButtonIndex={2}
+                //destructiveButtonIndex={1}
+                onPress={(index) => onPressCameraMenu(index)}
+            />
         </View>
     );
 }

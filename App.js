@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import { SafeAreaView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
-
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
 
@@ -34,11 +33,11 @@ export default function App() {
   } else {
     return (
       <SafeAreaView style={{ flex: 1 }}>
-        <TabContextProvider>
-          <NavigationContainer>
-            <RootStack />
-          </NavigationContainer>
-        </TabContextProvider>
+          <TabContextProvider>
+            <NavigationContainer>
+              <RootStack />
+            </NavigationContainer>
+          </TabContextProvider>
       </SafeAreaView>
     );
   }
