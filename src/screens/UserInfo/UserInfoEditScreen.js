@@ -6,6 +6,8 @@ import React, { useLayoutEffect, useState, useEffect } from "react";
 
 import { Text, StyleSheet, ScrollView, View, Pressable, ImageBackground, Image, Alert } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import ActionSheet from 'react-native-actionsheet'
+import { Camera } from 'expo-camera';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
@@ -42,7 +44,7 @@ const ActivityFunc = ({ label, onPress, activity }) => {
 }
 
 const UserInfoEditScreen = ({ navigation, route }) => {
-    const { userName, infoType } = route.params;
+    const { userName, infoType, image } = route.params;
 
     const [name, setName] = useState();
     const [gender, setGender] = useState();
@@ -71,10 +73,29 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         }
     }, [route.params])
 
+    const onPressCameraMenu = async (index) => {
+        switch (index) {
+            case 0:  //사진선택
+                const { status } = await Camera.requestCameraPermissionsAsync();
+                // 권한을 획득하면 status가 granted 상태
+                if (status === 'granted') {
+                    navigation.navigate('CameraScreen', {
+                        nextScreen: 'UserInfoEditScreen'
+                    });
+                } else {
+                    Alert.alert('카메라 접근 허용은 필수입니다.');
+                }
+
+            case 1:  //앨범에서 선택
+
+            default:
+        }
+    }
+
     const handleMove = () => {
         const userInfoInputs = { name, gender, age, height, weight, targetWeight, activity };
         // 서버에 저장
-        navigation.navigate('SetGoalScreen', {infoType: UserInfoType.init});
+        navigation.navigate('SetGoalScreen', { infoType: UserInfoType.init });
     }
 
     const handleComplete = () => {
@@ -94,8 +115,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={Null_img} style={styles.imgBackground}>
-                            <Pressable onPress={() => Alert.alert('카메라')} style={styles.imgView} >
+                        <ImageBackground source={image ? image : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="contain">
+                            <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
                         </ImageBackground>
@@ -128,6 +149,14 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 ? <MoveButton text="다음" onPress={handleMove} />
                 : <MoveButton text="완료" onPress={handleComplete} />
             }
+
+            <ActionSheet
+                ref={o => this.ActionSheet = o}
+                options={['사진찍기', '앨범에서 선택', '취소']}
+                cancelButtonIndex={2}
+                //destructiveButtonIndex={1}
+                onPress={(index) => onPressCameraMenu(index)}
+            />
         </RootView>
     );
 }
@@ -199,7 +228,7 @@ const styles = StyleSheet.create({
         height: verticalScale(125),
         resizeMode: 'contain',
         alignSelf: 'center',
-        marginBottom: verticalScale(25)
+        marginBottom: verticalScale(25),
     },
 
     imgView: {

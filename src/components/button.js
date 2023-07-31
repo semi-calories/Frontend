@@ -2,7 +2,7 @@
 // 버튼 컴포넌트 모아놓은 파일
 //
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
 import ActionSheet from 'react-native-actionsheet'
