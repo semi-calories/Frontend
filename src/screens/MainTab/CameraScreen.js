@@ -21,7 +21,7 @@ const CameraScreen = ({ navigation, route }) => {
     const cameraRef = useRef(null);
     const [type, setType] = useState(CameraType.back);
 
-    const [capturedImage, setCapturedImage] = useState()
+    const [capturedImage, setCapturedImage] = useState(null)
     const [previewVisible, setPreviewVisible] = useState(false)
 
     useLayoutEffect(() => {
@@ -52,14 +52,18 @@ const CameraScreen = ({ navigation, route }) => {
     };
 
     const uploadPictureHandler = () => {
+        let params = {}
 
         if (nextScreen == 'MealtimeScreen') {
             //api호출 후 captureImage 보내고 정보 받아오기
-            navigation.navigate(nextScreen, { foodParam :[ ]})
+            params = { foodParam: [] }
         } else {
-            navigation.navigate(nextScreen, { image: capturedImage, infoType:UserInfoType.edit })
+            params = { image: capturedImage.uri, infoType: UserInfoType.edit }
         }
+
+        navigation.navigate(nextScreen, params)
     }
+
 
     return previewVisible && capturedImage ? (
         <RootView>

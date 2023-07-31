@@ -7,6 +7,7 @@ import React, { useRef, useEffect } from "react";
 import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
 
 import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -65,22 +66,41 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         toggleOpened()
     }
 
+    const getPhotos = async () => {
+        const { assets } = await MediaLibrary.getAssetsAsync();
+
+        navigation.navigate('AlbumScreen', {
+            nextScreen: 'MealtimeScreen',
+            photosParam: assets,
+            firstPhotoId: assets[0].id
+        });
+    };
+
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
-                const { status } = await Camera.requestCameraPermissionsAsync();
+                const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
                 // 권한을 획득하면 status가 granted 상태
-                if (status === 'granted') {
+                if (cameraStatus === 'granted') {
                     navigation.navigate('CameraScreen', {
                         nextScreen: 'MealtimeScreen'
                     });
                 } else {
                     Alert.alert('카메라 접근 허용은 필수입니다.');
                 }
+                return;
 
             case 1:  //앨범에서 선택
+                const { status: albumStatus } = await MediaLibrary.requestPermissionsAsync()
+                if (albumStatus === 'granted') {
+                    getPhotos()
+                } else {
+                    Alert.alert('앨범 접근 허용은 필수입니다.');
+                }
+                return;
 
             default:
+                return;
         }
     }
 

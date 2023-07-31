@@ -8,6 +8,7 @@ import { Text, StyleSheet, ScrollView, View, Pressable, ImageBackground, Image, 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
+import * as MediaLibrary from 'expo-media-library';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
@@ -73,6 +74,16 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         }
     }, [route.params])
 
+    const getPhotos = async () => {
+        const { assets } = await MediaLibrary.getAssetsAsync();
+
+        navigation.navigate('AlbumScreen', {
+            nextScreen: 'UserInfoEditScreen',
+            photosParam: assets,
+            firstPhotoId: assets[0].id
+        });
+    };
+
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
@@ -85,8 +96,16 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 } else {
                     Alert.alert('카메라 접근 허용은 필수입니다.');
                 }
+                return;
 
             case 1:  //앨범에서 선택
+                const { status: albumStatus } = await MediaLibrary.requestPermissionsAsync()
+                if (albumStatus === 'granted') {
+                    getPhotos()
+                } else {
+                    Alert.alert('앨범 접근 허용은 필수입니다.');
+                }
+                return;
 
             default:
         }
@@ -115,7 +134,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={image ? image : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="contain">
+                        <ImageBackground source={image ? {uri : image} : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
                             <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>

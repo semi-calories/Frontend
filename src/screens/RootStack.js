@@ -8,6 +8,7 @@ import SignupScreen from "~/screens/LoginSignup/SignupScreen";
 
 import MainTab from "~/screens/MainTab/MainTab";
 import CameraScreen from "~/screens/MainTab/CameraScreen";
+import AlbumScreen from "~/screens/MainTab/AlbumScreen";
 import MealtimeScreen from "~/screens/MainTab/MealtimeScreen";
 
 import UserInfoMainScreen from "~/screens/UserInfo/UserInfoMainScreen";
@@ -31,6 +32,7 @@ const RootStack = () => {
 
             <Stack.Screen name="MainTab" component={MainTab}options={{ headerShown: false }} />
             <Stack.Screen name="CameraScreen" component={CameraScreen} />
+            <Stack.Screen name="AlbumScreen" component={AlbumScreen} />
             <Stack.Screen name="MealtimeScreen" component={MealtimeScreen} />
 
             <Stack.Screen name="UserInfoMainScreen" component={UserInfoMainScreen} />

@@ -30,7 +30,15 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow $(PRODUCT_NAME) to access your camera."
+          "cameraPermission": "Allow Semi-Calories to access your camera."
+        }
+      ],
+      [
+        "expo-media-library",
+        {
+          "photosPermission": "Allow Semi-Calories to access your photos.",
+          "savePhotosPermission": "Allow Semi-Calories to save photos.",
+          "isAccessMediaLocationEnabled": true
         }
       ]
     ]
