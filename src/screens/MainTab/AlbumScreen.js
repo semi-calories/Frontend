@@ -15,10 +15,10 @@ import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const AlbumScreen = ({ navigation, route }) => {
-    const { nextScreen, photosParam, firstPhotoId } = route.params
+    const { nextScreen} = route.params
 
     const [photos, setPhotos] = useState([])
-    console.log('AlbumScreen photos', photos)
+    console.log('AlbumScreen photos', photos, photos.length)
     const [chosenPhoto, setChosenPhoto] = useState(null)
 
     const albumRef = useRef(null)
@@ -31,8 +31,7 @@ const AlbumScreen = ({ navigation, route }) => {
     }, [navigation]);
 
     useEffect(() => {
-        setPhotos([...photosParam])
-        albumRef.current = firstPhotoId
+        getPhotos();
     }, [])
 
     const renderItem = ({ item }) => {
@@ -43,15 +42,17 @@ const AlbumScreen = ({ navigation, route }) => {
         );
     };
 
-    const onEndReached = async () => {
-        const { assets , endCursor, hasNextPage } = await MediaLibrary.getAssetsAsync({
-            after: albumRef.current,
-        });
+    const getPhotos = async () => {
+        let assetsOptions = {};
 
-        if (hasNextPage) {
-            albumRef.current = endCursor;
-            setPhotos([...photos, ...assets]);
+        if(albumRef.current){
+            assetsOptions = { after: albumRef.current };
         }
+
+        const { assets, endCursor } = await MediaLibrary.getAssetsAsync( assetsOptions );
+
+        albumRef.current = endCursor;
+        setPhotos([...photos, ...assets]);
     };
 
     const reChoosePictureHandler = () => {
@@ -92,7 +93,7 @@ const AlbumScreen = ({ navigation, route }) => {
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     numColumns={3}
-                    onEndReached={onEndReached}
+                    onEndReached={getPhotos}
                     //onEndReachedThreshold={0.8}
                     showsVerticalScrollIndicator="false"
                 />

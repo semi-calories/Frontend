@@ -66,16 +66,6 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         toggleOpened()
     }
 
-    const getPhotos = async () => {
-        const { assets } = await MediaLibrary.getAssetsAsync();
-
-        navigation.navigate('AlbumScreen', {
-            nextScreen: 'MealtimeScreen',
-            photosParam: assets,
-            firstPhotoId: assets[0].id
-        });
-    };
-
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
@@ -93,7 +83,9 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
             case 1:  //앨범에서 선택
                 const { status: albumStatus } = await MediaLibrary.requestPermissionsAsync()
                 if (albumStatus === 'granted') {
-                    getPhotos()
+                    navigation.navigate('AlbumScreen', {
+                        nextScreen: 'MealtimeScreen',
+                    });
                 } else {
                     Alert.alert('앨범 접근 허용은 필수입니다.');
                 }
