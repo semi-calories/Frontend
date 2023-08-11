@@ -55,22 +55,98 @@ export const MonthData = [
 
 //영양성분
 export const FoodTemp = [
-    { 
+    {
         name: '사과',
-        [Nutrition.serving]:230,
-        [Nutrition.kcal]:110,
-        [Nutrition.carbo]:29.3,
-        [Nutrition.protein]:0.6,
-        [Nutrition.fat]:0.4,
-        satisfaction:'',
+        [Nutrition.serving]: 230,
+        [Nutrition.kcal]: 110,
+        [Nutrition.carbo]: 29.3,
+        [Nutrition.protein]: 0.6,
+        [Nutrition.fat]: 0.4,
+        satisfaction: '',
     },
-    { 
+    {
         name: '계란후라이',
-        [Nutrition.serving]:46,
-        [Nutrition.kcal]:89,
-        [Nutrition.carbo]:0.4,
-        [Nutrition.protein]:6.2,
-        [Nutrition.fat]:6.8,
-        satisfaction:'',
+        [Nutrition.serving]: 46,
+        [Nutrition.kcal]: 89,
+        [Nutrition.carbo]: 0.4,
+        [Nutrition.protein]: 6.2,
+        [Nutrition.fat]: 6.8,
+        satisfaction: '',
+    },
+]
+
+// 추천
+export const RecommendFood = [
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+        food_image: '',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
     },
 ]
