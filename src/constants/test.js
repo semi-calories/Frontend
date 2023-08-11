@@ -150,3 +150,23 @@ export const RecommendFood = [
         food_fat: 5,
     },
 ]
+
+//식단 기록
+export const FoodRecord = [
+    {
+        food_name: '육회비빔밥',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+    {
+        food_name: '육회비빔밥',
+
+        food_kcal: 450,
+        food_carbo: 2.3,
+        food_protein: 20,
+        food_fat: 5,
+    },
+]

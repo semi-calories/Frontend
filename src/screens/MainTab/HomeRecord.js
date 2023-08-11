@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo } from "react";
 
-import { View, Text, StyleSheet, Pressable, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, FlatList } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
@@ -13,7 +13,7 @@ import RBSheet from "react-native-raw-bottom-sheet";
 import { DonutChart } from "~/components/chart";
 
 import { Nutrition, Nutrition_ko } from "~/constants/food";
-import { SpentAmount, TargetAmount, SpentNutri, TargetNutri } from "~/constants/test";
+import { SpentAmount, TargetAmount, SpentNutri, TargetNutri, FoodRecord } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -21,9 +21,11 @@ import { colors, fonts } from "~/constants/globalStyles";
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
-const HomeRecord = () => {
+const HomeRecord = ({navigation}) => {
 
-    const refRBSheet = useRef();
+    const refRBSheetCalendar = useRef();
+    const refRBSheetRecord = useRef();
+
     const [selectDate, setSelectDate] = useState(new Date())
 
     //요일 계산
@@ -48,7 +50,7 @@ const HomeRecord = () => {
         const ratio = Math.round(spent / target * 100);
 
         return (
-            <View style={[styles.flexRow, { marginVertical: verticalScale(17), justifyContent: 'space-between' }]}>
+            <View style={[styles.flexRowSpaceBetween, { marginVertical: verticalScale(17) }]}>
                 <Text style={[styles.text, { width: scale(67) }]}>{Nutrition_ko[name]}</Text>
                 <View style={[styles.flexRow, { width: scale(72) }]}>
                     <Text style={[styles.text, { fontFamily: fonts.bold }]}>{spent}</Text>
@@ -62,6 +64,33 @@ const HomeRecord = () => {
         )
     }
 
+    const renderItem = ({ item }) => {
+        return (
+            <Pressable style={styles.container} onPress={()=>console.log('MealtimeScreen으로 이동')}>
+                <View style={styles.flexRowSpaceBetween}>
+                    <Text style={styles.text}>{item.food_name}</Text>
+                    <Text style={styles.greyText}>{item.food_kcal} kcal</Text>
+                </View>
+                <View style={[styles.flexRowSpaceBetween, { marginTop: verticalScale(10), paddingHorizontal: scale(5) }]}>
+                    <View style={styles.nutri}>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.carbo]}</Text>
+                        <Text style={styles.greyText}>{item.food_carbo} g</Text>
+                    </View>
+                    <View style={styles.verticalBorder} />
+                    <View style={styles.nutri}>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.protein]}</Text>
+                        <Text style={styles.greyText}>{item.food_protein} g</Text>
+                    </View>
+                    <View style={styles.verticalBorder} />
+                    <View style={styles.nutri}>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.fat]}</Text>
+                        <Text style={styles.greyText}>{item.food_fat} g</Text>
+                    </View>
+                </View>
+            </Pressable>
+        );
+    };
+
     return (
         <View>
             {/* 날짜 선택하는 뷰 */}
@@ -69,7 +98,7 @@ const HomeRecord = () => {
                 <Pressable onPress={() => setSelectDate(CalculateDate('sub', selectDate))}>
                     <Entypo name="chevron-left" size={35} color="black" />
                 </Pressable>
-                <Pressable onPress={() => refRBSheet.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <Pressable onPress={() => refRBSheetCalendar.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
                     <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
                 </Pressable>
@@ -80,7 +109,9 @@ const HomeRecord = () => {
 
             {/* 차트 및 기록 뷰 */}
             <View style={styles.graphWrapper}>
-                <DonutChart spentAmount={SpentAmount} targetAmount={TargetAmount} />
+                <Pressable onPress={() => refRBSheetRecord.current.open()}>
+                    <DonutChart spentAmount={SpentAmount} targetAmount={TargetAmount} />
+                </Pressable>
             </View>
 
             {/* 탄단지 영양성분 뷰 */}
@@ -92,7 +123,7 @@ const HomeRecord = () => {
 
             {/* 캘린더 */}
             <RBSheet
-                ref={refRBSheet}
+                ref={refRBSheetCalendar}
                 height={verticalScale(320)}
                 closeOnDragDown={true}
                 customStyles={{
@@ -111,7 +142,7 @@ const HomeRecord = () => {
                         return (
                             <TouchableOpacity onPress={() => {
                                 setSelectDate(new Date(date.dateString))
-                                refRBSheet.current.close();
+                                refRBSheetCalendar.current.close();
                             }}>
                                 <Text style={[styles.calendarText, { color: formatDate == date.dateString ? colors.primary : colors.black }]}>{date.day}</Text>
                             </TouchableOpacity>
@@ -120,6 +151,29 @@ const HomeRecord = () => {
                     theme={{
                         arrowColor: colors.black,
                     }}
+                />
+            </RBSheet>
+
+            {/* 식단조회 */}
+            <RBSheet
+                ref={refRBSheetRecord}
+                height={verticalScale(500)}
+                closeOnDragDown={true}
+                customStyles={{
+                    container: {
+                        borderRadius: 10,
+                        paddingHorizontal:scale(30),
+                    },
+                    draggableIcon: {
+                        backgroundColor: colors.textGrey
+                    }
+                }}
+            >
+                <FlatList
+                    data={FoodRecord}
+                    renderItem={renderItem}
+                    keyExtractor={item => item.id}
+                    showsVerticalScrollIndicator="false"
                 />
             </RBSheet>
         </View>
@@ -173,10 +227,34 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
+    flexRowSpaceBetween:{
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent:'space-between'
+    },
+
     greyText: {
         fontFamily: fonts.medium,
         fontSize: scale(16),
         color: colors.borderGrey,
+    },
+
+    container: {
+        paddingVertical: verticalScale(24),
+
+        borderBottomWidth: scale(1),
+        borderBottomColor: colors.textGrey,
+    },
+
+    nutri: {
+        width: scale(80),
+        alignItems: 'center',
+    },
+
+    verticalBorder: {
+        width: scale(1),
+        height: verticalScale(24),
+        backgroundColor: colors.textGrey
     },
 })
 

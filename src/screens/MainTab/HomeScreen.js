@@ -40,7 +40,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
 
                 {/* 기록 화면 */}
-                {tabLabel == tabs[0] && <HomeRecord />}
+                {tabLabel == tabs[0] && <HomeRecord navigation={navigation}/>}
 
                 {/* 통계 화면 */}
                 {tabLabel == tabs[1] && <HomeStatistic />}
