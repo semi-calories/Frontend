@@ -17,7 +17,7 @@ import { USER_INFO } from "~/constants/asyncStoragekey";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 import { login } from "~/apis/api/loginSignup";
-import { getUserInfo } from "~/apis/services/user";
+import { getLoginInfo } from "~/apis/services/loginSignup";
 
 
 const LoginScreen = ({ navigation }) => {
@@ -30,29 +30,34 @@ const LoginScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const onPressLogin = () => {
-        const { user, error } = handleLogin()
+    const onPressLogin = async() => {
+        const { user, error } = await handleLogin()
 
         if (user) {
             storeData(user)
 
             navigation.navigate('MainTab')
-        } else {
+        } else if(error) {
             Alert.alert(error)
         }
 
-       // navigation.navigate('MainTab')
+        // navigation.navigate('MainTab')
     }
 
     const handleLogin = async () => {
         const userInfo = { email, password }
+        //console.log(userInfo)
 
-        try {
-            const rawResponse = await login(userInfo)
-            const response = await getUserInfo(rawResponse)
-            return response
-        } catch (err) {
-            console.log(err)
+        if (email && password) {
+            try {
+                const rawResponse = await login(userInfo)
+                const response = getLoginInfo(rawResponse)
+                return response
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            Alert.alert('아이디 또는 비밀번호를 입력해주세요.')
         }
     }
 

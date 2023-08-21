@@ -3,7 +3,7 @@
 //
 
 export const getLoginInfo = (rawLoginInfo) => {
-    const { userExists, user, matchResult } = rawLoginInfo.user
+    const { userExists, user, matchResult } = rawLoginInfo
 
     if (userExists && matchResult) {
         return { user, error: '' }
