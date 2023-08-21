@@ -27,6 +27,7 @@ const HomeRecord = ({navigation}) => {
     const refRBSheetRecord = useRef();
 
     const [selectDate, setSelectDate] = useState(new Date())
+    //console.log('HomeRecord selectDate', selectDate)
 
     //요일 계산
     let day = useMemo(() => DAYS[selectDate.getDay()], [selectDate]);

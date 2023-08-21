@@ -37,8 +37,9 @@ const HomeStatisticPeriod = ({ type }) => {
     const refRBSheet = useRef();
 
     const [selectDate, setSelectDate] = useState(new Date())
-    console.log(selectDate)
+    console.log("HomeStatisticPeriod selectDate",selectDate)
     const [pickerDate, setPickerDate] = useState()
+    console.log("HomeStatisticPeriod pickerDate",pickerDate)
 
     //날짜 포맷
     let formatDate = useMemo(() => moment(selectDate).format(type == '주간' ? 'YYYY-MM' : 'YYYY'), [selectDate, type]);
