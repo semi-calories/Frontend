@@ -10,7 +10,7 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 export function BasicTextInput(props) {
-  const { type, text, onChangeText,  width, ...restProps } = props  
+  const { type, text, onChangeText, width, ...restProps } = props
 
   return (
     <TextInput
@@ -23,13 +23,18 @@ export function BasicTextInput(props) {
 }
 
 export function LabelTextInput(props) {
-  const { type, label, text, onChangeText, unit, width, inputViewStyle ,inputStyle, ...restProps } = props
+  const { type, label, required, text, onChangeText, unit, width, inputViewStyle, inputStyle, ...restProps } = props
   return (
     <View style={inputViewStyle}>
-      {label && <Text style={styles.labelText}>{label}</Text>}
-      <View style={[styles.input, type == 'light' ? styles.light : styles.dark,{ width:width, flexDirection: 'row' }]}>
+      {label &&
+        <View style={styles.flexRow}>
+          <Text style={styles.labelText}>{label}</Text>
+          {required && <Text style={styles.required}> *</Text>}
+        </View>
+      }
+      <View style={[styles.input, type == 'light' ? styles.light : styles.dark, { width: width, flexDirection: 'row' }]}>
         <TextInput
-          style={[{ flex : 1 }, inputStyle]}
+          style={[{ flex: 1 }, inputStyle]}
           value={text}
           onChangeText={onChangeText}
           editable={type == 'dark' ? false : true}
@@ -44,7 +49,7 @@ export function LabelTextInput(props) {
 const styles = StyleSheet.create({
   input: {
     height: verticalScale(50),
-    padding:scale(14),
+    padding: scale(14),
 
     borderRadius: 10,
     marginVertical: verticalScale(6),
@@ -66,9 +71,20 @@ const styles = StyleSheet.create({
     color: colors.borderGrey,
   },
 
-  unitText:{
+  unitText: {
     fontFamily: fonts.bold,
     fontSize: scale(15),
     color: colors.textGrey,
+  },
+
+  flexRow: {
+    flexDirection: 'row',
+    alignItems: 'center'
+  },
+
+  required: {
+    color: 'red',
+    fontFamily: fonts.medium,
+    fontSize: scale(23),
   }
 });

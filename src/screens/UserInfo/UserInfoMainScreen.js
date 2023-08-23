@@ -23,6 +23,8 @@ const UserInfoMainScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
+    const userInfo = { userName: UserName, userCode: null, image: null }
+
     return (
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
@@ -32,11 +34,11 @@ const UserInfoMainScreen = ({ navigation }) => {
             </View>
 
             {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('UserInfoEditScreen', { userName: UserName, infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('UserInfoEditScreen', { userInfo, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetGoalScreen', { infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetGoalScreen', { userInfo, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>목표 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>

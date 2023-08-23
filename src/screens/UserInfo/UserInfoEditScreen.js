@@ -45,7 +45,9 @@ const ActivityFunc = ({ label, onPress, activity }) => {
 }
 
 const UserInfoEditScreen = ({ navigation, route }) => {
-    const { userName, infoType, image } = route.params;
+    const { userInfo, infoType } = route.params;
+    console.log('UserInfoEditScreen user', userInfo)
+    const { userName, email, userCode, image } = userInfo
 
     const [name, setName] = useState();
     const [gender, setGender] = useState();
@@ -58,7 +60,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
             navigation.setOptions({
-                header: () => <BackHeader rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+                header: () => <BackHeader />
             });
         } else if (infoType == UserInfoType.edit) {
             navigation.setOptions({
@@ -112,13 +114,36 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     }
 
     const handleMove = () => {
-        const userInfoInputs = { name, gender, age, height, weight, targetWeight, activity };
-        // 서버에 저장
-        navigation.navigate('SetGoalScreen', { infoType: UserInfoType.init });
+        const user = { userCode,email, name, image, gender, age, height, weight, targetWeight, activity };
+
+        if (gender && age) {
+            if (height && weight && targetWeight && activity) {
+                navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
+            } else {
+                Alert.alert(
+                    '',
+                    '나머지 항목을 작성하지 않으면 \n기록, 추천 기능을 사용할 수 없습니다. \n진행하시겠습니까?',
+                    [
+                        {
+                            text: '취소',
+                            style: 'cancel'
+                        },
+                        {
+                            text: '확인',
+                            style: 'default',
+                            onPress: () => navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init }),
+                        },
+                    ],
+                )
+            }
+        } else {
+            Alert.alert('* 는 필수 항목입니다.')
+        }
+
     }
 
     const handleComplete = () => {
-        const userInfoInputs = { name, gender, age, height, weight, targetWeight, activity };
+        const user = { name, gender, age, height, weight, targetWeight, activity };
         // 변경 내용 서버에 저장
         navigation.goBack();
     }
@@ -134,7 +159,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={image ? {uri : image} : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
+                        <ImageBackground source={image ? { uri: image } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
                             <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
@@ -142,14 +167,17 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                         <LabelTextInput type="light" label={UserInfo_ko[UserInfo.name]} text={name} onChangeText={setName} width={scale(320)} defaultValue={name} />
                     </View>
                 }
-                <Text style={styles.labelText}>{UserInfo_ko[UserInfo.gender]}</Text>
+                <View style={styles.flexRow}>
+                    <Text style={styles.labelText}>{UserInfo_ko[UserInfo.gender]}</Text>
+                    <Text style={styles.required}> *</Text>
+                </View>
                 <View style={styles.contentView}>
                     <GenderFunc label={Gender.female} onPress={() => setGender(Gender.female)} gender={gender} />
                     <GenderFunc label={Gender.male} onPress={() => setGender(Gender.male)} gender={gender} />
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
+                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} required text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.height]} text={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
@@ -161,11 +189,11 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 <View style={styles.contentView}>
                     <ActivityFunc label={Activity.less} onPress={() => setActivity(Activity.less)} activity={activity} />
                     <ActivityFunc label={Activity.normal} onPress={() => setActivity(Activity.normal)} activity={activity} />
-                    <ActivityFunc label={Activity.much} onPress={() => setActivity(Activity.much)} activity={activity} />
+                    <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={activity} />
                 </View>
             </ScrollView>
             {infoType == UserInfoType.init
-                ? <MoveButton text="다음" onPress={handleMove} />
+                ? <MoveButton text="다음" onPress={handleMove} inActive={!(gender && age)} />
                 : <MoveButton text="완료" onPress={handleComplete} />
             }
 
@@ -260,5 +288,16 @@ const styles = StyleSheet.create({
         width: scale(55),
         height: verticalScale(50),
         resizeMode: 'contain',
+    },
+
+    flexRow: {
+        flexDirection: 'row',
+        alignItems: 'center'
+    },
+
+    required: {
+        color: 'red',
+        fontFamily: fonts.medium,
+        fontSize: scale(23),
     }
 });
