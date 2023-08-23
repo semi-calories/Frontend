@@ -13,7 +13,3 @@ export const getLoginInfo = (rawLoginInfo) => {
         return { user, error: '존재하지 않는 회원입니다.' }
     }
 }
-
-export const getSignupInfo = (rawSignupInfo) => {
-    return rawSignupInfo.response
-}

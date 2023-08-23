@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useState } from "react";
 
-import { StyleSheet,Alert } from "react-native";
+import { StyleSheet, Alert } from "react-native";
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
@@ -14,8 +14,7 @@ import { PrimaryButton } from "~/components/button";
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { UserInfoType } from "~/constants/type";
 
-import { signup } from "~/apis/api/loginSignup";
-import { getSignupInfo } from "~/apis/services/loginSignup";
+import { signup, emailDuplicateCheck } from "~/apis/api/loginSignup";
 
 const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -28,28 +27,34 @@ const SignupScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const onPressSignup = () => {
-        const { response } = handleSignup()
-
-        if (response) {
-            Alert.alert('회원가입 완료!')
-            navigation.navigate('UserInfoEditScreen', { userName: userName, infoType: UserInfoType.init })
-        } else {
-            Alert.alert('회원가입 불가')
-        }
-
-        navigation.navigate('UserInfoEditScreen', { userName: userName, infoType: UserInfoType.init })
-    }
 
     const handleSignup = async () => {
         const signupInfo = { email, password, name: userName }
 
-        try {
-            const rawResponse = await signup(signupInfo)
-            const response = await getSignupInfo(rawResponse)
-            return response
-        } catch (err) {
-            console.log(err)
+        if (email && password && userName) {
+            try {
+                const { duplicateResult } = await emailDuplicateCheck(email)
+
+                if (duplicateResult) {
+                    Alert.alert('해당 이메일로 가입된 계정이 있습니다.')
+                } else {
+                    const { response: userCode } = await signup(signupInfo)
+                    console.log(userCode)
+
+                    const userInfo = { userName, userCode, image: null, email}
+
+                    if (userCode) {
+                        Alert.alert('회원가입 완료!')
+                        navigation.navigate('UserInfoEditScreen', { userInfo, infoType: UserInfoType.init })
+                    } else {
+                        Alert.alert('회원가입 불가')
+                    }
+                }
+            } catch (err) {
+                console.log(err)
+            }
+        } else {
+            Alert.alert('항목들을 모두 입력해주세요.')
         }
     }
 
@@ -59,7 +64,7 @@ const SignupScreen = ({ navigation }) => {
             <BasicTextInput type="light" text={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} />
             <BasicTextInput type="light" text={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} />
             <BasicTextInput type="light" text={userName} onChangeText={setUserName} placeholder="이름" width={scale(298)} />
-            <PrimaryButton text='회원가입' onPress={onPressSignup} btnStyle={styles.btn} />
+            <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );
 }

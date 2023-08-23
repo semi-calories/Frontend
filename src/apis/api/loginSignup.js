@@ -12,9 +12,18 @@ export const login = async (loginInfo) => {
     }
 }
 
-export const signup = async(signupInfo) => {
+export const signup = async (signupInfo) => {
     try {
         const { data } = await frontendInstance.post(`/sign-up`, signupInfo)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+export const emailDuplicateCheck = async (email) => {
+    try {
+        const { data } = await frontendInstance.get(`/emailDuplicateCheck`, { params: { email: email } })
         return data
     } catch (err) {
         console.error(err)
