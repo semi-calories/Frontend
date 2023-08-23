@@ -39,37 +39,37 @@ export const Gender_icon = {
 export const Activity = {
     less: 'less',
     normal: 'normal',
-    much: 'much',
+    more: 'more',
 }
 export const Activity_ko = {
     [Activity.less]: '적음',
     [Activity.normal]: '보통',
-    [Activity.much]: '많음',
+    [Activity.more]: '많음',
 }
 export const Activity_icon = {
     [Activity.less]: 'emoticon-neutral-outline',
     [Activity.normal]: 'emoticon-happy-outline',
-    [Activity.much]: 'emoticon-excited-outline',
+    [Activity.more]: 'emoticon-excited-outline',
 }
 
 
 export const Goal = {
-    healthy: 'healthy',
-    weightLoss: 'weightLoss',
-    weightGain: 'weightGain',
+    health: 'health',
+    lose: 'lose',
+    gain: 'gain',
 }
 export const Goal_ko = {
-    [Goal.healthy]: '건강 식단',
-    [Goal.weightLoss]: '체지방 감소 식단',
-    [Goal.weightGain]: '체중 증량 식단',
+    [Goal.health]: '건강 식단',
+    [Goal.lose]: '체지방 감소 식단',
+    [Goal.gain]: '체중 증량 식단',
 }
 export const Goal_explain = {
-    [Goal.healthy]: '탄단지 균형을 알맞게 유지해요',
-    [Goal.weightLoss]: '탄단지 균형을 유지하고 칼로리 섭취를 제한해요',
-    [Goal.weightGain]: '탄단지 균형을 유지하고 칼로리 섭취를 늘려요'
+    [Goal.health]: '탄단지 균형을 알맞게 유지해요',
+    [Goal.lose]: '탄단지 균형을 유지하고 칼로리 섭취를 제한해요',
+    [Goal.gain]: '탄단지 균형을 유지하고 칼로리 섭취를 늘려요'
 }
 export const Goal_icon = {
-    [Goal.healthy]: 'noodles',
-    [Goal.weightLoss]: 'food-apple-outline',
-    [Goal.weightGain]: 'food-turkey'
+    [Goal.health]: 'noodles',
+    [Goal.lose]: 'food-apple-outline',
+    [Goal.gain]: 'food-turkey'
 }
