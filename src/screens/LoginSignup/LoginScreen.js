@@ -19,7 +19,6 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 import { login } from "~/apis/api/loginSignup";
 import { getLoginInfo } from "~/apis/services/loginSignup";
 
-
 const LoginScreen = ({ navigation }) => {
     const [email, onChangeEmail] = useState();
     const [password, onChangePassword] = useState();
@@ -30,20 +29,6 @@ const LoginScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const onPressLogin = async() => {
-        const { user, error } = await handleLogin()
-
-        if (user) {
-            storeData(user)
-
-            navigation.navigate('MainTab')
-        } else if(error) {
-            Alert.alert(error)
-        }
-
-        // navigation.navigate('MainTab')
-    }
-
     const handleLogin = async () => {
         const userInfo = { email, password }
         //console.log(userInfo)
@@ -51,8 +36,15 @@ const LoginScreen = ({ navigation }) => {
         if (email && password) {
             try {
                 const rawResponse = await login(userInfo)
-                const response = getLoginInfo(rawResponse)
-                return response
+                const { user, error } = getLoginInfo(rawResponse)
+
+                if (user) {
+                    storeData(user)
+        
+                    navigation.navigate('MainTab')
+                } else {
+                    Alert.alert(error)
+                }
             } catch (err) {
                 console.log(err)
             }
@@ -70,12 +62,18 @@ const LoginScreen = ({ navigation }) => {
         }
     };
 
+//    const TestApi = async () =>{
+//     const data = await getInfo(6);
+//     console.log(data)
+//    }
+//    TestApi()
+
 
     return (
         <RootView viewStyle={styles.container}>
             <BasicTextInput type="light" text={email} onChangeText={onChangeEmail} placeholder="이메일" width={scale(298)} />
-            <BasicTextInput type="light" text={password} onChangeText={onChangePassword} placeholder="비밀번호" width={scale(298)} />
-            <PrimaryButton text='로그인' onPress={onPressLogin} btnStyle={styles.btn} />
+            <BasicTextInput type="light" text={password} onChangeText={onChangePassword} placeholder="비밀번호" width={scale(298)} password/>
+            <PrimaryButton text='로그인' onPress={handleLogin} btnStyle={styles.btn} />
         </RootView>
     );
 }
