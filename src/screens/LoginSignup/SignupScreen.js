@@ -33,7 +33,7 @@ const SignupScreen = ({ navigation }) => {
 
         if (email && password && userName) {
             try {
-                const { duplicateResult } = await emailDuplicateCheck(email)
+                const { duplicateResult } = await emailDuplicateCheck({email : email})
 
                 if (duplicateResult) {
                     Alert.alert('해당 이메일로 가입된 계정이 있습니다.')

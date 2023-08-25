@@ -23,7 +23,7 @@ export const signup = async (signupInfo) => {
 
 export const emailDuplicateCheck = async (email) => {
     try {
-        const { data } = await frontendInstance.get(`/emailDuplicateCheck`, { params: { email: email } })
+        const { data } = await frontendInstance.get(`/emailDuplicateCheck`, { params: email })
         return data
     } catch (err) {
         console.error(err)
