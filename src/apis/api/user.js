@@ -5,7 +5,7 @@ import { frontendInstance } from "~/apis/utils/instance"
 
 export const getInfo = async (userCode) => {
     try {
-        const { data } = await frontendInstance.get(`/user/getInfo`, { params:{ userCode: userCode } })
+        const { data } = await frontendInstance.get(`/user/getInfo`, { params: userCode })
         return data
     } catch (err) {
         console.error(err)

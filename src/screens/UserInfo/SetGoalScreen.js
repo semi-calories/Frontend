@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
@@ -18,6 +18,8 @@ import { UserInfoType } from "~/constants/type";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
+
+import { updateInfo } from "~/apis/api/user";
 
 const GoalFunc = ({ label, onPress, goal }) => {
     return (
@@ -34,15 +36,16 @@ const GoalFunc = ({ label, onPress, goal }) => {
 }
 
 const SetGoalScreen = ({ navigation, route }) => {
-    const { infoType } = route.params;
+    const { infoType, userInfo } = route.params;
+    console.log('SetGoalScreen userInfo', userInfo)
 
 
-    const [userGoal, setGoal] = useState(Goal.healthy);
+    const [userGoal, setGoal] = useState(Goal.health);
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
             navigation.setOptions({
-                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+                header: () => <BackHeader back backPress={() => navigation.goBack()} />
             });
         } else if (infoType == UserInfoType.edit) {
             navigation.setOptions({
@@ -55,18 +58,38 @@ const SetGoalScreen = ({ navigation, route }) => {
         // 서버에서 데이터 get해서 변수들 set해주기
     }, [route.params])
 
-    const handleMove = () => {
-        // 서버에 저장
-        navigation.navigate('CalculateGoalScreen', { infoType: infoType });
+    const handleMove = async () => {
+        const user = {
+            userCode: userInfo.userCode,
+            email:userInfo.email,
+            image:userInfo.image,
+            name:userInfo.name,
+            gender: userInfo.gender,
+            age:userInfo.age,
+            height:userInfo.height,
+            weight:userInfo.weight,
+            userActivity:userInfo.activity,
+            goalWeight: userInfo.targetWeight,
+            userGoal: userGoal
+        }
+
+        try {
+            const response = await updateInfo(user)
+            console.log(response)
+
+            navigation.navigate('CalculateGoalScreen', { userInfo: user, infoType });
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     return (
         <RootView viewStyle={styles.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.text}>목표가 무엇인가요?</Text>
-                <GoalFunc label={Goal.healthy} onPress={() => setGoal(Goal.healthy)} goal={userGoal} />
-                <GoalFunc label={Goal.weightLoss} onPress={() => setGoal(Goal.weightLoss)} goal={userGoal} />
-                <GoalFunc label={Goal.weightGain} onPress={() => setGoal(Goal.weightGain)} goal={userGoal} />
+                <GoalFunc label={Goal.health} onPress={() => setGoal(Goal.health)} goal={userGoal} />
+                <GoalFunc label={Goal.lose} onPress={() => setGoal(Goal.lose)} goal={userGoal} />
+                <GoalFunc label={Goal.gain} onPress={() => setGoal(Goal.gain)} goal={userGoal} />
             </View>
             <MoveButton text="다음" onPress={handleMove} />
         </RootView>

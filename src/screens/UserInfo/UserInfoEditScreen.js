@@ -114,7 +114,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     }
 
     const handleMove = () => {
-        const user = { userCode,email, name, image, gender, age, height, weight, targetWeight, activity };
+        const user = { userCode, email, name, image, gender, age, height, weight, targetWeight, activity };
 
         if (gender && age) {
             if (height && weight && targetWeight && activity) {
