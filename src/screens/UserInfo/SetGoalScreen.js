@@ -5,12 +5,14 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
-
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
+
+import { USER_INFO } from "~/constants/asyncStoragekey";
 
 import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
@@ -19,7 +21,7 @@ import { UserInfoType } from "~/constants/type";
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 
-import { updateInfo } from "~/apis/api/user";
+import { updateInfo, getInfo} from "~/apis/api/user";
 
 const GoalFunc = ({ label, onPress, goal }) => {
     return (
@@ -75,13 +77,35 @@ const SetGoalScreen = ({ navigation, route }) => {
 
         try {
             const response = await updateInfo(user)
-            console.log(response)
+            const userData = await getUserInfo()
 
-            navigation.navigate('CalculateGoalScreen', { userInfo: user, infoType });
+
+
+            navigation.navigate('CalculateGoalScreen', { userInfo: userData, infoType });
         } catch (err) {
             console.log(err)
         }
     }
+
+    const getUserInfo = async () => {
+        try {
+            const user = await getInfo({ userCode: userInfo.userCode })
+            storeData(user)
+
+            return user
+        } catch (err) {
+            console.log(err)
+        }
+    }
+
+    const storeData = async (value) => {
+        try {
+            const jsonValue = JSON.stringify(value);
+            await AsyncStorage.setItem(USER_INFO, jsonValue);
+        } catch (e) {
+            console.log(e)
+        }
+    };
 
     return (
         <RootView viewStyle={styles.container}>

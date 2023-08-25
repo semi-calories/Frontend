@@ -2,7 +2,7 @@
 // 목표량 계산 Screen
 //
 
-import React, { useLayoutEffect, useEffect, useState } from "react";
+import React, { useLayoutEffect } from "react";
 
 import { View, Text, StyleSheet, } from "react-native";
 
@@ -19,14 +19,10 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 import { TargetIntake } from "~/constants/test";
 
-import { getInfo } from "~/apis/api/user";
 
 const CalculateGoalScreen = ({ navigation, route }) => {
     const { infoType, userInfo } = route.params;
-
-    const [user, setUser] = useState()
-    console.log(user)
-
+    console.log('CalculateGoalScreen userInfo', userInfo)
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
@@ -40,38 +36,25 @@ const CalculateGoalScreen = ({ navigation, route }) => {
         }
     }, [navigation, infoType]);
 
-    useEffect(() => {
-        getUserInfo()
-    }, [])
-
-    const getUserInfo = async () => {
-        try {
-            const user = await getInfo({ userCode: userInfo.userCode })
-
-            setUser({ ...user })
-        } catch (err) {
-            console.log(err)
-        }
-    }
 
     return (
         <RootView viewStyle={styles.container}>
             <View style={{ flex: 1 }}>
                 <Text style={styles.text}>목표량을 계산했어요</Text>
                 <View style={styles.inputViewStyle}>
-                    <LabelTextInput type="dark" label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={user ? Math.round(user?.kcal).toString() : ''} inputStyle={styles.inputStyle} />
+                    <LabelTextInput type="dark" label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={Math.round(userInfo?.kcal).toString()} inputStyle={styles.inputStyle} />
                     <View style={{ marginTop: verticalScale(40) }}>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={user ? Math.round(user?.carbo).toString() : ''} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{user ? Math.round(user?.carbo) * 4 : ''} kcal</Text>
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.carbo]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.carbo).toString()} inputStyle={styles.inputStyle} />
+                            <Text style={styles.calText}>{Math.round(userInfo?.carbo) * 4 } kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={user ? Math.round(user?.protein).toString() : ''} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{user ? Math.round(user?.protein) * 4 : ''} kcal</Text>
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.protein]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.protein).toString()} inputStyle={styles.inputStyle} />
+                            <Text style={styles.calText}>{Math.round(userInfo?.protein) * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={user ? Math.round(user?.fat).toString() : ''} inputStyle={styles.inputStyle} />
-                            <Text style={styles.calText}>{user ? Math.round(user?.fat) * 9 : ''} kcal</Text>
+                            <LabelTextInput type="dark" label={Nutrition_ko[Nutrition.fat]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.fat).toString()} inputStyle={styles.inputStyle} />
+                            <Text style={styles.calText}>{Math.round(userInfo?.fat) * 9} kcal</Text>
                         </View>
                     </View>
                 </View>
