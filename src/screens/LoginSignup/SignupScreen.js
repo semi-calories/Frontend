@@ -19,7 +19,7 @@ import { signup, emailDuplicateCheck } from "~/apis/api/loginSignup";
 const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
     const [password, setPassword] = useState();
-    const [userName, setUserName] = useState();
+    const [name, setName] = useState();
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -29,9 +29,9 @@ const SignupScreen = ({ navigation }) => {
 
 
     const handleSignup = async () => {
-        const signupInfo = { email, password, name: userName }
+        const signupInfo = { email, password, name }
 
-        if (email && password && userName) {
+        if (email && password && name) {
             try {
                 const { duplicateResult } = await emailDuplicateCheck({email : email})
 
@@ -41,7 +41,7 @@ const SignupScreen = ({ navigation }) => {
                     const { response: userCode } = await signup(signupInfo)
                     console.log(userCode)
 
-                    const userInfo = { userName, userCode, image: null, email}
+                    const userInfo = { name, userCode, image: null, email}
 
                     if (userCode) {
                         Alert.alert('회원가입 완료!')
@@ -63,7 +63,7 @@ const SignupScreen = ({ navigation }) => {
         <RootView viewStyle={styles.container}>
             <BasicTextInput type="light" text={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} />
             <BasicTextInput type="light" text={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password/>
-            <BasicTextInput type="light" text={userName} onChangeText={setUserName} placeholder="이름" width={scale(298)} />
+            <BasicTextInput type="light" text={name} onChangeText={setName} placeholder="이름" width={scale(298)} />
             <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );
