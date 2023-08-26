@@ -6,6 +6,8 @@ import { frontendInstance } from "~/apis/utils/instance"
 export const login = async (loginInfo) => {
     try {
         const { data } = await frontendInstance.post(`/passwordMatch`, loginInfo)
+        console.log('login api data', data)
+
         return data
     } catch (err) {
         console.error(err)
@@ -15,6 +17,8 @@ export const login = async (loginInfo) => {
 export const signup = async (signupInfo) => {
     try {
         const { data } = await frontendInstance.post(`/sign-up`, signupInfo)
+        console.log('signup api data', data)
+
         return data
     } catch (err) {
         console.error(err)

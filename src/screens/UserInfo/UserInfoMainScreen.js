@@ -2,20 +2,22 @@
 //사용자 정보 메인 화면 - 사용자 정보 편집, 목표 설정, 선호/비선호 음식 설정 화면으로 이동 가능
 //
 
-import React, { useLayoutEffect } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Image, Pressable } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
+import { GetUserData } from "~/components/asyncStorageData";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
 import { Null_img, UserName } from "~/constants/test";
 
-const UserInfoMainScreen = ({ navigation }) => {
+const UserInfoMainScreen = ({ navigation}) => {
+    const[user, setUser] = useState({})
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -23,26 +25,35 @@ const UserInfoMainScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    const userInfo = { userName: UserName, userCode: null, image: null }
+    useEffect(()=>{
+        getUser()
+    },[])
+
+    const getUser = async()=>{
+        const data = await GetUserData();
+
+        setUser({...data})
+    }
+
 
     return (
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
             <View style={styles.profile}>
-                <Image source={Null_img} style={styles.img} />
-                <Text style={styles.boldText}>{UserName}</Text>
+                <Image source={user.image ? user.image : Null_img} style={styles.img} />
+                <Text style={styles.boldText}>{user?.name}</Text>
             </View>
 
             {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('UserInfoEditScreen', { userInfo, infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: user, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetGoalScreen', { userInfo, infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('SetGoalScreen', { userInfo: user, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>목표 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.navigate('SetFoodScreen', { infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
                 <Text style={[styles.boldText, { fontSize: scale(18) }]}>선호 / 비선호 음식 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>

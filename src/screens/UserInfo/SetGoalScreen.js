@@ -6,13 +6,11 @@ import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
-
-import { USER_INFO } from "~/constants/asyncStoragekey";
+import { StoreUserData } from "~/components/asyncStorageData";
 
 import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
@@ -71,7 +69,7 @@ const SetGoalScreen = ({ navigation, route }) => {
             height:userInfo.height,
             weight:userInfo.weight,
             userActivity:userInfo.activity,
-            goalWeight: userInfo.targetWeight,
+            goalWeight: userInfo.goalWeight,
             userGoal: userGoal
         }
 
@@ -90,7 +88,7 @@ const SetGoalScreen = ({ navigation, route }) => {
     const getUserInfo = async () => {
         try {
             const user = await getInfo({ userCode: userInfo.userCode })
-            storeData(user)
+            StoreUserData({...user, userCode : userInfo.userCode})
 
             return user
         } catch (err) {
@@ -98,14 +96,6 @@ const SetGoalScreen = ({ navigation, route }) => {
         }
     }
 
-    const storeData = async (value) => {
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem(USER_INFO, jsonValue);
-        } catch (e) {
-            console.log(e)
-        }
-    };
 
     return (
         <RootView viewStyle={styles.container}>

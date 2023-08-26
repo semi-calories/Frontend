@@ -5,14 +5,12 @@
 import React, { useLayoutEffect, useState } from "react";
 
 import { StyleSheet, Alert } from "react-native";
-import AsyncStorage from '@react-native-async-storage/async-storage';
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
-
-import { USER_INFO } from "~/constants/asyncStoragekey";
+import { StoreUserData } from "~/components/asyncStorageData";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 
@@ -30,8 +28,10 @@ const LoginScreen = ({ navigation }) => {
     }, [navigation]);
 
     const handleLogin = async () => {
-        const userInfo = { email, password }
-        //console.log(userInfo)
+        const userInfo = { 
+            userEmail: email,
+            userPassword: password
+        }
 
         if (email && password) {
             try {
@@ -39,7 +39,7 @@ const LoginScreen = ({ navigation }) => {
                 const { user, error } = getLoginInfo(rawResponse)
 
                 if (user) {
-                    storeData(user)
+                    StoreUserData(user)
         
                     navigation.navigate('MainTab')
                 } else {
@@ -52,21 +52,6 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('아이디 또는 비밀번호를 입력해주세요.')
         }
     }
-
-    const storeData = async (value) => {
-        try {
-            const jsonValue = JSON.stringify(value);
-            await AsyncStorage.setItem(USER_INFO, jsonValue);
-        } catch (e) {
-            console.log(e)
-        }
-    };
-
-//    const TestApi = async () =>{
-//     const data = await getInfo(6);
-//     console.log(data)
-//    }
-//    TestApi()
 
 
     return (
