@@ -2,7 +2,7 @@
 //메인 홈화면
 //
 
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Pressable } from "react-native";
 
@@ -11,6 +11,7 @@ import HomeStatistic from "~/screens/MainTab/HomeStatistic";
 
 import { RootView, TabContainer } from "~/components/container";
 import { MainHeader } from "~/components/header";
+import { GetUserData } from "~/components/asyncStorageData";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -18,14 +19,32 @@ import { colors, fonts } from "~/constants/globalStyles";
 const tabs = ['기록', '통계'];
 
 const HomeScreen = ({ navigation }) => {
-
     const [tabLabel, setTabLabel] = useState(tabs[0])
+
+    const [user, setUser] = useState({})
+    console.log('HomeScreen user', user)
 
     useLayoutEffect(() => {
         navigation.setOptions({
             header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
+
+    useEffect(() => {
+        const focusSubscription = navigation.addListener('focus', () => {
+            console.log('HomeScreen focus')
+            getUser()
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return focusSubscription;
+    }, [navigation]);
+
+    const getUser = async () => {
+        const data = await GetUserData();
+
+        setUser({ ...data })
+    }
 
     return (
         <TabContainer>
@@ -40,7 +59,7 @@ const HomeScreen = ({ navigation }) => {
                 </View>
 
                 {/* 기록 화면 */}
-                {tabLabel == tabs[0] && <HomeRecord navigation={navigation}/>}
+                {tabLabel == tabs[0] && <HomeRecord navigation={navigation} />}
 
                 {/* 통계 화면 */}
                 {tabLabel == tabs[1] && <HomeStatistic />}

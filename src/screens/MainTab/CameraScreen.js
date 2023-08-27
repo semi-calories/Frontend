@@ -1,7 +1,7 @@
 //
 // 카메라 스크린 나타나는 화면
 //
-import React, { useRef, useState, useLayoutEffect } from "react";
+import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
 import { Camera, CameraType, AutoFocus } from 'expo-camera';
@@ -16,7 +16,10 @@ import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const CameraScreen = ({ navigation, route }) => {
-    const { nextScreen } = route.params
+    const { nextScreen, userInfo } = route.params
+
+    const [ user, setUser ] = useState({})
+    console.log('CameraScreen user', user)
 
     const cameraRef = useRef(null);
     const [type, setType] = useState(CameraType.back);
@@ -29,6 +32,12 @@ const CameraScreen = ({ navigation, route }) => {
             header: () => <BackHeader back title="사진 찍기" backPress={() => navigation.goBack()} />
         });
     }, [navigation]);
+
+    useEffect(() => {
+        if(capturedImage){
+            setUser({ ...userInfo, image: capturedImage.uri })
+        }
+    }, [capturedImage])
 
     const takePictureHandler = async () => {
         // cameraRef가 없으면 해당 함수가 실행되지 않게 가드
@@ -58,7 +67,7 @@ const CameraScreen = ({ navigation, route }) => {
             //api호출 후 captureImage 보내고 정보 받아오기
             params = { foodParam: [] }
         } else {
-            params = { image: capturedImage.uri, infoType: UserInfoType.edit }
+            params = { userInfo: user, infoType: UserInfoType.edit }
         }
 
         navigation.navigate(nextScreen, params)

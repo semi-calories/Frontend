@@ -15,7 +15,11 @@ import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const AlbumScreen = ({ navigation, route }) => {
-    const { nextScreen} = route.params
+    const { nextScreen, userInfo} = route.params
+
+
+    const [user, setUser] = useState({})
+    console.log('AlbumScreen user', user)
 
     const [photos, setPhotos] = useState([])
     console.log('AlbumScreen photos', photos, photos.length)
@@ -33,6 +37,12 @@ const AlbumScreen = ({ navigation, route }) => {
     useEffect(() => {
         getPhotos();
     }, [])
+
+    useEffect(()=>{
+        if(chosenPhoto){
+            setUser({...userInfo, image: chosenPhoto.uri})
+        }
+    },[chosenPhoto])
 
     const renderItem = ({ item }) => {
         return (
@@ -66,7 +76,7 @@ const AlbumScreen = ({ navigation, route }) => {
             //api호출 후 captureImage 보내고 정보 받아오기
             params = { foodParam: [] }
         } else {
-            params = { image: chosenPhoto.uri, infoType: UserInfoType.edit }
+            params = { userInfo: user, infoType: UserInfoType.edit }
         }
 
         navigation.navigate(nextScreen, params)

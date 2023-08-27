@@ -16,8 +16,8 @@ import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
 import { Null_img, UserName } from "~/constants/test";
 
-const UserInfoMainScreen = ({ navigation}) => {
-    const[user, setUser] = useState({})
+const UserInfoMainScreen = ({ navigation }) => {
+    const [user, setUser] = useState({})
     console.log('UserInfoMainScreen user', user)
 
     useLayoutEffect(() => {
@@ -26,14 +26,19 @@ const UserInfoMainScreen = ({ navigation}) => {
         });
     }, [navigation]);
 
-    useEffect(()=>{
-        getUser()
-    },[])
+    useEffect(() => {
+        const focusSubscription = navigation.addListener('focus', () => {
+            getUser()
+        });
 
-    const getUser = async()=>{
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return focusSubscription;
+    }, [navigation]);
+
+    const getUser = async () => {
         const data = await GetUserData();
 
-        setUser({...data})
+        setUser({ ...data })
     }
 
 
@@ -41,7 +46,7 @@ const UserInfoMainScreen = ({ navigation}) => {
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
             <View style={styles.profile}>
-                <Image source={user.image ? user.image : Null_img} style={styles.img} />
+                <Image source={user.image ? {uri: user.image} : Null_img} style={styles.img} resizeMode="cover"/>
                 <Text style={styles.boldText}>{user?.name}</Text>
             </View>
 
@@ -82,6 +87,8 @@ const styles = StyleSheet.create({
         height: verticalScale(125),
         resizeMode: 'contain',
         marginBottom: verticalScale(8),
+
+        borderRadius:100,
     },
 
     boldText: {

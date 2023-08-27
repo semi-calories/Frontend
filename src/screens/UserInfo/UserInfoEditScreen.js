@@ -67,7 +67,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             });
         } else if (infoType == UserInfoType.edit) {
             navigation.setOptions({
-                header: () => <BackHeader back title="사용자 정보" backPress={() => navigation.goBack()} />
+                header: () => <BackHeader back title="사용자 정보" backPress={() => navigation.pop()} />
             });
         }
     }, [navigation, infoType]);
@@ -88,6 +88,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
 
         navigation.navigate('AlbumScreen', {
             nextScreen: 'UserInfoEditScreen',
+            userInfo,
             photosParam: assets,
             firstPhotoId: assets[0].id
         });
@@ -100,7 +101,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 // 권한을 획득하면 status가 granted 상태
                 if (status === 'granted') {
                     navigation.navigate('CameraScreen', {
-                        nextScreen: 'UserInfoEditScreen'
+                        nextScreen: 'UserInfoEditScreen',
+                        userInfo,
                     });
                 } else {
                     Alert.alert('카메라 접근 허용은 필수입니다.');
