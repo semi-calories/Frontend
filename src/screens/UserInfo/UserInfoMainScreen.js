@@ -18,6 +18,7 @@ import { Null_img, UserName } from "~/constants/test";
 
 const UserInfoMainScreen = ({ navigation}) => {
     const[user, setUser] = useState({})
+    console.log('UserInfoMainScreen user', user)
 
     useLayoutEffect(() => {
         navigation.setOptions({

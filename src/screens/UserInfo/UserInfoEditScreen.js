@@ -14,6 +14,7 @@ import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
+import { StoreUserData, GetUserData } from "~/components/asyncStorageData";
 
 import { HeaderType, UserInfoType } from "~/constants/type";
 import { Gender, Gender_ko, Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/userInfo";
@@ -21,6 +22,8 @@ import { Null_img } from "~/constants/test";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
+
+import { updateInfo } from "~/apis/api/user";
 
 const EditIcon = require('@assets/EditIcon.png')
 
@@ -47,14 +50,14 @@ const ActivityFunc = ({ label, onPress, activity }) => {
 const UserInfoEditScreen = ({ navigation, route }) => {
     const { userInfo, infoType } = route.params;
     console.log('UserInfoEditScreen user', userInfo)
-    const { userName, email, userCode, image } = userInfo
 
+    const [image, setImage] = useState();
     const [name, setName] = useState();
     const [gender, setGender] = useState();
     const [age, setAge] = useState();
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
-    const [targetWeight, setTargetWeight] = useState();
+    const [goalWeight, setGoalWeight] = useState();
     const [activity, setActivity] = useState();
 
     useLayoutEffect(() => {
@@ -70,11 +73,15 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     }, [navigation, infoType]);
 
     useEffect(() => {
-        // 서버에서 데이터 get해서 변수들 set해주기
-        if (userName) {
-            setName(userName)
-        }
-    }, [route.params])
+        setImage(userInfo.image ? userInfo.image : '')
+        setName(userInfo.name ? userInfo.name : '')
+        setGender(userInfo.gender ? userInfo.gender : '')
+        setAge(userInfo.age ? userInfo.age.toString() : '')
+        setHeight(userInfo.height ? userInfo.height.toString() : '')
+        setWeight(userInfo.weight ? userInfo.weight.toString() : '')
+        setGoalWeight(userInfo.goalWeight ? userInfo.goalWeight.toString() : '')
+        setActivity(userInfo.activity ? userInfo.activity : '')
+    }, [route.params?.userInfo])
 
     const getPhotos = async () => {
         const { assets } = await MediaLibrary.getAssetsAsync();
@@ -113,46 +120,50 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleMove = () => {
-        const user = { userCode, email, name, image, gender, age, height, weight, targetWeight, activity };
+    const handleComplete = () => {
+        const user = {
+            userCode: userInfo.userCode,
+            email: userInfo.email,
+            name,
+            image,
+            gender,
+            age,
+            height,
+            weight,
+            goalWeight,
+            userActivity: activity,
+        };
 
-        if (gender && age) {
-            if (height && weight && targetWeight && activity) {
-                navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
-            } else {
-                Alert.alert(
-                    '',
-                    '나머지 항목을 작성하지 않으면 \n기록, 추천 기능을 사용할 수 없습니다. \n진행하시겠습니까?',
-                    [
-                        {
-                            text: '취소',
-                            style: 'cancel'
-                        },
-                        {
-                            text: '확인',
-                            style: 'default',
-                            onPress: () => navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init }),
-                        },
-                    ],
-                )
-            }
+        if (name && gender && age && height && weight && goalWeight && activity) {
+            handleNext(user)
         } else {
-            Alert.alert('* 는 필수 항목입니다.')
+            Alert.alert('항목을 모두 입력해주세요.')
         }
 
     }
 
-    const handleComplete = () => {
-        const user = { name, gender, age, height, weight, targetWeight, activity };
-        // 변경 내용 서버에 저장
-        navigation.goBack();
+    const handleNext = async (user) => {
+        if (infoType == UserInfoType.init) {
+            navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
+
+        } else if (infoType == UserInfoType.edit) {
+            try {
+                const response = await updateInfo(user)
+                StoreUserData(user)
+
+                Alert.alert('사용자 정보 수정 완료!')
+            } catch (err) {
+                console.log(err)
+            }
+        }
     }
+
 
     return (
         <RootView viewStyle={styles.container}>
             {infoType == UserInfoType.init &&
                 <>
-                    <Text style={styles.boldText}>{userName}님</Text>
+                    <Text style={styles.boldText}>{userInfo.name}님</Text>
                     <Text style={styles.text}>나만의 식단 관리 설정</Text>
                 </>
             }
@@ -169,7 +180,6 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 }
                 <View style={styles.flexRow}>
                     <Text style={styles.labelText}>{UserInfo_ko[UserInfo.gender]}</Text>
-                    <Text style={styles.required}> *</Text>
                 </View>
                 <View style={styles.contentView}>
                     <GenderFunc label={Gender.female} onPress={() => setGender(Gender.female)} gender={gender} />
@@ -177,12 +187,12 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} required text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
+                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.height]} text={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.weight]} text={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.targetWeight]} text={targetWeight} onChangeText={setTargetWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
+                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.goalWeight]} text={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
                 </View>
 
                 <Text style={styles.labelText}>{UserInfo_ko[UserInfo.activity]}</Text>
@@ -192,10 +202,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                     <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={activity} />
                 </View>
             </ScrollView>
-            {infoType == UserInfoType.init
-                ? <MoveButton text="다음" onPress={handleMove} inActive={!(gender && age)} />
-                : <MoveButton text="완료" onPress={handleComplete} />
-            }
+            <MoveButton text={infoType == UserInfoType.init ? '다음' : '완료'} onPress={handleComplete} inActive={!(name && gender && age && height && weight && goalWeight && activity)} />
 
             <ActionSheet
                 ref={o => this.ActionSheet = o}
