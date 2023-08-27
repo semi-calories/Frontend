@@ -55,7 +55,9 @@ const SetGoalScreen = ({ navigation, route }) => {
     }, [navigation, infoType]);
 
     useEffect(() => {
-        // 서버에서 데이터 get해서 변수들 set해주기
+        if(userInfo.userGoal){
+            setGoal(userInfo.userGoal)
+        }
     }, [route.params])
 
     const handleMove = async () => {
@@ -68,7 +70,7 @@ const SetGoalScreen = ({ navigation, route }) => {
             age:userInfo.age,
             height:userInfo.height,
             weight:userInfo.weight,
-            userActivity:userInfo.activity,
+            userActivity:userInfo.userActivity,
             goalWeight: userInfo.goalWeight,
             userGoal: userGoal
         }
