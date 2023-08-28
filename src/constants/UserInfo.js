@@ -9,7 +9,7 @@ export const UserInfo = {
     height: 'height',
     weight: 'weight',
     goalWeight: 'goalWeight',
-    activity: 'activity',
+    userActivity: 'userActivity',
 }
 export const UserInfo_ko = {
     [UserInfo.name]:'이름',
@@ -18,7 +18,7 @@ export const UserInfo_ko = {
     [UserInfo.height]: '키',
     [UserInfo.weight]: '몸무게',
     [UserInfo.goalWeight]: '목표 몸무게',
-    [UserInfo.activity]: '평소 활동량'
+    [UserInfo.userActivity]: '평소 활동량'
 }
 
 

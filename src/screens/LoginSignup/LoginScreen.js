@@ -16,6 +16,7 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 
 import { login } from "~/apis/api/loginSignup";
 import { getLoginInfo } from "~/apis/services/loginSignup";
+import { getInfo } from "~/apis/api/user";
 
 const LoginScreen = ({ navigation }) => {
     const [email, onChangeEmail] = useState();
@@ -39,7 +40,8 @@ const LoginScreen = ({ navigation }) => {
                 const { user, error } = getLoginInfo(rawResponse)
 
                 if (user) {
-                    StoreUserData(user)
+                    const userData = await getInfo({ userCode: user.userCode })
+                    StoreUserData({...userData, userCode : user.userCode})
         
                     navigation.navigate('MainTab')
                 } else {
@@ -52,7 +54,6 @@ const LoginScreen = ({ navigation }) => {
             Alert.alert('아이디 또는 비밀번호를 입력해주세요.')
         }
     }
-
 
     return (
         <RootView viewStyle={styles.container}>

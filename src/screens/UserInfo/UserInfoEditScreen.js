@@ -58,7 +58,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     const [height, setHeight] = useState();
     const [weight, setWeight] = useState();
     const [goalWeight, setGoalWeight] = useState();
-    const [activity, setActivity] = useState();
+    const [userActivity, setActivity] = useState();
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
@@ -80,7 +80,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         setHeight(userInfo.height ? userInfo.height.toString() : '')
         setWeight(userInfo.weight ? userInfo.weight.toString() : '')
         setGoalWeight(userInfo.goalWeight ? userInfo.goalWeight.toString() : '')
-        setActivity(userInfo.activity ? userInfo.activity : '')
+        setActivity(userInfo.userActivity ? userInfo.userActivity : '')
     }, [route.params?.userInfo])
 
     const getPhotos = async () => {
@@ -133,10 +133,10 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             height,
             weight,
             goalWeight,
-            userActivity: activity,
+            userActivity: userActivity,
         };
 
-        if (name && gender && age && height && weight && goalWeight && activity) {
+        if (name && gender && age && height && weight && goalWeight && userActivity) {
             handleNext(user)
         } else {
             Alert.alert('항목을 모두 입력해주세요.')
@@ -197,14 +197,14 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                     <LabelTextInput type="light" label={UserInfo_ko[UserInfo.goalWeight]} text={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
                 </View>
 
-                <Text style={styles.labelText}>{UserInfo_ko[UserInfo.activity]}</Text>
+                <Text style={styles.labelText}>{UserInfo_ko[UserInfo.userActivity]}</Text>
                 <View style={styles.contentView}>
-                    <ActivityFunc label={Activity.less} onPress={() => setActivity(Activity.less)} activity={activity} />
-                    <ActivityFunc label={Activity.normal} onPress={() => setActivity(Activity.normal)} activity={activity} />
-                    <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={activity} />
+                    <ActivityFunc label={Activity.less} onPress={() => setActivity(Activity.less)} activity={userActivity} />
+                    <ActivityFunc label={Activity.normal} onPress={() => setActivity(Activity.normal)} activity={userActivity} />
+                    <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={userActivity} />
                 </View>
             </ScrollView>
-            <MoveButton text={infoType == UserInfoType.init ? '다음' : '완료'} onPress={handleComplete} inActive={!(name && gender && age && height && weight && goalWeight && activity)} />
+            <MoveButton text={infoType == UserInfoType.init ? '다음' : '완료'} onPress={handleComplete} inActive={!(name && gender && age && height && weight && goalWeight && userActivity)} />
 
             <ActionSheet
                 ref={o => this.ActionSheet = o}
