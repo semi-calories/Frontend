@@ -60,7 +60,7 @@ const CalculateGoalScreen = ({ navigation, route }) => {
                 </View>
             </View>
             {infoType == UserInfoType.init
-                ? <MoveButton text="다음" onPress={() => navigation.navigate('SetFoodScreen', { infoType: UserInfoType.init })} />
+                ? <MoveButton text="다음" onPress={() => navigation.navigate('SetFoodScreen', { userInfo, infoType: UserInfoType.init })} />
                 : <MoveButton text="완료" onPress={() => navigation.pop(2)} />
             }
         </RootView>

@@ -2,7 +2,7 @@
 // 선호/비선호 음식 선택 Screen
 //
 
-import React, { useEffect, useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
 import { Chip } from 'react-native-paper';
@@ -20,6 +20,9 @@ import { FoodTemp } from "~/constants/test";
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
+import { getPrefer, getDislike, savePrefer, saveDislike } from "~/apis/api/user";
+import { getDislikeFood, getPreferFood } from "~/apis/services/user";
+
 const AddFunc = ({ onPress }) => {
     return (
         <Pressable onPress={onPress} style={styles.add}>
@@ -29,9 +32,13 @@ const AddFunc = ({ onPress }) => {
 }
 
 const SetFoodScreen = ({ navigation, route }) => {
-    let preferFood = new Set(FoodTemp);
-    let dislikeFood = new Set(FoodTemp);
+    const { userInfo } = route.params
+    console.log('SetFoodScreen userInfo', userInfo)
 
+    const [preferFood, setPreferFood] = useState([])
+    console.log('SetFoodScreen preferFood', preferFood)
+    const [dislikeFood, setDislikeFood] = useState([])
+    console.log('SetFoodScreen dislikeFood', dislikeFood)
 
     useLayoutEffect(() => {
         if (route.params?.infoType == UserInfoType.init) {
@@ -47,26 +54,82 @@ const SetFoodScreen = ({ navigation, route }) => {
     }, [navigation, route.params?.infoType]);
 
     useEffect(() => {
+        getDislikeFunc()
+        getPreferFunc()
+    }, [])
+
+    useEffect(() => {
         if (route.params?.foodParam) {
             if (route.params?.type == SearchFoodType.prefer) {
-                console.log(route.params?.foodParam)
-                preferFood = new Set([...preferFood, ...route.params?.foodParam])
+                setPreferFood([...preferFood, ...route.params?.foodParam])
             } else if (route.params?.type == SearchFoodType.dislike) {
-                console.log(route.params?.foodParam)
-                dislikeFood = new Set([...dislikeFood, ...route.params?.foodParam])
+                setDislikeFood([...dislikeFood, ...route.params?.foodParam])
             }
         }
 
     }, [route.params?.type, route.params?.foodParam])
 
-    const handleInitComplete = () => {
-        //서버에 저장
-        navigation.navigate('MainTab');
+    const getPreferFunc = async () => {
+        try {
+            const { response } = await getPrefer({ userCode: userInfo.userCode })
+            const prefer = getPreferFood(response)
+
+            setPreferFood([...prefer])
+        } catch (e) {
+            console.log(e)
+        }
     }
 
-    const handleEditComplete = () => {
-        //서버에 저장
-        navigation.goBack();
+    const getDislikeFunc = async () => {
+        try {
+            const { response } = await getDislike({ userCode: userInfo.userCode })
+            const dislike = getDislikeFood(response)
+
+            setDislikeFood([...dislike])
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const handleComplete = async() => {
+        await savePreferFunc()
+        await saveDislikeFunc()
+
+        if(route.params?.infoType == UserInfoType.init){
+            navigation.navigate('MainTab')
+        }else {
+            navigation.goBack()
+        }
+    }
+
+    const savePreferFunc = async()=>{
+        const preferFoodCode = preferFood.map(food => food.foodCode)
+
+        const preferInfo ={
+            userCode: userInfo.userCode,
+            foodList:preferFoodCode
+        }
+
+        try {
+            const { response } = await savePrefer(preferInfo)
+        } catch (e) {
+            console.log(e)
+        }
+    }
+
+    const saveDislikeFunc = async()=>{
+        const dislikeFoodCode = dislikeFood.map(food => food.foodCode)
+
+        const dislikeInfo ={
+            userCode: userInfo.userCode,
+            foodList:dislikeFoodCode
+        }
+
+        try {
+            const { response } = await saveDislike(dislikeInfo)
+        } catch (e) {
+            console.log(e)
+        }
     }
 
     return (
@@ -74,20 +137,17 @@ const SetFoodScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.titleText}>선호음식</Text>
                 <View style={styles.chipView}>
-                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food.name + idx} mode="outlined" onClose={() => preferFood.delete(food)} style={styles.chip}>{food.name}</Chip>)}
-                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.prefer })} />
+                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setPreferFood([...preferFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
+                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.prefer, userInfo })} />
                 </View>
 
                 <Text style={styles.titleText}>비선호음식</Text>
                 <View style={styles.chipView}>
-                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food.name + idx} mode="outlined" onClose={() => dislikeFood.delete(food)} style={styles.chip}>{food.name}</Chip>)}
-                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike })} />
+                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setDislikeFood([...dislikeFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
+                    <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike, userInfo })} />
                 </View>
             </ScrollView>
-            {route.params?.infoType == UserInfoType.init
-                ? <MoveButton text="완료" onPress={handleInitComplete} />
-                : <MoveButton text="완료" onPress={handleEditComplete} />
-            }
+            <MoveButton text="완료" onPress={handleComplete} />
         </RootView>
     );
 }
