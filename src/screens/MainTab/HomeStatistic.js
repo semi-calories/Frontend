@@ -14,7 +14,7 @@ import { colors, fonts } from "~/constants/globalStyles";
 
 const tabs = ['주간', '월간'];
 
-const HomeStatistic = () => {
+const HomeStatistic = ({userInfo}) => {
     const [tabLabel, setTabLabel] = useState(tabs[0])
 
     return (
@@ -28,7 +28,7 @@ const HomeStatistic = () => {
                 ))}
             </View>
 
-            <HomeStatisticPeriod type={tabLabel} />
+            <HomeStatisticPeriod type={tabLabel} userInfo={userInfo}/>
         </View>
     )
 }
