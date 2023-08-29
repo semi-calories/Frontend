@@ -72,12 +72,12 @@ export function SearchHeader({ backPress, text, onChangeText, clearText }) {
                 <MaterialIcons name="search" size={24} color={colors.borderGrey} />
                 <TextInput
                     style={styles.searchInput}
-                    value={text}
+                    //value={text}
                     onChangeText={onChangeText}
                 />
-                <Pressable onPress={clearText}>
+                {/* <Pressable onPress={clearText}>
                     <Ionicons name="close-circle" size={24} color={colors.borderGrey} />
-                </Pressable>
+                </Pressable> */}
             </View>
         </View>
     )
