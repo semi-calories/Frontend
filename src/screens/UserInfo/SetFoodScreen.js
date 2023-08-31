@@ -4,7 +4,7 @@
 
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
-import { View, Text, StyleSheet, ScrollView, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from "react-native";
 import { Chip } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 
@@ -61,9 +61,17 @@ const SetFoodScreen = ({ navigation, route }) => {
     useEffect(() => {
         if (route.params?.foodParam) {
             if (route.params?.type == SearchFoodType.prefer) {
-                setPreferFood([...preferFood, ...route.params?.foodParam])
+                const removeDuplication = route.params?.foodParam.filter(item => {
+                    return !preferFood.some(i => i.foodCode === item.foodCode)
+                });
+
+                setPreferFood([...preferFood, ...removeDuplication])
             } else if (route.params?.type == SearchFoodType.dislike) {
-                setDislikeFood([...dislikeFood, ...route.params?.foodParam])
+                const removeDuplication = route.params?.foodParam.filter(item => {
+                    return !dislikeFood.some(i => i.foodCode === item.foodCode)
+                });
+
+                setDislikeFood([...dislikeFood, ...removeDuplication])
             }
         }
 
@@ -91,23 +99,27 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleComplete = async() => {
-        await savePreferFunc()
-        await saveDislikeFunc()
+    const handleComplete = async () => {
+        if (preferFood.length || dislikeFood.length) {
+            await savePreferFunc()
+            await saveDislikeFunc()
 
-        if(route.params?.infoType == UserInfoType.init){
-            navigation.navigate('MainTab')
-        }else {
-            navigation.goBack()
+            if (route.params?.infoType == UserInfoType.init) {
+                navigation.navigate('MainTab')
+            } else {
+                Alert.alert('저장되었습니다!')
+            }
+        } else {
+            Alert.alert('항목을 하나 이상 선택해주세요.')
         }
     }
 
-    const savePreferFunc = async()=>{
+    const savePreferFunc = async () => {
         const preferFoodCode = preferFood.map(food => food.foodCode)
 
-        const preferInfo ={
+        const preferInfo = {
             userCode: userInfo.userCode,
-            foodList:preferFoodCode
+            foodList: preferFoodCode
         }
 
         try {
@@ -117,12 +129,12 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const saveDislikeFunc = async()=>{
+    const saveDislikeFunc = async () => {
         const dislikeFoodCode = dislikeFood.map(food => food.foodCode)
 
-        const dislikeInfo ={
+        const dislikeInfo = {
             userCode: userInfo.userCode,
-            foodList:dislikeFoodCode
+            foodList: dislikeFoodCode
         }
 
         try {
@@ -147,7 +159,7 @@ const SetFoodScreen = ({ navigation, route }) => {
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike, userInfo })} />
                 </View>
             </ScrollView>
-            <MoveButton text="완료" onPress={handleComplete} />
+            <MoveButton text="완료" onPress={handleComplete} inActive={preferFood.length || dislikeFood.length ? false : true} />
         </RootView>
     );
 }

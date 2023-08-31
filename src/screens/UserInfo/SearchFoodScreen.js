@@ -4,7 +4,7 @@
 
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
-import { View, Text, StyleSheet, ScrollView, FlatList, Pressable } from "react-native";
+import { View, Text, StyleSheet, ScrollView, FlatList, Pressable, Alert } from "react-native";
 import { Chip } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -55,26 +55,30 @@ const SearchFoodScreen = ({ navigation, route }) => {
         return (
             <Pressable style={styles.foodView} onPress={() => handleSelect(item)}>
                 <Text style={styles.text}>{item.foodName}</Text>
-                <AntDesign name={selectFood.includes(item) ? "checkcircle" : 'checkcircleo' } size={scale(20)} color={colors.borderGrey} />
+                <AntDesign name={selectFood.includes(item) ? "checkcircle" : 'checkcircleo'} size={scale(20)} color={colors.borderGrey} />
             </Pressable>
         );
     };
 
-    const handleSelect = item =>{
-        if(selectFood.includes(item)) {
-            const rest = selectFood.filter(food =>  food!==item )
+    const handleSelect = item => {
+        if (selectFood.includes(item)) {
+            const rest = selectFood.filter(food => food !== item)
             setSelectFood([...rest])
-        }else{
+        } else {
             setSelectFood(prev => [...prev, item])
         }
     }
 
     const handleComplete = () => {
-        if (type == SearchFoodType.add) {
-            navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo })
+        if (selectFood.length) {
+            if (type == SearchFoodType.add) {
+                navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo })
+            } else {
+                // 이전 화면에 선택한 food 업데이트 해줘야함
+                navigation.navigate('SetFoodScreen', { type: type, foodParam: selectFood, userInfo })
+            }
         } else {
-            // 이전 화면에 선택한 food 업데이트 해줘야함
-            navigation.navigate('SetFoodScreen', { type: type, foodParam: selectFood, userInfo })
+            Alert.alert('항목을 하나이상 선택해주세요')
         }
     }
 
@@ -86,13 +90,13 @@ const SearchFoodScreen = ({ navigation, route }) => {
                 renderItem={renderItem}
                 keyExtractor={(item, idx) => item + idx}
                 showsVerticalScrollIndicator={false}
-                style={{paddingHorizontal: scale(30)}}
+                style={{ paddingHorizontal: scale(30) }}
             />
             <View style={styles.selectBtnView}>
                 <ScrollView horizontal style={styles.chipView}>
-                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food+idx} mode="outlined" onClose={() => setSelectFood([...selectFood.filter(fd =>  fd!==food )])} style={styles.chip}>{food.foodName}</Chip>)}
+                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setSelectFood([...selectFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
                 </ScrollView>
-                <PrimaryButton text={`${selectFood.length }개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleComplete} />
+                <PrimaryButton text={`${selectFood.length}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleComplete} />
             </View>
         </RootView>
     );
@@ -101,10 +105,10 @@ const SearchFoodScreen = ({ navigation, route }) => {
 export default SearchFoodScreen;
 
 const styles = StyleSheet.create({
-    foodView:{
-        flexDirection:'row',
-        justifyContent:'space-between',
-        paddingHorizontal:scale(10),
+    foodView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        paddingHorizontal: scale(10),
         paddingVertical: verticalScale(24),
 
         borderBottomWidth: scale(1),
