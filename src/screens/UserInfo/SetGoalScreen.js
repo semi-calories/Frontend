@@ -90,9 +90,9 @@ const SetGoalScreen = ({ navigation, route }) => {
     const getUserInfo = async () => {
         try {
             const user = await getInfo({ userCode: userInfo.userCode })
-            StoreUserData({...user, userCode : userInfo.userCode})
+            await StoreUserData({...user, userCode : userInfo.userCode})
 
-            return user
+            return {...user, userCode : userInfo.userCode}
         } catch (err) {
             console.log(err)
         }
