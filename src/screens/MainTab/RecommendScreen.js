@@ -2,12 +2,14 @@
 // 추천때 보여지는 화면
 //
 
-import React, { useLayoutEffect, useState } from "react";
+import React, { useLayoutEffect, useState, useEffect } from "react";
 
 import { View, Text, StyleSheet, FlatList, Image } from "react-native";
 
 import { TabContainer, RootView } from "~/components/container";
 import { MainHeader } from "~/components/header";
+
+import { GetUserData } from "~/components/asyncStorageData";
 
 import { RecommendFood } from "~/constants/test";
 import { Nutrition, Nutrition_ko } from "~/constants/food";
@@ -15,14 +17,42 @@ import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
+import { recommendRequest } from "~/apis/api/diet";
+
 const RecommendScreen = ({ navigation }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
+
+    const [user, setUser] = useState({})
+    console.log('RecommendScreen user', user)
 
     useLayoutEffect(() => {
         navigation.setOptions({
             header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
+
+    useEffect(() => {
+        if (user) {
+            recommendRequestDiet()
+        }
+    }, [user])
+
+    useEffect(() => {
+        const focusSubscription = navigation.addListener('focus', () => {
+            console.log('HomeScreen focus')
+            getUser()
+        });
+
+        // Return the function to unsubscribe from the event so it gets removed on unmount
+        return focusSubscription;
+    }, [navigation]);
+
+    const getUser = async () => {
+        const data = await GetUserData();
+
+        setUser({ ...data })
+    }
+
 
     const renderItem = ({ item }) => {
         return (
@@ -33,22 +63,22 @@ const RecommendScreen = ({ navigation }) => {
                         <Text style={styles.text}>{item.food_name}</Text>
                         <Text style={[styles.greyText, { fontSize: scale(14) }]}>{item.food_kcal} kcal</Text>
                     </View>
-                    <View style={[styles.flexRow,{marginTop:verticalScale(5), paddingHorizontal:scale(5)}]}>
-                            <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
-                                <Text style={styles.greyText}>{item.food_carbo} g</Text>
-                            </View>
-                            <View style={styles.verticalBorder} />
-                            <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
-                                <Text style={styles.greyText}>{item.food_protein} g</Text>
-                            </View>
-                            <View style={styles.verticalBorder} />
-                            <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodFat]}</Text>
-                                <Text style={styles.greyText}>{item.food_fat} g</Text>
-                            </View>
+                    <View style={[styles.flexRow, { marginTop: verticalScale(5), paddingHorizontal: scale(5) }]}>
+                        <View style={styles.nutri}>
+                            <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
+                            <Text style={styles.greyText}>{item.food_carbo} g</Text>
                         </View>
+                        <View style={styles.verticalBorder} />
+                        <View style={styles.nutri}>
+                            <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
+                            <Text style={styles.greyText}>{item.food_protein} g</Text>
+                        </View>
+                        <View style={styles.verticalBorder} />
+                        <View style={styles.nutri}>
+                            <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodFat]}</Text>
+                            <Text style={styles.greyText}>{item.food_fat} g</Text>
+                        </View>
+                    </View>
                 </View>
             </View>
         );
@@ -57,6 +87,21 @@ const RecommendScreen = ({ navigation }) => {
     const fetchItems = () => {
 
         setIsRefreshing(false)
+    }
+
+    const recommendRequestDiet = async () => {
+        const requestInfo = {
+            userCode: user.userCode,
+            eatTimes: 0,
+        }
+
+        try {
+            const response = await recommendRequest(requestInfo)
+            console.log('recommendRequestDiet response', response)
+
+        } catch (error) {
+            console.error(error)
+        }
     }
 
     return (
@@ -69,7 +114,7 @@ const RecommendScreen = ({ navigation }) => {
                     onRefresh={fetchItems}
                     refreshing={isRefreshing}
                     showsVerticalScrollIndicator="false"
-                    contentContainerStyle={{paddingBottom : verticalScale(80)}}
+                    contentContainerStyle={{ paddingBottom: verticalScale(80) }}
                 />
             </RootView>
         </TabContainer>
@@ -131,6 +176,6 @@ const styles = StyleSheet.create({
         height: verticalScale(24),
         backgroundColor: colors.textGrey
     },
-    
+
 
 });

@@ -76,3 +76,16 @@ export const recognizeUpload = async (uploadInfo) => {
     }
 }
 
+//음식 추천 요청
+export const recommendRequest= async (requestInfo) => {
+    console.log('recommendRequest requestInfo', requestInfo)
+
+    try {
+        const { data } = await frontendInstance.post(`/recommend/request`, requestInfo)
+        console.log('recommendRequest data', data)
+        
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}

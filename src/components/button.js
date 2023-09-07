@@ -40,7 +40,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     const animation = useRef(new Animated.Value(0)).current
 
     const [user, setUser] = useState({})
-    console.log('TabBarButton user', user)
+    //console.log('TabBarButton user', user)
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 

@@ -1,4 +1,4 @@
-import React,{useState} from "react";
+import React, { useState } from "react";
 
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -17,13 +17,13 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 const Tab = createBottomTabNavigator();
 
 const MainTab = ({ navigation }) => {
-    const {opened, toggleOpened} = useTabMenu();
+    const { opened, toggleOpened } = useTabMenu();
 
     return (
         <Tab.Navigator
             screenOptions={{
                 // tabBarLabelStyle: { fontSize: scale(14) },
-                tabBarShowLabel:false,
+                tabBarShowLabel: false,
 
                 tabBarActiveTintColor: colors.black,
                 tabBarInactiveTintColor: colors.textGrey,
@@ -54,11 +54,11 @@ const MainTab = ({ navigation }) => {
             />
             <Tab.Screen name="DietRecordScreen" component={DietRecordScreen}
                 options={{
-                    tabBarItemStyle:{
-                        height:0
+                    tabBarItemStyle: {
+                        height: 0
                     },
                     tabBarButton: () => (
-                        <TabBarButton opened={opened} toggleOpened={toggleOpened} navigation={navigation}/>
+                        <TabBarButton opened={opened} toggleOpened={toggleOpened} navigation={navigation} />
                     )
                 }}
             />
