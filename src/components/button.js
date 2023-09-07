@@ -40,6 +40,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     const animation = useRef(new Animated.Value(0)).current
 
     const [user, setUser] = useState({})
+    console.log('TabBarButton user', user)
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -66,7 +67,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     }, [opened, animation])
 
     const onPressRecord = () => {
-        navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add });
+        navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add, userInfo:user });
         toggleOpened()
     }
 

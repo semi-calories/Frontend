@@ -61,7 +61,7 @@ const AlbumScreen_new = ({ navigation, route }) => {
             console.log(dietLists)
 
             if (dietLists.length) {
-                params = { foodParam: dietLists }
+                params = { foodParam: dietLists, userInfo }
 
                 navigation.navigate(nextScreen, params)
             } else {

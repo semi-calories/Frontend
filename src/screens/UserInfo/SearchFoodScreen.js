@@ -22,6 +22,7 @@ import { foodSearch } from "~/apis/api/diet";
 
 const SearchFoodScreen = ({ navigation, route }) => {
     const { type, userInfo } = route.params;
+    console.log('SearchFoodScreen route.params', route.params)
 
     const [text, setText] = useState('')
 

@@ -4,10 +4,11 @@
 
 import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 
-import { Pressable, FlatList, StyleSheet, Text, View } from "react-native";
+import { Pressable, FlatList, StyleSheet, Text, View, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
+import moment from "moment";
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
@@ -23,12 +24,15 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 import { updateRecord } from "~/apis/api/diet";
 
 const MealtimeScreen = ({ navigation, route }) => {
+    const { userInfo } = route.params;
+    console.log('MealtimeScreen userInfo', userInfo)
+
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    console.log('date time', date, time)
+    //console.log('date time', date, time)
 
-    const [selectFood, setSelectFood] = useState();
-    console.log('MealtimeScreen selectFood', selectFood)
+    const [selectFoods, setSelectFoods] = useState();
+    console.log('MealtimeScreen selectFood', selectFoods)
     const [foodDetail, setFoodDetail] = useState()
     console.log('MealtimeScreen foodDetail', foodDetail)
 
@@ -44,7 +48,7 @@ const MealtimeScreen = ({ navigation, route }) => {
     }, [navigation]);
 
     useEffect(() => {
-        setSelectFood([...route.params?.foodParam])
+        setSelectFoods([...route.params?.foodParam])
     }, [route.params?.foodParam])
 
     useEffect(() => {
@@ -102,21 +106,51 @@ const MealtimeScreen = ({ navigation, route }) => {
     }
 
     const handleDelete = () => {
-        setSelectFood([...selectFood.filter(food => food.foodCode !== foodDetail.foodCode)]);
+        setSelectFoods([...selectFoods.filter(food => food.foodCode !== foodDetail.foodCode)]);
         refRBSheet.current.close()
     }
 
     const handleSave = () => {
-        const result = selectFood.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
+        const result = selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
         console.log('handleSave', result)
 
-        setSelectFood([...selectFood.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)]);
+        setSelectFoods([...selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)]);
         refRBSheet.current.close()
     }
 
-    const handleComplete = () => {
-        //서버에 저장
-        navigation.pop(2);
+    const handleComplete = async () =>{
+        const dateOnly =  moment(date).format('YYYY-MM-DD')
+        const timeOnly = moment(time).format(' HH:mm')
+
+        const dateTime = moment(dateOnly + timeOnly).format('YYYY-MM-DDTHH:mm')
+
+        try{
+            const response = await Promise.all(
+                selectFoods.map(async food => {
+                    const recordInfo = {
+                        userCode: userInfo.userCode,
+                        eatDate : dateTime,
+                        foodWeight : food.foodWeight,
+                        foodCode: food.foodCode,
+                        foodName: food.foodName,
+                        foodKcal: food.foodKcal,
+                        foodCarbo: food.foodCarbo,
+                        foodProtein: food.foodProtein,
+                        foodFat: food.foodFat,
+                        satisfaction: food.satisfaction ? food.satisfaction : null
+                    }
+
+                   await updateRecord(recordInfo)
+                })
+            );
+
+            Alert.alert('식사가 저장되었습니다.')
+
+            navigation.pop(2);
+        }catch(e){
+            console.error(e)
+        }
+        
     }
 
 
@@ -138,7 +172,7 @@ const MealtimeScreen = ({ navigation, route }) => {
             <View style={[styles.container, { flex: 1 }]}>
                 <Text style={styles.boldText}>음식</Text>
                 <FlatList
-                    data={selectFood}
+                    data={selectFoods}
                     renderItem={renderItem}
                     keyExtractor={(item, idx) => item + idx}
                     showsVerticalScrollIndicator={false}
