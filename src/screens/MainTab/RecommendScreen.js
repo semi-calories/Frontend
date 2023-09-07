@@ -35,17 +35,17 @@ const RecommendScreen = ({ navigation }) => {
                     </View>
                     <View style={[styles.flexRow,{marginTop:verticalScale(5), paddingHorizontal:scale(5)}]}>
                             <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.carbo]}</Text>
+                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
                                 <Text style={styles.greyText}>{item.food_carbo} g</Text>
                             </View>
                             <View style={styles.verticalBorder} />
                             <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.protein]}</Text>
+                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
                                 <Text style={styles.greyText}>{item.food_protein} g</Text>
                             </View>
                             <View style={styles.verticalBorder} />
                             <View style={styles.nutri}>
-                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.fat]}</Text>
+                                <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodFat]}</Text>
                                 <Text style={styles.greyText}>{item.food_fat} g</Text>
                             </View>
                         </View>

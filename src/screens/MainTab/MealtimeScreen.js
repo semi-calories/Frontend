@@ -20,14 +20,17 @@ import { Nutrition, Nutrition_ko, Satisfaction, Satisfaction_icon, Satisfaction_
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
+import { updateRecord } from "~/apis/api/diet";
+
 const MealtimeScreen = ({ navigation, route }) => {
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
+    console.log('date time', date, time)
 
     const [selectFood, setSelectFood] = useState();
     console.log('MealtimeScreen selectFood', selectFood)
     const [foodDetail, setFoodDetail] = useState()
-    //console.log('MealtimeScreen foodDetail', foodDetail)
+    console.log('MealtimeScreen foodDetail', foodDetail)
 
     const [serving, setServing] = useState();
     const [editing, setEditing] = useState(false);
@@ -46,16 +49,16 @@ const MealtimeScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (foodDetail) {
-            const ratio = serving / foodDetail?.serving
+            const ratio = serving / foodDetail?.foodWeight
 
-            setFoodDetail(prev => ({
+            setFoodDetail(prev => {return {
                 ...prev,
-                [Nutrition.serving]: serving,
-                [Nutrition.kcal]: Math.round(prev.kcal * ratio * 10) / 10,
-                [Nutrition.carbo]: Math.round(prev.carbo * ratio * 10) / 10,
-                [Nutrition.protein]: Math.round(prev.protein * ratio * 10) / 10,
-                [Nutrition.fat]: Math.round(prev.fat * ratio * 10) / 10,
-            }))
+                [Nutrition.foodWeight]: serving,
+                [Nutrition.foodKcal]: Math.round(prev.foodKcal * ratio * 10) / 10,
+                [Nutrition.foodCarbo]: Math.round(prev.foodCarbo * ratio * 10) / 10,
+                [Nutrition.foodProtein]: Math.round(prev.foodProtein * ratio * 10) / 10,
+                [Nutrition.foodFat]: Math.round(prev.foodFat * ratio * 10) / 10,
+            }})
         }
     }, [editing])
 
@@ -63,11 +66,11 @@ const MealtimeScreen = ({ navigation, route }) => {
         return (
             <Pressable style={[styles.box, styles.border]} onPress={() => handlePressDetail(item)}>
                 <View>
-                    <Text style={[styles.boldText, { fontSize: scale(20) }]}>{item.name}</Text>
+                    <Text style={[styles.boldText, { fontSize: scale(20) }]}>{item.foodName}</Text>
                     <View style={styles.foodView}>
-                        <Text style={styles.greyText}>{item.kcal}kcal</Text>
+                        <Text style={styles.greyText}>{item.foodKcal}kcal</Text>
                         <Text style={styles.greyText}>  ㅣ  </Text>
-                        <Text style={styles.greyText}>{item.serving}g</Text>
+                        <Text style={styles.greyText}>{item.foodWeight}g</Text>
                     </View>
                 </View>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
@@ -99,12 +102,15 @@ const MealtimeScreen = ({ navigation, route }) => {
     }
 
     const handleDelete = () => {
-        setSelectFood([...selectFood.filter(food => food.name !== foodDetail.name)]);
+        setSelectFood([...selectFood.filter(food => food.foodCode !== foodDetail.foodCode)]);
         refRBSheet.current.close()
     }
 
     const handleSave = () => {
-        setSelectFood([...selectFood.map(food => food.name==foodDetail.name ? foodDetail : food)]);
+        const result = selectFood.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
+        console.log('handleSave', result)
+
+        setSelectFood([...selectFood.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)]);
         refRBSheet.current.close()
     }
 
@@ -159,28 +165,28 @@ const MealtimeScreen = ({ navigation, route }) => {
             >
                 <View style={[styles.container, styles.borderThick]}>
                     <View style={[styles.border, { alignItems: 'center', paddingBottom: verticalScale(15) }]}>
-                        <Text style={styles.boldText}>{foodDetail?.name}</Text>
+                        <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
                     </View>
                     <View style={styles.detailNutriView}>
-                        <LabelTextInput type="light" text={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.serving?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} />
-                        <View style={[styles.flexRow, { marginVertical: verticalScale(20) }]}>
-                            <Text style={styles.mtext}>{Nutrition_ko[Nutrition.kcal]}</Text>
-                            <Text style={styles.mtext}>{foodDetail?.kcal} kcal</Text>
+                        <LabelTextInput type="light" text={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} />
+                        <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
+                            <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodKcal]}</Text>
+                            <Text style={styles.mtext}>{foodDetail?.foodKcal} kcal</Text>
                         </View>
                         <View style={styles.flexRow}>
                             <View style={styles.nutri}>
-                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.carbo]}</Text>
-                                <Text style={styles.mtext}>{foodDetail?.carbo} g</Text>
+                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
+                                <Text style={styles.mtext}>{foodDetail?.foodCarbo} g</Text>
                             </View>
                             <View style={styles.verticalBorder} />
                             <View style={styles.nutri}>
-                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.protein]}</Text>
-                                <Text style={styles.mtext}>{foodDetail?.protein} g</Text>
+                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
+                                <Text style={styles.mtext}>{foodDetail?.foodProtein} g</Text>
                             </View>
                             <View style={styles.verticalBorder} />
                             <View style={styles.nutri}>
-                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.fat]}</Text>
-                                <Text style={styles.mtext}>{foodDetail?.fat} g</Text>
+                                <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodFat]}</Text>
+                                <Text style={styles.mtext}>{foodDetail?.foodFat} g</Text>
                             </View>
                         </View>
                     </View>

@@ -119,14 +119,14 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
     //차트 관련
     const ChartMonthData = {
         labels: ["1월", "2월", "3월", "4월", "5월", "6월", "7월", "8월", "9월", "10월", "11월", "12월"],
-        legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+        legend: [Nutrition_ko[Nutrition.foodCarbo], Nutrition_ko[Nutrition.foodProtein], Nutrition_ko[Nutrition.foodFat]],
         data: monthData,
         barColors: [colors.carbo, colors.protein, colors.fat]
     };
 
     const ChartWeekData = {
         labels: ["1주차", "2주차", "3주차", "4주차", "5주차"],
-        legend: [Nutrition_ko[Nutrition.carbo], Nutrition_ko[Nutrition.protein], Nutrition_ko[Nutrition.fat]],
+        legend: [Nutrition_ko[Nutrition.foodCarbo], Nutrition_ko[Nutrition.foodProtein], Nutrition_ko[Nutrition.foodFat]],
         data: weekData,
         barColors: [colors.carbo, colors.protein, colors.fat]
     };

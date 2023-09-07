@@ -3,18 +3,18 @@
 //
 
 export const Nutrition= {
-    serving:'serving',
-    kcal:'kcal',
-    carbo:'carbo',
-    protein:'protein',
-    fat:'fat',
+    foodWeight:'foodWeight',
+    foodKcal:'foodKcal',
+    foodCarbo:'foodCarbo',
+    foodProtein:'foodProtein',
+    foodFat:'foodFat',
 }
 export const Nutrition_ko = {
-    [Nutrition.serving]:'제공량',
-    [Nutrition.carbo]:'탄수화물',
-    [Nutrition.protein]:'단백질',
-    [Nutrition.fat]:'지방',
-    [Nutrition.kcal]:'열량'
+    [Nutrition.foodWeight]:'제공량',
+    [Nutrition.foodCarbo]:'탄수화물',
+    [Nutrition.foodProtein]:'단백질',
+    [Nutrition.foodFat]:'지방',
+    [Nutrition.foodKcal]:'열량'
 }
 
 export const Satisfaction = {

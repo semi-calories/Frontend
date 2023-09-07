@@ -19,14 +19,14 @@ export const SpentAmount = 859;
 export const TargetAmount = 1929;
 
 export const SpentNutri = {
-    [Nutrition.carbo]: 82,
-    [Nutrition.protein]: 53,
-    [Nutrition.fat]: 36
+    [Nutrition.foodCarbo]: 82,
+    [Nutrition.foodProtein]: 53,
+    [Nutrition.foodFat]: 36
 }
 export const TargetNutri = {
-    [Nutrition.carbo]: 198,
-    [Nutrition.protein]: 198,
-    [Nutrition.fat]: 43
+    [Nutrition.foodCarbo]: 198,
+    [Nutrition.foodProtein]: 198,
+    [Nutrition.foodFat]: 43
 }
 
 //통계
@@ -57,20 +57,20 @@ export const MonthData = [
 export const FoodTemp = [
     {
         name: '사과',
-        [Nutrition.serving]: 230,
-        [Nutrition.kcal]: 110,
-        [Nutrition.carbo]: 29.3,
-        [Nutrition.protein]: 0.6,
-        [Nutrition.fat]: 0.4,
+        [Nutrition.foodWeight]: 230,
+        [Nutrition.foodKcal]: 110,
+        [Nutrition.foodCarbo]: 29.3,
+        [Nutrition.foodProtein]: 0.6,
+        [Nutrition.foodFat]: 0.4,
         satisfaction: '',
     },
     {
         name: '계란후라이',
-        [Nutrition.serving]: 46,
-        [Nutrition.kcal]: 89,
-        [Nutrition.carbo]: 0.4,
-        [Nutrition.protein]: 6.2,
-        [Nutrition.fat]: 6.8,
+        [Nutrition.foodWeight]: 46,
+        [Nutrition.foodKcal]: 89,
+        [Nutrition.foodCarbo]: 0.4,
+        [Nutrition.foodProtein]: 6.2,
+        [Nutrition.foodFat]: 6.8,
         satisfaction: '',
     },
 ]
