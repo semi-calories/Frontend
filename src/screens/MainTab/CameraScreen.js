@@ -3,7 +3,7 @@
 //
 import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 
-import { StyleSheet, TouchableOpacity, View, Image, Text } from "react-native";
+import { StyleSheet, TouchableOpacity, View, Image, Text, Alert } from "react-native";
 import { Camera, CameraType, AutoFocus } from 'expo-camera';
 import { AntDesign } from '@expo/vector-icons';
 
@@ -15,16 +15,19 @@ import { UserInfoType } from "~/constants/type";
 import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
+import { recognizeUpload } from "~/apis/api/diet";
+
 const CameraScreen = ({ navigation, route }) => {
     const { nextScreen, userInfo } = route.params
 
-    const [ user, setUser ] = useState({})
+    const [user, setUser] = useState({})
     console.log('CameraScreen user', user)
 
     const cameraRef = useRef(null);
     const [type, setType] = useState(CameraType.back);
 
     const [capturedImage, setCapturedImage] = useState(null)
+    console.log('capturedImage', capturedImage)
     const [previewVisible, setPreviewVisible] = useState(false)
 
     useLayoutEffect(() => {
@@ -34,7 +37,7 @@ const CameraScreen = ({ navigation, route }) => {
     }, [navigation]);
 
     useEffect(() => {
-        if(capturedImage){
+        if (capturedImage) {
             setUser({ ...userInfo, image: capturedImage.uri })
         }
     }, [capturedImage])
@@ -60,19 +63,44 @@ const CameraScreen = ({ navigation, route }) => {
         setCapturedImage(null);
     };
 
-    const uploadPictureHandler = () => {
-        let params = {}
-
+    const uploadPictureHandler = async() => {
         if (nextScreen == 'MealtimeScreen') {
-            //api호출 후 captureImage 보내고 정보 받아오기
-            params = { foodParam: [] }
-        } else {
-            params = { userInfo: user, infoType: UserInfoType.edit }
-        }
+            const dietLists = await recognizeUploadDiet()
 
-        navigation.navigate(nextScreen, params)
+            if(dietLists.length){
+                params = { foodParam: dietLists }
+
+                navigation.navigate(nextScreen, params)
+            }else{
+                Alert.alert('사진 인식이 되지 않습니다. 다시 촬영해주세요.')
+            }
+
+        } else {
+            const params = { 
+                userInfo: user,
+                infoType: UserInfoType.edit
+            }
+
+            navigation.navigate(nextScreen, params)
+        }
     }
 
+    const recognizeUploadDiet = async () => {
+        const uploadInfo = {
+            userCode: userInfo.userCode,
+            file:capturedImage.base64,
+        }
+
+        try{
+            const { dietLists } = await recognizeUpload(uploadInfo)
+            console.log('recognizeUploadDiet dietLists', dietLists)
+
+            return dietLists;
+        }catch(e){
+            console.error()
+        }
+
+    }
 
     return previewVisible && capturedImage ? (
         <RootView>

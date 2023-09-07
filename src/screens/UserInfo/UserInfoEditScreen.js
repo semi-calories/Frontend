@@ -9,6 +9,7 @@ import { MaterialCommunityIcons } from '@expo/vector-icons';
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
@@ -23,7 +24,7 @@ import { Null_img } from "~/constants/test";
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
-import { updateInfo } from "~/apis/api/user";
+import { getInfo, updateInfo } from "~/apis/api/user";
 
 const EditIcon = require('@assets/EditIcon.png')
 
@@ -97,9 +98,9 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
-                const { status } = await Camera.requestCameraPermissionsAsync();
+                const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
                 // 권한을 획득하면 status가 granted 상태
-                if (status === 'granted') {
+                if (cameraStatus === 'granted') {
                     navigation.navigate('CameraScreen', {
                         nextScreen: 'UserInfoEditScreen',
                         userInfo,
@@ -110,9 +111,12 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 return;
 
             case 1:  //앨범에서 선택
-                const { status: albumStatus } = await MediaLibrary.requestPermissionsAsync()
+                const { status: albumStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync()
                 if (albumStatus === 'granted') {
-                    getPhotos()
+                    navigation.navigate('AlbumScreen_new', {
+                        nextScreen: 'UserInfoEditScreen',
+                        userInfo,
+                    });
                 } else {
                     Alert.alert('앨범 접근 허용은 필수입니다.');
                 }
@@ -127,7 +131,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             userCode: userInfo.userCode,
             email: userInfo.email,
             name,
-            image,
+            image: image.base64,
             gender,
             age,
             height,
@@ -151,7 +155,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         } else if (infoType == UserInfoType.edit) {
             try {
                 const response = await updateInfo(user)
-                StoreUserData(user)
+                const userData = await getInfo({ userCode: userInfo.userCode })
+                StoreUserData({...userData, userCode : userInfo.userCode})
 
                 Alert.alert('사용자 정보 수정 완료!')
             } catch (err) {
@@ -172,7 +177,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={image ? { uri: image } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
+                        <ImageBackground source={image ? { uri: image.uri } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
                             <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>

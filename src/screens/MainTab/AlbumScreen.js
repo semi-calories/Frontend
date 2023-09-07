@@ -24,6 +24,7 @@ const AlbumScreen = ({ navigation, route }) => {
     const [photos, setPhotos] = useState([])
     console.log('AlbumScreen photos', photos, photos.length)
     const [chosenPhoto, setChosenPhoto] = useState(null)
+    console.log('AlbumScreen  chosenPhoto',chosenPhoto)
 
     const albumRef = useRef(null)
     console.log("AlbumScreen albumRef", albumRef)
@@ -40,6 +41,8 @@ const AlbumScreen = ({ navigation, route }) => {
 
     useEffect(()=>{
         if(chosenPhoto){
+            getPhotoInfo()
+
             setUser({...userInfo, image: chosenPhoto.uri})
         }
     },[chosenPhoto])
@@ -80,6 +83,11 @@ const AlbumScreen = ({ navigation, route }) => {
         }
 
         navigation.navigate(nextScreen, params)
+    }
+
+    const getPhotoInfo = async()=>{
+       const info = await MediaLibrary.getAssetInfoAsync(chosenPhoto)
+       console.log('getPhotoInfo',info)
     }
 
 

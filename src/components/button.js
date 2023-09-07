@@ -2,12 +2,15 @@
 // 버튼 컴포넌트 모아놓은 파일
 //
 
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect, useState } from "react";
 
 import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
+import * as ImagePicker from 'expo-image-picker';
+
+import { GetUserData } from "~/components/asyncStorageData";
 
 import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
@@ -27,7 +30,7 @@ export function PrimaryButton({ text, onPress, btnStyle }) {
 
 export function MoveButton({ text, onPress, btnStyle, inActive }) {
     return (
-        <TouchableOpacity style={[inActive ? styles.moveBtnInactive :styles.moveBtn , btnStyle]} onPress={onPress}>
+        <TouchableOpacity style={[inActive ? styles.moveBtnInactive : styles.moveBtn, btnStyle]} onPress={onPress}>
             <Text style={styles.whiteText}>{text}</Text>
         </TouchableOpacity>
     );
@@ -35,6 +38,8 @@ export function MoveButton({ text, onPress, btnStyle, inActive }) {
 
 export function TabBarButton({ opened, toggleOpened, navigation }) {
     const animation = useRef(new Animated.Value(0)).current
+
+    const [user, setUser] = useState({})
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
 
@@ -46,6 +51,10 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
         })
     }
+
+    useEffect(() => {
+        getUser()
+    }, [])
 
     useEffect(() => {
         Animated.timing(animation, {
@@ -66,6 +75,12 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         toggleOpened()
     }
 
+    const getUser = async () => {
+        const data = await GetUserData();
+
+        setUser({ ...data })
+    }
+
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
@@ -73,7 +88,8 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 // 권한을 획득하면 status가 granted 상태
                 if (cameraStatus === 'granted') {
                     navigation.navigate('CameraScreen', {
-                        nextScreen: 'MealtimeScreen'
+                        nextScreen: 'MealtimeScreen',
+                        userInfo: user,
                     });
                 } else {
                     Alert.alert('카메라 접근 허용은 필수입니다.');
@@ -81,10 +97,11 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 return;
 
             case 1:  //앨범에서 선택
-                const { status: albumStatus } = await MediaLibrary.requestPermissionsAsync()
+                const { status: albumStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync()
                 if (albumStatus === 'granted') {
-                    navigation.navigate('AlbumScreen', {
+                    navigation.navigate('AlbumScreen_new', {
                         nextScreen: 'MealtimeScreen',
+                        userInfo: user,
                     });
                 } else {
                     Alert.alert('앨범 접근 허용은 필수입니다.');
@@ -189,8 +206,8 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: 'center',
     },
-    
-    moveBtnInactive:{
+
+    moveBtnInactive: {
         width: scale(320),
         height: verticalScale(50),
         borderRadius: 20,

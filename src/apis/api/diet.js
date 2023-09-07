@@ -62,3 +62,17 @@ export const updateRecord = async (recordInfo) => {
     }
 }
 
+//음식 인식 요청
+export const recognizeUpload = async (uploadInfo) => {
+    //console.log('recognizeUpload uploadInfo', uploadInfo)
+
+    try {
+        const { data } = await frontendInstance.post(`/recognizer/recognizerFood`, uploadInfo)
+        console.log('recognizeUpload data', data)
+        
+        return data
+    } catch (err) {
+        console.log(err)
+    }
+}
+

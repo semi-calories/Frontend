@@ -10,7 +10,7 @@ const FRONTEND_BASE_URL = 'http://34.236.139.24:8080';
 const axiosAPI = (url, options) => {
     return axios.create({
         baseURL: url,
-        timeout: 2000,
+        //timeout: 2000,
         ...options
     })
 }
