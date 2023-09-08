@@ -2,7 +2,7 @@
 // 홈화면 - 기록 상태 보는 화면
 //
 
-import React, { useState, useRef, useMemo } from "react";
+import React, { useState, useRef, useMemo, useEffect } from "react";
 
 import { View, Text, StyleSheet, Pressable, TouchableOpacity, FlatList } from "react-native";
 import { Calendar } from "react-native-calendars";
@@ -11,6 +11,7 @@ import moment from 'moment';
 import RBSheet from "react-native-raw-bottom-sheet";
 
 import { DonutChart } from "~/components/chart";
+import { CalculateRecordDate } from "~/components/date";
 
 import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { SpentAmount, TargetAmount, SpentNutri, TargetNutri, FoodRecord } from "~/constants/test";
@@ -18,36 +19,73 @@ import { SpentAmount, TargetAmount, SpentNutri, TargetNutri, FoodRecord } from "
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
+import { getRecord } from "~/apis/api/diet";
+
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
 
-const HomeRecord = ({navigation}) => {
+const HomeRecord = ({ navigation, userInfo }) => {
 
     const refRBSheetCalendar = useRef();
     const refRBSheetRecord = useRef();
 
     const [selectDate, setSelectDate] = useState(new Date())
-    //console.log('HomeRecord selectDate', selectDate)
+    console.log('HomeRecord selectDate', selectDate)
+
+    const [records, setRecords] = useState([])
+    console.log('HomeRecord records', records)
+
+    useEffect(() => {
+        if (userInfo.userCode) {
+            getDietRecord()
+        }
+    }, [selectDate, userInfo])
+
+    useEffect(() => {
+        if (records.length) {
+
+        }
+    }, [records])
 
     //요일 계산
     let day = useMemo(() => DAYS[selectDate.getDay()], [selectDate]);
     //날짜 포맷; YYYY-MM-DD 형식
     let formatDate = useMemo(() => moment(selectDate).format('YYYY-MM-DD'), [selectDate]);
 
-    const CalculateDate = (calculation, date) => {
-        const clone = new Date(date);
+    const getDietRecord = async () => {
+        const recordInfo = {
+            userCode: userInfo.userCode,
+            dateTime: moment(selectDate).format('YYYY-MM-DD')
+        }
 
-        if (calculation == 'add')
-            clone.setDate(date.getDate() + 1)
-        if (calculation == 'sub')
-            clone.setDate(date.getDate() - 1)
+        try {
+            const { userRecordDtos } = await getRecord(recordInfo)
 
-        return clone;
+            setRecords([...userRecordDtos])
+        } catch (err) {
+            console.log(err)
+        }
     }
 
     const NutritionFunc = ({ name }) => {
-        const spent = SpentNutri[Nutrition[name]];
-        const target = TargetNutri[Nutrition[name]];
+        let nutri = '';
+
+        switch (name) {
+            case 'foodCarbo':
+                nutri = 'carbo';
+                break
+            case 'foodProtein':
+                nutri = 'protein';
+                break
+            case 'foodFat':
+                nutri = 'fat';
+                break
+            default:
+                break;
+        }
+
+        const target = Math.round(userInfo[nutri])
+        const spent = Math.round(caculateSpent(Nutrition[name]));
         const ratio = Math.round(spent / target * 100);
 
         return (
@@ -67,43 +105,47 @@ const HomeRecord = ({navigation}) => {
 
     const renderItem = ({ item }) => {
         return (
-            <Pressable style={styles.container} onPress={()=>console.log('MealtimeScreen으로 이동')}>
+            <Pressable style={styles.container} onPress={() => console.log('MealtimeScreen으로 이동')}>
                 <View style={styles.flexRowSpaceBetween}>
-                    <Text style={styles.text}>{item.food_name}</Text>
-                    <Text style={styles.greyText}>{item.food_kcal} kcal</Text>
+                    <Text style={styles.text}>{item.dietRecordList.foodName}</Text>
+                    <Text style={styles.greyText}>{item.dietRecordList.foodKcal} kcal</Text>
                 </View>
                 <View style={[styles.flexRowSpaceBetween, { marginTop: verticalScale(10), paddingHorizontal: scale(5) }]}>
                     <View style={styles.nutri}>
-                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.carbo]}</Text>
-                        <Text style={styles.greyText}>{item.food_carbo} g</Text>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
+                        <Text style={styles.greyText}>{item.dietRecordList.foodCarbo} g</Text>
                     </View>
                     <View style={styles.verticalBorder} />
                     <View style={styles.nutri}>
-                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.protein]}</Text>
-                        <Text style={styles.greyText}>{item.food_protein} g</Text>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
+                        <Text style={styles.greyText}>{item.dietRecordList.foodProtein} g</Text>
                     </View>
                     <View style={styles.verticalBorder} />
                     <View style={styles.nutri}>
-                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.fat]}</Text>
-                        <Text style={styles.greyText}>{item.food_fat} g</Text>
+                        <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodFat]}</Text>
+                        <Text style={styles.greyText}>{item.dietRecordList.foodFat} g</Text>
                     </View>
                 </View>
             </Pressable>
         );
     };
 
+    const caculateSpent = nutri => {
+        return records.reduce((acc, cur, idx) => { return acc += cur.dietRecordList[nutri] }, 0)
+    }
+
     return (
         <View>
             {/* 날짜 선택하는 뷰 */}
             <View style={styles.dayView}>
-                <Pressable onPress={() => setSelectDate(CalculateDate('sub', selectDate))}>
+                <Pressable onPress={() => setSelectDate(CalculateRecordDate('sub', selectDate))}>
                     <Entypo name="chevron-left" size={35} color="black" />
                 </Pressable>
                 <Pressable onPress={() => refRBSheetCalendar.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
                     <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
                 </Pressable>
-                <Pressable onPress={() => setSelectDate(CalculateDate('add', selectDate))}>
+                <Pressable onPress={() => setSelectDate(CalculateRecordDate('add', selectDate))}>
                     <Entypo name="chevron-right" size={35} color="black" />
                 </Pressable>
             </View>
@@ -111,15 +153,15 @@ const HomeRecord = ({navigation}) => {
             {/* 차트 및 기록 뷰 */}
             <View style={styles.graphWrapper}>
                 <Pressable onPress={() => refRBSheetRecord.current.open()}>
-                    <DonutChart spentAmount={SpentAmount} targetAmount={TargetAmount} />
+                    <DonutChart spentAmount={Math.round(caculateSpent(Nutrition.foodKcal))} targetAmount={Math.round(userInfo?.kcal)} />
                 </Pressable>
             </View>
 
             {/* 탄단지 영양성분 뷰 */}
             <View style={styles.nutritionView}>
-                <NutritionFunc name={Nutrition.carbo} />
-                <NutritionFunc name={Nutrition.protein} />
-                <NutritionFunc name={Nutrition.fat} />
+                <NutritionFunc name={Nutrition.foodCarbo} />
+                <NutritionFunc name={Nutrition.foodProtein} />
+                <NutritionFunc name={Nutrition.foodFat} />
             </View>
 
             {/* 캘린더 */}
@@ -163,7 +205,7 @@ const HomeRecord = ({navigation}) => {
                 customStyles={{
                     container: {
                         borderRadius: 10,
-                        paddingHorizontal:scale(30),
+                        paddingHorizontal: scale(30),
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -171,7 +213,7 @@ const HomeRecord = ({navigation}) => {
                 }}
             >
                 <FlatList
-                    data={FoodRecord}
+                    data={records}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     showsVerticalScrollIndicator="false"
@@ -228,10 +270,10 @@ const styles = StyleSheet.create({
         alignItems: 'center'
     },
 
-    flexRowSpaceBetween:{
+    flexRowSpaceBetween: {
         flexDirection: 'row',
         alignItems: 'center',
-        justifyContent:'space-between'
+        justifyContent: 'space-between'
     },
 
     greyText: {

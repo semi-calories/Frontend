@@ -7,8 +7,20 @@ import { extendMoment } from 'moment-range';
 
 const moment = extendMoment(Moment);
 
-//날짜 더하고 뺴고 계산
-export const CalculateDate = (type, calculation, date) => {
+//기록 - 날짜 더하고 빼고 계산
+export const CalculateRecordDate = (calculation, date) => {
+    const clone = new Date(date);
+
+    if (calculation == 'add')
+        clone.setDate(date.getDate() + 1)
+    if (calculation == 'sub')
+        clone.setDate(date.getDate() - 1)
+
+    return clone;
+}
+
+//통계 - 날짜 더하고 뺴고 계산
+export const CalculateStatisticDate = (type, calculation, date) => {
     const clone = new Date(date);
 
     if (type == '주간') {

@@ -11,7 +11,7 @@ import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import { StackedBarChart } from "react-native-chart-kit";
 import moment from 'moment';
 
-import { CalculateDate, CalculateWeek, FormatWeekData } from "~/components/date";
+import { CalculateStatisticDate, CalculateWeek, FormatWeekData } from "~/components/date";
 
 import { WeekData, MonthData } from "~/constants/test";
 import { Nutrition, Nutrition_ko } from '~/constants/food'
@@ -136,14 +136,14 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
         <View>
             {/* 날짜 선택하는 뷰 */}
             <View style={styles.dayView}>
-                <Pressable onPress={() => setSelectDate(CalculateDate(type, 'sub', selectDate))}>
+                <Pressable onPress={() => setSelectDate(CalculateStatisticDate(type, 'sub', selectDate))}>
                     <Entypo name="chevron-left" size={35} color="black" />
                 </Pressable>
                 <Pressable onPress={() => refRBSheet.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{formatDate}</Text>
                     <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
                 </Pressable>
-                <Pressable onPress={() => setSelectDate(CalculateDate(type, 'add', selectDate))}>
+                <Pressable onPress={() => setSelectDate(CalculateStatisticDate(type, 'add', selectDate))}>
                     <Entypo name="chevron-right" size={35} color="black" />
                 </Pressable>
             </View>
