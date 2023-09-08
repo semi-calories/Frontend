@@ -23,7 +23,9 @@ const RecommendScreen = ({ navigation }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     const [user, setUser] = useState({})
-    console.log('RecommendScreen user', user)
+    //console.log('RecommendScreen user', user)
+    const [recommends, setRecommends] = useState([]);
+    console.log('RecommendScreen recommends', recommends)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -57,26 +59,26 @@ const RecommendScreen = ({ navigation }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
-                {item.food_image ? <Image source={item.food_image} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
+                {item.foodImage ? <Image source={{uri: item.foodImage}} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
                 <View style={styles.foodView}>
                     <View style={styles.flexRow}>
-                        <Text style={styles.text}>{item.food_name}</Text>
-                        <Text style={[styles.greyText, { fontSize: scale(14) }]}>{item.food_kcal} kcal</Text>
+                        <Text style={styles.text}>{item.foodName}</Text>
+                        <Text style={[styles.greyText, { fontSize: scale(14) }]}>{item.foodKcal} kcal</Text>
                     </View>
                     <View style={[styles.flexRow, { marginTop: verticalScale(5), paddingHorizontal: scale(5) }]}>
                         <View style={styles.nutri}>
                             <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
-                            <Text style={styles.greyText}>{item.food_carbo} g</Text>
+                            <Text style={styles.greyText}>{item.foodCarbon} g</Text>
                         </View>
                         <View style={styles.verticalBorder} />
                         <View style={styles.nutri}>
                             <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodProtein]}</Text>
-                            <Text style={styles.greyText}>{item.food_protein} g</Text>
+                            <Text style={styles.greyText}>{item.foodProtein} g</Text>
                         </View>
                         <View style={styles.verticalBorder} />
                         <View style={styles.nutri}>
                             <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodFat]}</Text>
-                            <Text style={styles.greyText}>{item.food_fat} g</Text>
+                            <Text style={styles.greyText}>{item.foodFat} g</Text>
                         </View>
                     </View>
                 </View>
@@ -85,6 +87,7 @@ const RecommendScreen = ({ navigation }) => {
     };
 
     const fetchItems = () => {
+        recommendRequestDiet()
 
         setIsRefreshing(false)
     }
@@ -96,9 +99,9 @@ const RecommendScreen = ({ navigation }) => {
         }
 
         try {
-            const response = await recommendRequest(requestInfo)
-            console.log('recommendRequestDiet response', response)
+            const { recommendList } = await recommendRequest(requestInfo)
 
+            setRecommends([...recommendList])
         } catch (error) {
             console.error(error)
         }
@@ -108,7 +111,7 @@ const RecommendScreen = ({ navigation }) => {
         <TabContainer>
             <RootView viewStyle={styles.viewStyle}>
                 <FlatList
-                    data={RecommendFood}
+                    data={recommends}
                     renderItem={renderItem}
                     keyExtractor={item => item.id}
                     onRefresh={fetchItems}

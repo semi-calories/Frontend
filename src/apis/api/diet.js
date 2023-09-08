@@ -68,7 +68,7 @@ export const recognizeUpload = async (uploadInfo) => {
 
     try {
         const { data } = await frontendInstance.post(`/recognizer/recognizerFood`, uploadInfo)
-        console.log('recognizeUpload data', data)
+        //console.log('recognizeUpload data', data)
         
         return data
     } catch (err) {
@@ -82,7 +82,7 @@ export const recommendRequest= async (requestInfo) => {
 
     try {
         const { data } = await frontendInstance.post(`/recommend/request`, requestInfo)
-        console.log('recommendRequest data', data)
+        //console.log('recommendRequest data', data)
         
         return data
     } catch (err) {
