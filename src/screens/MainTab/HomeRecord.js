@@ -14,6 +14,7 @@ import { DonutChart } from "~/components/chart";
 import { CalculateRecordDate } from "~/components/date";
 
 import { Nutrition, Nutrition_ko } from "~/constants/food";
+import { RecordType } from "~/constants/type";
 import { SpentAmount, TargetAmount, SpentNutri, TargetNutri, FoodRecord } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
@@ -99,7 +100,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
 
     const renderItem = ({ item }) => {
         return (
-            <Pressable style={styles.container} onPress={() => console.log('MealtimeScreen으로 이동')}>
+            <Pressable style={styles.container} onPress={() => handleDetail(item)}>
                 <View style={styles.flexRowSpaceBetween}>
                     <Text style={styles.text}>{item.dietRecordList.foodName}</Text>
                     <Text style={styles.greyText}>{item.dietRecordList.foodKcal} kcal</Text>
@@ -126,6 +127,24 @@ const HomeRecord = ({ navigation, userInfo }) => {
 
     const caculateSpent = nutri => {
         return records.reduce((acc, cur, idx) => { return acc += cur.dietRecordList[nutri] }, 0)
+    }
+
+    const handleDetail = (item) => {
+        const detail = {
+            foodCode: item.foodCode,
+            eatDate: item.dietRecordList.eatDate,
+            foodCarbo: item.dietRecordList.foodCarbo,
+            foodFat: item.dietRecordList.foodFat,
+            foodKcal: item.dietRecordList.foodKcal,
+            foodName: item.dietRecordList.foodName,
+            foodProtein: item.dietRecordList.foodProtein,
+            foodWeight: item.dietRecordList.foodWeight,
+            satisfaction: item.userSatisfactionList.satisfaction,
+        }
+        console.log('handleDetail detail', [detail])
+
+        refRBSheetRecord.current.close()
+        navigation.navigate('MealtimeScreen', { foodParam: [detail], userInfo, type: RecordType.edit})
     }
 
     return (
@@ -200,6 +219,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                     container: {
                         borderRadius: 10,
                         paddingHorizontal: scale(30),
+                        paddingBottom: verticalScale(30)
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -209,7 +229,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                 <FlatList
                     data={records}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item, idx) => item + idx}
                     showsVerticalScrollIndicator="false"
                 />
             </RBSheet>

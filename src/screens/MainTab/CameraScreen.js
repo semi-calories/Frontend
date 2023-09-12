@@ -10,7 +10,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 
-import { UserInfoType } from "~/constants/type";
+import { UserInfoType, RecordType } from "~/constants/type";
 
 import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -68,7 +68,7 @@ const CameraScreen = ({ navigation, route }) => {
             const dietLists = await recognizeUploadDiet()
 
             if(dietLists.length){
-                params = { foodParam: dietLists }
+                params = { foodParam: dietLists, userInfo, type: RecordType.init }
 
                 navigation.navigate(nextScreen, params)
             }else{

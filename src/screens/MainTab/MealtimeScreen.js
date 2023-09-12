@@ -17,22 +17,23 @@ import { LabelTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
 
 import { Nutrition, Nutrition_ko, Satisfaction, Satisfaction_icon, Satisfaction_ko } from "~/constants/food";
+import { RecordType } from "~/constants/type";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
-import { updateRecord } from "~/apis/api/diet";
+import { registerRecord, updateRecord, deleteRecord } from "~/apis/api/diet";
 
 const MealtimeScreen = ({ navigation, route }) => {
-    const { userInfo } = route.params;
+    const { userInfo, type } = route.params;
     console.log('MealtimeScreen userInfo', userInfo)
 
     const [date, setDate] = useState(new Date());
     const [time, setTime] = useState(new Date());
-    //console.log('date time', date, time)
+    console.log('date time', date, time)
 
-    const [selectFoods, setSelectFoods] = useState();
-    console.log('MealtimeScreen selectFood', selectFoods)
+    const [selectFoods, setSelectFoods] = useState([]);
+    console.log('MealtimeScreen selectFoods', selectFoods)
     const [foodDetail, setFoodDetail] = useState()
     console.log('MealtimeScreen foodDetail', foodDetail)
 
@@ -49,20 +50,27 @@ const MealtimeScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         setSelectFoods([...route.params?.foodParam])
+
+        if (route.params?.foodParam[0].eatDate) {
+            setDate(new Date(route.params?.foodParam[0].eatDate))
+            setTime(new Date(route.params?.foodParam[0].eatDate))
+        }
     }, [route.params?.foodParam])
 
     useEffect(() => {
         if (foodDetail) {
             const ratio = serving / foodDetail?.foodWeight
 
-            setFoodDetail(prev => {return {
-                ...prev,
-                [Nutrition.foodWeight]: serving,
-                [Nutrition.foodKcal]: Math.round(prev.foodKcal * ratio * 10) / 10,
-                [Nutrition.foodCarbo]: Math.round(prev.foodCarbo * ratio * 10) / 10,
-                [Nutrition.foodProtein]: Math.round(prev.foodProtein * ratio * 10) / 10,
-                [Nutrition.foodFat]: Math.round(prev.foodFat * ratio * 10) / 10,
-            }})
+            setFoodDetail(prev => {
+                return {
+                    ...prev,
+                    [Nutrition.foodWeight]: serving,
+                    [Nutrition.foodKcal]: Math.round(prev.foodKcal * ratio * 10) / 10,
+                    [Nutrition.foodCarbo]: Math.round(prev.foodCarbo * ratio * 10) / 10,
+                    [Nutrition.foodProtein]: Math.round(prev.foodProtein * ratio * 10) / 10,
+                    [Nutrition.foodFat]: Math.round(prev.foodFat * ratio * 10) / 10,
+                }
+            })
         }
     }, [editing])
 
@@ -105,32 +113,42 @@ const MealtimeScreen = ({ navigation, route }) => {
         )
     }
 
-    const handleDelete = () => {
+    const handleDetailDelete = () => {
         setSelectFoods([...selectFoods.filter(food => food.foodCode !== foodDetail.foodCode)]);
+        setFoodDetail({})
+
         refRBSheet.current.close()
     }
 
-    const handleSave = () => {
+    const handleDetailSave = () => {
         const result = selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
         console.log('handleSave', result)
 
         setSelectFoods([...selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)]);
+        setFoodDetail({})
+
         refRBSheet.current.close()
     }
 
-    const handleComplete = async () =>{
-        const dateOnly =  moment(date).format('YYYY-MM-DD')
+    const handleComplete = async () => {
+        if (selectFoods.length == 0) {
+            Alert.alert('식사를 하나 이상 기록해주세요.')
+            return;
+        }
+
+        const dateOnly = moment(date).format('YYYY-MM-DD')
         const timeOnly = moment(time).format(' HH:mm')
 
-        const dateTime = moment(dateOnly + timeOnly).format('YYYY-MM-DDTHH:mm')
+        const dateTime = moment(dateOnly + timeOnly).format('YYYY-MM-DDTHH:mm:ss')
+        // console.log('dateTime', dateTime)
 
-        try{
+        try {
             const response = await Promise.all(
                 selectFoods.map(async food => {
                     const recordInfo = {
                         userCode: userInfo.userCode,
-                        eatDate : dateTime,
-                        foodWeight : food.foodWeight,
+                        eatDate: dateTime,
+                        foodWeight: food.foodWeight,
                         foodCode: food.foodCode,
                         foodName: food.foodName,
                         foodKcal: food.foodKcal,
@@ -140,17 +158,69 @@ const MealtimeScreen = ({ navigation, route }) => {
                         satisfaction: food.satisfaction ? food.satisfaction : null
                     }
 
-                   await updateRecord(recordInfo)
+                    await registerRecord(recordInfo)
                 })
             );
 
             Alert.alert('식사가 저장되었습니다.')
 
             navigation.pop(2);
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+    const handleUpdate = async() =>{
+        const dateOnly = moment(date).format('YYYY-MM-DD')
+        const timeOnly = moment(time).format(' HH:mm')
+
+        const dateTime = moment(dateOnly + timeOnly).format('YYYY-MM-DDTHH:mm:ss')
+
+        const recordInfo ={
+            userCode: userInfo.userCode,
+            originalEatDate: route.params?.foodParam[0].eatDate,
+            originalFoodCode: selectFoods[0].foodCode,
+
+            eatDate: dateTime,
+            foodWeight: selectFoods[0].foodWeight,
+            foodCode: selectFoods[0].foodCode,
+            foodName: selectFoods[0].oodName,
+            foodKcal: selectFoods[0].foodKcal,
+            foodCarbo: selectFoods[0].foodCarbo,
+            foodProtein: selectFoods[0].foodProtein,
+            foodFat: selectFoods[0].foodFat,
+            satisfaction: selectFoods[0].satisfaction ? selectFoods[0].satisfaction : null
+        }
+
+        try{
+            const { response } = await updateRecord(recordInfo)
+
+            Alert.alert('식사가 수정되었습니다.')
+
+            navigation.pop()
         }catch(e){
             console.error(e)
         }
-        
+    }
+
+    const handleDelete = async() =>{
+        const recordInfo = {
+            userCode:userInfo.userCode,
+            foodCode:selectFoods[0].foodCode,
+            eatDate:route.params?.foodParam[0].eatDate,
+        }
+
+
+        try{
+            const { response } = await deleteRecord(recordInfo)
+
+            Alert.alert('식사가 삭제되었습니다.')
+
+            navigation.pop()
+        }catch(e){
+            console.error(e)
+        }
     }
 
 
@@ -178,9 +248,17 @@ const MealtimeScreen = ({ navigation, route }) => {
                     showsVerticalScrollIndicator={false}
                 />
             </View>
-            <View style={{ paddingHorizontal: scale(30) }}>
-                <MoveButton text="완료" onPress={handleComplete} />
-            </View>
+            {type == RecordType.init ? (
+                <View style={{ paddingHorizontal: scale(30) }}>
+                    <MoveButton text="완료" onPress={handleComplete} inActive={selectFoods.length ? false : true} />
+                </View>
+            ) : (
+                <View style={styles.btnView}>
+                    <MoveButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.white, borderWidth: 2 }]} textStyle={{ color: colors.black }} onPress={handleDelete} />
+                    <MoveButton text="수정" btnStyle={styles.btnStyle} onPress={handleUpdate}/>
+                </View>
+            )}
+
 
 
             {/* 음식상세 */}
@@ -233,10 +311,16 @@ const MealtimeScreen = ({ navigation, route }) => {
                         <SatisfactionFunc label={Satisfaction.like} onPress={() => handleSatisfaction(Satisfaction.like)} satisfaction={foodDetail?.satisfaction} />
                     </View>
                 </View>
-                <View style={styles.btnView}>
-                    <PrimaryButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.pink }]} onPress={handleDelete} />
-                    <PrimaryButton text="저장" btnStyle={[styles.btnStyle, { backgroundColor: colors.primary }]} onPress={handleSave} />
-                </View>
+                {selectFoods.length > 1 ? (
+                    <View style={styles.btnView}>
+                        <PrimaryButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.pink }]} onPress={handleDetailDelete} />
+                        <PrimaryButton text="저장" btnStyle={styles.btnStyle} onPress={handleDetailSave} />
+                    </View>
+                ) : (
+                    <View style={{ alignSelf: 'center' }}>
+                        <PrimaryButton text="저장" btnStyle={{ width: scale(340), height: verticalScale(50)}} onPress={handleDetailSave} />
+                    </View>
+                )}
             </RBSheet>
         </RootView>
     );

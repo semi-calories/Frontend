@@ -9,7 +9,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 
-import { UserInfoType } from "~/constants/type";
+import { RecordType, UserInfoType } from "~/constants/type";
 
 import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -36,11 +36,11 @@ const AlbumScreen_new = ({ navigation, route }) => {
         pickImage()
     }, [])
 
-    useEffect(()=>{
-        if(image){
-            setUser({...userInfo, image})
+    useEffect(() => {
+        if (image) {
+            setUser({ ...userInfo, image })
         }
-    },[image])
+    }, [image])
 
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
@@ -61,7 +61,7 @@ const AlbumScreen_new = ({ navigation, route }) => {
             console.log(dietLists)
 
             if (dietLists.length) {
-                params = { foodParam: dietLists, userInfo }
+                params = { foodParam: dietLists, userInfo, type: RecordType.init }
 
                 navigation.navigate(nextScreen, params)
             } else {

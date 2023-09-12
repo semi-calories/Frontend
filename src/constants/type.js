@@ -18,3 +18,8 @@ export const SearchFoodType = {
     dislike:'dislike',
     add:'add'
 }
+
+export const RecordType = {
+    init:'init',
+    edit:'edit',
+}

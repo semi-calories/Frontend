@@ -12,7 +12,7 @@ import { SearchHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
-import { SearchFoodType } from "~/constants/type";
+import { RecordType, SearchFoodType } from "~/constants/type";
 import { FoodTemp } from "~/constants/test";
 
 import { colors, fonts } from "~/constants/globalStyles";
@@ -73,7 +73,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
     const handleComplete = () => {
         if (selectFood.length) {
             if (type == SearchFoodType.add) {
-                navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo })
+                navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo, type: RecordType.init})
             } else {
                 // 이전 화면에 선택한 food 업데이트 해줘야함
                 navigation.navigate('SetFoodScreen', { type: type, foodParam: selectFood, userInfo })

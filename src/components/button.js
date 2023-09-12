@@ -20,18 +20,18 @@ const addIcon = require("@assets/Add.png");
 const pencilIcon = require('@assets/Pencil.png');
 const cameraIcon = require('@assets/Camera.png')
 
-export function PrimaryButton({ text, onPress, btnStyle }) {
+export function PrimaryButton({ text, onPress, btnStyle, textStyle }) {
     return (
         <TouchableOpacity style={[styles.primaryBtn, btnStyle]} onPress={onPress}>
-            <Text style={styles.whiteText}>{text}</Text>
+            <Text style={[styles.text, textStyle]}>{text}</Text>
         </TouchableOpacity>
     );
 }
 
-export function MoveButton({ text, onPress, btnStyle, inActive }) {
+export function MoveButton({ text, onPress, btnStyle, inActive, textStyle}) {
     return (
         <TouchableOpacity style={[inActive ? styles.moveBtnInactive : styles.moveBtn, btnStyle]} onPress={onPress}>
-            <Text style={styles.whiteText}>{text}</Text>
+            <Text style={[styles.text, textStyle]}>{text}</Text>
         </TouchableOpacity>
     );
 }
@@ -218,7 +218,7 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
     },
 
-    whiteText: {
+    text: {
         color: colors.white,
         fontSize: scale(20),
         fontFamily: fonts.bold,
