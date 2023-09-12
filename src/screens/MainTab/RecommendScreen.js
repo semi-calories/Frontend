@@ -113,7 +113,7 @@ const RecommendScreen = ({ navigation }) => {
                 <FlatList
                     data={recommends}
                     renderItem={renderItem}
-                    keyExtractor={item => item.id}
+                    keyExtractor={(item,idx) => item+idx}
                     onRefresh={fetchItems}
                     refreshing={isRefreshing}
                     showsVerticalScrollIndicator="false"

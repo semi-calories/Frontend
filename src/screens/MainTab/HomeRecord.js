@@ -41,12 +41,6 @@ const HomeRecord = ({ navigation, userInfo }) => {
         }
     }, [selectDate, userInfo])
 
-    useEffect(() => {
-        if (records.length) {
-
-        }
-    }, [records])
-
     //요일 계산
     let day = useMemo(() => DAYS[selectDate.getDay()], [selectDate]);
     //날짜 포맷; YYYY-MM-DD 형식
