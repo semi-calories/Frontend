@@ -50,9 +50,9 @@ export const getWeekStats = async (userCode, month) => {
     }
 }
 
-//식단 기록 등록/수정
-export const updateRecord = async (recordInfo) => {
-    console.log('updateRecord recordInfo', recordInfo)
+//식단 기록 등록
+export const registerRecord = async (recordInfo) => {
+    console.log('registerRecord recordInfo', recordInfo)
 
     try {
         const { data } = await frontendInstance.post(`/record/text`, recordInfo)
@@ -61,6 +61,31 @@ export const updateRecord = async (recordInfo) => {
         console.error(err)
     }
 }
+
+//식단 기록 수정
+export const updateRecord = async(recordInfo) =>{
+    console.log('updateRecord recordInfo', recordInfo)
+
+    try {
+        const { data } = await frontendInstance.post(`/record/updateRecord`, recordInfo)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+//식단 기록 삭제
+export const deleteRecord = async(recordInfo) =>{
+    console.log('deleteRecord recordInfo', recordInfo)
+
+    try {
+        const { data } = await frontendInstance.post(`/record/deleteRecord`, recordInfo)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
 
 //음식 인식 요청
 export const recognizeUpload = async (uploadInfo) => {
