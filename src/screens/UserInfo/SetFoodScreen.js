@@ -100,17 +100,13 @@ const SetFoodScreen = ({ navigation, route }) => {
     }
 
     const handleComplete = async () => {
-        if (preferFood.length || dislikeFood.length) {
-            await savePreferFunc()
-            await saveDislikeFunc()
+        await savePreferFunc()
+        await saveDislikeFunc()
 
-            if (route.params?.infoType == UserInfoType.init) {
-                navigation.navigate('MainTab')
-            } else {
-                Alert.alert('저장되었습니다!')
-            }
+        if (route.params?.infoType == UserInfoType.init) {
+            navigation.navigate('MainTab')
         } else {
-            Alert.alert('항목을 하나 이상 선택해주세요.')
+            Alert.alert('저장되었습니다!')
         }
     }
 
@@ -159,7 +155,7 @@ const SetFoodScreen = ({ navigation, route }) => {
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike, userInfo })} />
                 </View>
             </ScrollView>
-            <MoveButton text="완료" onPress={handleComplete} inActive={preferFood.length || dislikeFood.length ? false : true} />
+            <MoveButton text="완료" onPress={handleComplete}/>
         </RootView>
     );
 }
