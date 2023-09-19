@@ -138,6 +138,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             weight,
             goalWeight,
             userActivity: userActivity,
+            userGoal:userInfo.userGoal,
         };
 
         if (name && gender && age && height && weight && goalWeight && userActivity) {
