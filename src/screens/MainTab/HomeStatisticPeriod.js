@@ -42,7 +42,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
         } else if (type == '월간') {
             getDietMonthStats()
         }
-    }, [selectDate])
+    }, [selectDate, type])
 
     const getDietMonthStats = async () => {
         const statInfo = {
