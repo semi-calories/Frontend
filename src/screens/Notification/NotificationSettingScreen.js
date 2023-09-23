@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useState } from "react";
 
-import { View, Text, StyleSheet, Switch } from "react-native";
+import { View, Text, StyleSheet, Switch, Alert } from "react-native";
 import DateTimePicker from '@react-native-community/datetimepicker';
 import moment from "moment";
 
@@ -16,11 +16,11 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const NotificationSettingScreen = ({ navigation }) => {
-    const [isEnabled, setIsEnabled] = useState(false);
+    const [isEnabled, setIsEnabled] = useState(true);
 
-    const [breakfast, setBreakfast] = useState(new Date());
-    const [lunch, setLunch] = useState(new Date());
-    const [dinner, setDinner] = useState(new Date())
+    const [breakfast, setBreakfast] = useState(new Date(2023,8,19,7));
+    const [lunch, setLunch] = useState(new Date(2023,8,19,13));
+    const [dinner, setDinner] = useState(new Date(2023,8,19,18,30))
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -33,8 +33,10 @@ const NotificationSettingScreen = ({ navigation }) => {
         return moment(date).format('HH:mm')
     }
 
-    const handleSave=()=>{
-        console.log('알림 시간 저장')
+    const handleComplete=()=>{
+        //알림 데이터 서버에 저장
+
+       Alert.alert('식단 알림이 설정되었습니다.')
     }
    
     return (
@@ -67,7 +69,7 @@ const NotificationSettingScreen = ({ navigation }) => {
                 </View>
             )}
             </View>
-            <MoveButton text="완료" onPress={()=>console.log('알림 시간 저장')} />
+            <MoveButton text="완료" onPress={handleComplete} />
         </RootView>
     );
 }

@@ -170,3 +170,41 @@ export const FoodRecord = [
         food_fat: 5,
     },
 ]
+
+export const NotiData = [
+    {
+        date:'9월 19일',
+        eatTime:'점심',
+        time:'13:00',
+        foodName:'순대국밥',
+        foodKcal:'675.5'
+    },
+    {
+        date:'9월 19일',
+        eatTime:'아침',
+        time:'07:00',
+        foodName:'삼치구이',
+        foodKcal:'355'
+    },
+    {
+        date:'9월 18일',
+        eatTime:'저녁',
+        time:'18:30',
+        foodName:'두부미트볼',
+        foodKcal:'322'
+    },
+    {
+        date:'9월 18일',
+        eatTime:'점심',
+        time:'13:00',
+        foodName:'장어덮밥',
+        foodKcal:'665.5'
+    },
+    {
+        date:'9월 18일',
+        eatTime:'아침',
+        time:'07:00',
+        foodName:'해물볶음밥',
+        foodKcal:'455'
+    },
+]
