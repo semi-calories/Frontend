@@ -3,7 +3,7 @@
 //
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
-import { View, Text, StyleSheet, Pressable } from "react-native";
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RBSheet from "react-native-raw-bottom-sheet";
@@ -20,7 +20,11 @@ import { LineData } from "~/constants/test";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-const HomeWeight = () => {
+import { getWeight, saveWeight, deleteWeight } from "~/apis/api/user";
+
+
+const HomeWeight = ({ userInfo }) => {
+    console.log('HomeWeight userInfo', userInfo)
 
     //월 선택
     const refRBSheetDate = useRef();
@@ -30,10 +34,11 @@ const HomeWeight = () => {
     //차트 몸무게
     const refRBSheetWeight = useRef();
     const [date, setDate] = useState(new Date())
-    const [weight, setWeight] = useState()
+    const [weight, setWeight] = useState('0')
 
     useEffect(() => {
         //날짜 변경하면 그에 맞는 몸무게 가져와서 세팅
+        getWeightFunc()
     }, [date])
 
 
@@ -55,6 +60,7 @@ const HomeWeight = () => {
     const handleSheet = item => {
         console.log(item)
         // item.label로 setDate
+        getWeightFunc()
 
         refRBSheetWeight.current.open()
     }
@@ -70,8 +76,70 @@ const HomeWeight = () => {
     //lineDataMaxValue 최대 몸무게 10자리 반올림 + 20
     const lineDataMaxValue = Math.ceil(Math.max(...LineData.map(v => v.value)) / 10) * 10 + 20
 
-    const handleSave = () => {
+    const handleSave = async () => {
+        const dateString = date.toISOString().substring(0, 19)
 
+        const weightInfo = {
+            userCode: userInfo.userCode,
+            userWeight: weight,
+            timestamp: dateString
+        }
+
+        try {
+            await saveWeight(weightInfo)
+
+            Alert.alert('몸무게가 저장되었습니다.')
+            refRBSheetWeight.current.close()
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+    const handleDelete = async () => {
+        if(!weight) {
+            Alert.alert('해당 날짜는 삭제할 몸무게 기록이 없습니다.')
+            return;
+        }
+
+        const dateString = date.toISOString().substring(0, 19)
+
+        const weightInfo = {
+            userCode: userInfo.userCode,
+            timestamp: dateString
+        }
+
+        try {
+            await deleteWeight(weightInfo)
+
+            Alert.alert('몸무게가 삭제되었습니다.')
+            refRBSheetWeight.current.close()
+        } catch (e) {
+            console.error(e)
+        }
+
+    }
+
+    const getWeightFunc = async () => {
+        const dateString = date.toISOString().substring(0, 19)
+
+        const weightInfo = {
+            userCode: userInfo.userCode,
+            timestamp: dateString
+        }
+
+        try {
+            const { response } = await getWeight(weightInfo)
+            console.log('getWeightFunc response', response)
+
+            if (response) {
+                setWeight(response)
+            } else {
+                setWeight(0)
+            }
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     return (
@@ -154,7 +222,7 @@ const HomeWeight = () => {
                 customStyles={{
                     container: {
                         borderRadius: 10,
-                        paddingHorizontal: scale(30),
+                        paddingHorizontal: scale(20),
                         paddingBottom: verticalScale(30)
                     },
                     draggableIcon: {
@@ -169,11 +237,12 @@ const HomeWeight = () => {
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
-                        <LabelTextInput type="light" text={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
+                        <LabelTextInput type="light" text={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
                     </View>
                 </View>
-                <View style={{ alignItems: 'center' }}>
-                    <PrimaryButton text="저장" btnStyle={{ width: scale(340), height: verticalScale(50) }} onPress={handleSave} />
+                <View style={styles.btnView}>
+                    <PrimaryButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.pink }]} onPress={handleDelete} />
+                    <PrimaryButton text="저장" btnStyle={styles.btnStyle} onPress={handleSave} />
                 </View>
             </RBSheet>
         </View>
@@ -227,7 +296,7 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'space-between',
-        // paddingHorizontal: scale(15),
+        paddingHorizontal: scale(15),
         paddingVertical: verticalScale(20)
     },
 
@@ -235,5 +304,13 @@ const styles = StyleSheet.create({
         flexDirection: 'row'
     },
 
+    btnView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between'
+    },
 
+    btnStyle: {
+        width: scale(170),
+        height: verticalScale(50)
+    }
 })
