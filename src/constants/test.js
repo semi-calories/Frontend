@@ -173,38 +173,47 @@ export const FoodRecord = [
 
 export const NotiData = [
     {
-        date:'9월 19일',
-        eatTime:'점심',
-        time:'13:00',
-        foodName:'순대국밥',
-        foodKcal:'675.5'
+        date: '9월 19일',
+        eatTime: '점심',
+        time: '13:00',
+        foodName: '순대국밥',
+        foodKcal: '675.5'
     },
     {
-        date:'9월 19일',
-        eatTime:'아침',
-        time:'07:00',
-        foodName:'삼치구이',
-        foodKcal:'355'
+        date: '9월 19일',
+        eatTime: '아침',
+        time: '07:00',
+        foodName: '삼치구이',
+        foodKcal: '355'
     },
     {
-        date:'9월 18일',
-        eatTime:'저녁',
-        time:'18:30',
-        foodName:'두부미트볼',
-        foodKcal:'322'
+        date: '9월 18일',
+        eatTime: '저녁',
+        time: '18:30',
+        foodName: '두부미트볼',
+        foodKcal: '322'
     },
     {
-        date:'9월 18일',
-        eatTime:'점심',
-        time:'13:00',
-        foodName:'장어덮밥',
-        foodKcal:'665.5'
+        date: '9월 18일',
+        eatTime: '점심',
+        time: '13:00',
+        foodName: '장어덮밥',
+        foodKcal: '665.5'
     },
     {
-        date:'9월 18일',
-        eatTime:'아침',
-        time:'07:00',
-        foodName:'해물볶음밥',
-        foodKcal:'455'
+        date: '9월 18일',
+        eatTime: '아침',
+        time: '07:00',
+        foodName: '해물볶음밥',
+        foodKcal: '455'
     },
 ]
+
+export const LineData = [
+    { value: 65, dataPointText: '65', label: '09-01' },
+    { value: 63.6, dataPointText: '63.6', label: '09-10' },
+    { value: 63.8, dataPointText: '63.8', label: '09-12' },
+    { value: 62.8, dataPointText: '62.8', label: '09-17' },
+    { value: 62.4, dataPointText: '62.4', label: '09-20' },
+    { value: 62.3, dataPointText: '62.3', label: '09-22' },
+];

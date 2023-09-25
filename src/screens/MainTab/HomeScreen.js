@@ -8,6 +8,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import HomeRecord from "~/screens/MainTab/HomeRecord";
 import HomeStatistic from "~/screens/MainTab/HomeStatistic";
+import HomeWeight from "~/screens/MainTab/HomeWeight";
 
 import { RootView, TabContainer } from "~/components/container";
 import { MainHeader } from "~/components/header";
@@ -16,7 +17,7 @@ import { GetUserData } from "~/components/asyncStorageData";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-const tabs = ['기록', '통계'];
+const tabs = ['기록', '통계','몸무게'];
 
 const HomeScreen = ({ navigation }) => {
     const [tabLabel, setTabLabel] = useState(tabs[0])
@@ -63,6 +64,9 @@ const HomeScreen = ({ navigation }) => {
 
                 {/* 통계 화면 */}
                 {tabLabel == tabs[1] && <HomeStatistic userInfo={user}/>}
+
+                {/* 몸무게 화면 */}
+                {tabLabel == tabs[2] && <HomeWeight userInfo={user}/>}
             </RootView>
         </TabContainer>
     );

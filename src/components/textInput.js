@@ -62,7 +62,7 @@ export function LabelTextInput(props) {
 const styles = StyleSheet.create({
   input: {
     height: verticalScale(50),
-    padding: scale(14),
+    padding: scale(12),
 
     borderRadius: 10,
     marginVertical: verticalScale(6),
