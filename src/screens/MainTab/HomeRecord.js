@@ -4,7 +4,7 @@
 
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
-import { View, Text, StyleSheet, Pressable, TouchableOpacity, FlatList } from "react-native";
+import { View, Text, StyleSheet, Pressable, TouchableOpacity, FlatList, PixelRatio } from "react-native";
 import { Calendar } from "react-native-calendars";
 import { Entypo, Ionicons } from '@expo/vector-icons';
 import moment from 'moment';
@@ -24,6 +24,8 @@ import { getRecord } from "~/apis/api/diet";
 
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
+const radius = PixelRatio.roundToNearestPixel(scale(110));
+const STROKE_WIDTH = scale(30);
 
 const HomeRecord = ({ navigation, userInfo }) => {
 
@@ -36,9 +38,13 @@ const HomeRecord = ({ navigation, userInfo }) => {
     const [records, setRecords] = useState([])
     console.log('HomeRecord records', records)
 
+    //DonutChart 에러 나는거 막기 위함
+    const [isLoaded, setLoaded] = useState(false)
+
     useEffect(() => {
         if (userInfo.userCode) {
             getDietRecord()
+            setLoaded(true)
         }
     }, [selectDate, userInfo])
 
@@ -144,7 +150,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
         console.log('handleDetail detail', [detail])
 
         refRBSheetRecord.current.close()
-        navigation.navigate('MealtimeScreen', { foodParam: [detail], userInfo, type: RecordType.edit})
+        navigation.navigate('MealtimeScreen', { foodParam: [detail], userInfo, type: RecordType.edit })
     }
 
     return (
@@ -164,10 +170,17 @@ const HomeRecord = ({ navigation, userInfo }) => {
             </View>
 
             {/* 차트 및 기록 뷰 */}
-            <View style={styles.graphWrapper}>
-                <Pressable onPress={() => refRBSheetRecord.current.open()}>
-                    <DonutChart spentAmount={Math.round(caculateSpent(Nutrition.foodKcal))} targetAmount={Math.round(userInfo?.kcal)} />
-                </Pressable>
+            <View style={styles.chartView}>
+                <View style={styles.chartContainer} onPress={() => refRBSheetRecord.current.open()}>
+                {isLoaded &&
+                     <DonutChart
+                    strokeWidth={STROKE_WIDTH}
+                    radius={radius}
+                    spentAmount={Math.round(caculateSpent(Nutrition.foodKcal)) }
+                    targetAmount={Math.round(userInfo?.kcal)}
+                />
+                }
+                </View>
             </View>
 
             {/* 탄단지 영양성분 뷰 */}
@@ -262,9 +275,16 @@ const styles = StyleSheet.create({
         fontSize: scale(15)
     },
 
-    graphWrapper: {
-        paddingTop: verticalScale(60),
-        paddingBottom: verticalScale(35),
+    chartView: {
+        paddingVertical: verticalScale(30),
+        //flex:1,
+        alignItems: "center",
+        justifyContent: "center",
+    },
+
+    chartContainer: {
+        width: radius * 2,
+        height: radius * 2,
     },
 
     nutritionView: {
