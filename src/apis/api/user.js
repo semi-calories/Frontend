@@ -68,3 +68,52 @@ export const saveDislike = async (dislikeInfo) => {
         console.error(err)
     }
 }
+
+
+//몸무게 월별 조회
+export const getMonthWeight = async (weightInfo) => {
+    console.log('getMonthWeight weightInfo', weightInfo)
+
+    try {
+        const { data } = await frontendInstance.get('/record/getMonthWeight', { params: weightInfo })
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+//몸무게 조회
+export const getWeight = async (weightInfo) => {
+    console.log('getWeight weightInfo', weightInfo)
+
+    try {
+        const { data } = await frontendInstance.get('/record/getWeight', { params: weightInfo })
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+//몸무게 저장/수정
+export const saveWeight = async (weightInfo) => {
+    console.log('saveWeight weightInfo', weightInfo)
+
+    try {
+        const { data } = await frontendInstance.post('/record/saveWeight', weightInfo)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
+
+//몸무게 석제
+export const deleteWeight = async (weightInfo) => {
+    console.log('deleteWeight weightInfo', weightInfo)
+
+    try {
+        const { data } = await frontendInstance.post('/record/deleteWeight', weightInfo)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
