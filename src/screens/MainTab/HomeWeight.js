@@ -12,20 +12,20 @@ import { Chip } from 'react-native-paper';
 
 import { MoveButton, PrimaryButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
+import { StoreUserData } from "~/components/asyncStorageData";
 
 import { LineData } from "~/constants/test";
 
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-import { getWeight, saveWeight, deleteWeight, getMonthRangeWeight } from "~/apis/api/user";
+import { getInfo, getWeight, saveWeight, deleteWeight, getMonthRangeWeight } from "~/apis/api/user";
 import { getStructedRangeWeight } from "~/apis/services/user";
 
 const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 
 const HomeWeight = ({ userInfo }) => {
-    console.log('HomeWeight userInfo', userInfo)
-
+    console.log('HomeWeight userInfo',userInfo)
     //상단 필터 관련
     const refRBSheetFilter = useRef();
 
@@ -50,6 +50,7 @@ const HomeWeight = ({ userInfo }) => {
     }, [modal])
 
     const handlePressChart = item => {
+        console.log(item)
         // item.label로 setDate
         getDayWeight()
 
@@ -71,6 +72,9 @@ const HomeWeight = ({ userInfo }) => {
 
         try {
             await saveWeight(weightInfo)
+
+            const userData = await getInfo({ userCode: userInfo.userCode })
+            StoreUserData({...userData,userCode: userInfo.userCode, weight: userData.weight})
 
             Alert.alert('몸무게가 저장되었습니다.')
             refRBSheetWeight.current.close()
@@ -96,6 +100,9 @@ const HomeWeight = ({ userInfo }) => {
 
         try {
             await deleteWeight(weightInfo)
+
+            const userData = await getInfo({ userCode: userInfo.userCode })
+            StoreUserData({...userData,userCode: userInfo.userCode, weight: userData.weight})
 
             Alert.alert('몸무게가 삭제되었습니다.')
             refRBSheetWeight.current.close()

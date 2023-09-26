@@ -171,7 +171,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
 
             {/* 차트 및 기록 뷰 */}
             <View style={styles.chartView}>
-                <View style={styles.chartContainer} onPress={() => refRBSheetRecord.current.open()}>
+                <Pressable style={styles.chartContainer} onPress={() => refRBSheetRecord.current.open()}>
                 {isLoaded &&
                      <DonutChart
                     strokeWidth={STROKE_WIDTH}
@@ -180,7 +180,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                     targetAmount={Math.round(userInfo?.kcal)}
                 />
                 }
-                </View>
+                </Pressable>
             </View>
 
             {/* 탄단지 영양성분 뷰 */}

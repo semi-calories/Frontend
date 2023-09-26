@@ -36,10 +36,11 @@ const HomeScreen = ({ navigation }) => {
             console.log('HomeScreen focus')
             getUser()
         });
+        getUser()
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return focusSubscription;
-    }, [navigation]);
+    }, [navigation, tabLabel]);
 
     const getUser = async () => {
         const data = await GetUserData();
