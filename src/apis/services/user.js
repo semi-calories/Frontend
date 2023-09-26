@@ -9,3 +9,15 @@ export const getPreferFood = rawData =>{
 export const getDislikeFood = rawData =>{
     return rawData.map(food => food.dislikeFoodCode)
 }
+
+export const getStructedRangeWeight = rawData =>{
+    const data =  rawData.map(v => {
+        return {
+            value:v.weight,
+            dataPointText:v.weight.toString(),
+            label:v.timestamp.substring(0,10)
+        }
+    })
+
+    return data
+}

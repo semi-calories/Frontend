@@ -3,16 +3,14 @@
 //
 import React, { useState, useRef, useMemo, useEffect } from "react";
 
-import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
-import { Entypo, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { View, Text, StyleSheet, Alert } from "react-native";
+import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
 import RBSheet from "react-native-raw-bottom-sheet";
-import WheelPickerExpo from 'react-native-wheel-picker-expo';
 import { LineChart } from "react-native-gifted-charts"
-import moment from 'moment';
+import { Chip } from 'react-native-paper';
 
-import { CalculateStatisticDate } from "~/components/date";
-import { PrimaryButton } from "~/components/button";
+import { MoveButton, PrimaryButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 
 import { LineData } from "~/constants/test";
@@ -20,62 +18,48 @@ import { LineData } from "~/constants/test";
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-import { getWeight, saveWeight, deleteWeight } from "~/apis/api/user";
+import { getWeight, saveWeight, deleteWeight, getMonthRangeWeight } from "~/apis/api/user";
+import { getStructedRangeWeight } from "~/apis/services/user";
 
+const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 
 const HomeWeight = ({ userInfo }) => {
     console.log('HomeWeight userInfo', userInfo)
 
-    //월 선택
-    const refRBSheetDate = useRef();
-    const [selectDate, setSelectDate] = useState(new Date())
-    const [pickerDate, setPickerDate] = useState()
+    //상단 필터 관련
+    const refRBSheetFilter = useRef();
+
+    const before1Month = new Date(new Date().setMonth(new Date().getMonth() - 1))
+    const [startDate, setStartDate] = useState(before1Month)
+    const [endDate, setEndDate] = useState(new Date())
+
+    const [modal, setModal] = useState(false)
+
+    const [period, setPeriod] = useState('최근 1개월')
+
 
     //차트 몸무게
     const refRBSheetWeight = useRef();
+
     const [date, setDate] = useState(new Date())
     const [weight, setWeight] = useState('0')
 
+
     useEffect(() => {
-        //날짜 변경하면 그에 맞는 몸무게 가져와서 세팅
-        getWeightFunc()
-    }, [date])
+        getRangeWeight()
+    }, [modal])
 
-
-    //날짜 포맷
-    let formatDate = useMemo(() => moment(selectDate).format('YYYY-MM'), [selectDate]);
-
-    const YearMonthFunc = () => {
-        const currentYear = new Date().getFullYear();
-        const yearMonthArr = [];
-
-        for (let year = 2010; year <= currentYear; year++) {
-            Array.from({ length: 12 }, (v, i) => yearMonthArr.push(`${year}년 ${i + 1}월`));
-        }
-
-        return yearMonthArr;
-    };
-    const yearMonthArray = YearMonthFunc();
-
-    const handleSheet = item => {
-        console.log(item)
+    const handlePressChart = item => {
         // item.label로 setDate
-        getWeightFunc()
+        getDayWeight()
 
         refRBSheetWeight.current.open()
-    }
-
-    const handlePicker = value => {
-        const year = value.substr(0, 4);
-        const month = value.slice(6, -1);
-        setSelectDate(new Date(`${year}-${month}`))
-
-        refRBSheetDate.current.close();
     }
 
     //lineDataMaxValue 최대 몸무게 10자리 반올림 + 20
     const lineDataMaxValue = Math.ceil(Math.max(...LineData.map(v => v.value)) / 10) * 10 + 20
 
+    //몸무게 저장
     const handleSave = async () => {
         const dateString = date.toISOString().substring(0, 19)
 
@@ -96,8 +80,9 @@ const HomeWeight = ({ userInfo }) => {
 
     }
 
+    //몸무게 삭제
     const handleDelete = async () => {
-        if(!weight) {
+        if (!weight) {
             Alert.alert('해당 날짜는 삭제할 몸무게 기록이 없습니다.')
             return;
         }
@@ -120,7 +105,8 @@ const HomeWeight = ({ userInfo }) => {
 
     }
 
-    const getWeightFunc = async () => {
+    //특정날 몸무게 조회
+    const getDayWeight = async () => {
         const dateString = date.toISOString().substring(0, 19)
 
         const weightInfo = {
@@ -133,7 +119,7 @@ const HomeWeight = ({ userInfo }) => {
             console.log('getWeightFunc response', response)
 
             if (response) {
-                setWeight(response)
+                setWeight(response.weight)
             } else {
                 setWeight(0)
             }
@@ -142,26 +128,70 @@ const HomeWeight = ({ userInfo }) => {
         }
     }
 
+    const handleRange = () => {
+        setModal(!modal)
+
+        refRBSheetFilter.current.close()
+    }
+
+    //기간 몸무게 조회
+    const getRangeWeight = async () => {
+        const weightInfo = {
+            userCode: userInfo.userCode,
+            startYear: startDate.getFullYear(),
+            startMonth: startDate.getMonth() + 1,
+            startDay: startDate.getDate(),
+            endYear: endDate.getFullYear(),
+            endMonth: endDate.getMonth() + 1,
+            endDay: endDate.getDate(),
+        }
+
+        // try {
+        //     const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
+        //     const weightList = getStructedRangeWeight(rawWeightList)
+        //     console.log('getRangeWeight weightList', weightList)
+
+        // } catch (e) {
+        //     console.error(e)
+        // }
+    }
+
+    const handlePeriod = per =>{
+        setPeriod(per)
+
+        let date = ''
+
+        switch(per){
+            case '최근 1개월':
+                date = new Date(new Date().setMonth(new Date().getMonth() - 1))
+                break;
+            case '3개월':
+                date = new Date(new Date().setMonth(new Date().getMonth() - 3))
+                break;
+            case '6개월':
+                date = new Date(new Date().setMonth(new Date().getMonth() - 6))
+                break;
+            case '1년':
+                date = new Date(new Date().setFullYear(new Date().getFullYear() - 1))
+                break;
+            default:
+                break;
+        }
+        setStartDate(date)
+    }
+
     return (
         <View>
-            {/* 날짜 선택하는 뷰 */}
             <View style={styles.dayView}>
-                <Pressable onPress={() => setSelectDate(CalculateStatisticDate("주간", 'sub', selectDate))}>
-                    <Entypo name="chevron-left" size={35} color="black" />
-                </Pressable>
-                <Pressable onPress={() => refRBSheetDate.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
-                    <Text style={styles.text}>{formatDate}</Text>
-                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
-                </Pressable>
-                <Pressable onPress={() => setSelectDate(CalculateStatisticDate("주간", 'add', selectDate))}>
-                    <Entypo name="chevron-right" size={35} color="black" />
-                </Pressable>
+                <Text style={styles.text}>최근 1개월</Text>
+                <FontAwesome name="sliders" onPress={() => refRBSheetFilter.current.open()} size={23} color={colors.borderGrey} />
             </View>
+
 
             <View style={styles.chartView}>
                 <LineChart
                     data={LineData}
-                    onPress={item => handleSheet(item)}
+                    onPress={item => handlePressChart(item)}
                     height={verticalScale(310)}
                     dataPointsHeight={10}
                     dataPointsWidth={10}
@@ -180,7 +210,7 @@ const HomeWeight = ({ userInfo }) => {
                     maxValue={lineDataMaxValue}
                     noOfSections={5}
                     roundToDigits={0.1}
-                    isAnimated
+                //isAnimated
                 />
             </View>
 
@@ -188,31 +218,49 @@ const HomeWeight = ({ userInfo }) => {
                 <Text style={styles.greyText}>* 그래프 점을 클릭하면 몸무게를 수정할 수 있습니다 </Text>
             </View>
 
-            {/* 날짜 선택 bottomSheet */}
+
+            {/* 상단 필터 - 기간설정 */}
             <RBSheet
-                ref={refRBSheetDate}
+                ref={refRBSheetFilter}
                 height={verticalScale(320)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
                         borderRadius: 10,
+                        paddingHorizontal: scale(20),
+                        paddingBottom: verticalScale(30),
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
                     }
                 }}
             >
-                <Pressable onPress={() => handlePicker(pickerDate)} style={styles.selectView} >
-                    <Text style={styles.text}>선택</Text>
-                </Pressable>
-                <WheelPickerExpo
-                    height={verticalScale(260)}
-                    width={dWidth}
-                    initialSelectedIndex={yearMonthArray.indexOf(moment(selectDate).format('YYYY년 M월'))}
-                    items={yearMonthArray.map(name => ({ label: name, value: name }))}
-                    onChange={({ item }) => setPickerDate(item.value)}
-                />
+                <View style={{ flex: 1 }}>
+                    <Text style={styles.text}>기간설정</Text>
+                    <View style={[styles.rangeView, { marginTop: verticalScale(20) }]}>
+                        {FILTERPERIOD.map((per,idx) => (
+                            <Chip 
+                                id={per+idx}
+                                mode="outlined" 
+                                onPress={() => handlePeriod(per)} 
+                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground}}
+                            >
+                                {per}
+                            </Chip>
+                            ))
+                        }
+                    </View>
+                    <View style={styles.rangeView}>
+                        <DateTimePicker mode="date" value={startDate} onChange={(event, selectedDate) => setStartDate(selectedDate)} />
+                        <Text style={styles.text}>-</Text>
+                        <DateTimePicker mode="date" value={endDate} onChange={(event, selectedDate) => setEndDate(selectedDate)} />
+                    </View>
+                </View>
+                <View style={{ alignItems: 'center' }}>
+                    <MoveButton text="조회" onPress={handleRange} />
+                </View>
             </RBSheet>
+
 
             {/* 몸무게 추가 bottomSheet */}
             <RBSheet
@@ -267,6 +315,14 @@ const styles = StyleSheet.create({
         fontFamily: fonts.medium,
         fontSize: scale(18),
         color: colors.black,
+    },
+
+    rangeView: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-evenly',
+        marginVertical: verticalScale(8),
+        //paddingHorizontal: scale(20)
     },
 
     selectView: {

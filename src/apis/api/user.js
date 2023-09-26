@@ -70,12 +70,12 @@ export const saveDislike = async (dislikeInfo) => {
 }
 
 
-//몸무게 월별 조회
-export const getMonthWeight = async (weightInfo) => {
-    console.log('getMonthWeight weightInfo', weightInfo)
+//몸무게 기간 조회
+export const getMonthRangeWeight = async (weightInfo) => {
+    console.log('getMonthRangeWeight weightInfo', weightInfo)
 
     try {
-        const { data } = await frontendInstance.get('/record/getMonthWeight', { params: weightInfo })
+        const { data } = await frontendInstance.get('/record/getMonthRangeWeight', { params: weightInfo })
         return data
     } catch (err) {
         console.error(err)
