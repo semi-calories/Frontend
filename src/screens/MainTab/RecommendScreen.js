@@ -59,7 +59,7 @@ const RecommendScreen = ({ navigation }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
-                {item.foodImage ? <Image source={{uri: item.foodImage}} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
+                {item.foodImgUrl ? <Image source={{uri: item.foodImgUrl}} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
                 <View style={styles.foodView}>
                     <View style={styles.flexRow}>
                         <Text style={styles.text}>{item.foodName}</Text>
@@ -143,6 +143,7 @@ const styles = StyleSheet.create({
         width: scale(90),
         height: verticalScale(75),
         borderRadius: 10,
+        resizeMode:'contain'
     },
 
     text: {
