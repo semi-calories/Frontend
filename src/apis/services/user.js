@@ -12,10 +12,14 @@ export const getDislikeFood = rawData =>{
 
 export const getStructedRangeWeight = rawData =>{
     const data =  rawData.map(v => {
+        const year = v.timestamp.substring(2,4);
+        const month=v.timestamp.substring(5,7);
+        const day = v.timestamp.substring(8,10);
+
         return {
             value:v.weight,
             dataPointText:v.weight.toString(),
-            label:v.timestamp.substring(0,10)
+            label:`${year}.${month}.${day}`
         }
     })
 

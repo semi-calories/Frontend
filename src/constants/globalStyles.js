@@ -23,6 +23,8 @@ export const colors = {
     switch:'#76EE59',
 
     btnBackground:"#D9D9D9",
+    
+    linePoint:'#5E8A31'
 };
 
 export const fonts = {

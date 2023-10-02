@@ -25,7 +25,6 @@ import { getStructedRangeWeight } from "~/apis/services/user";
 const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 
 const HomeWeight = ({ userInfo }) => {
-    console.log('HomeWeight userInfo',userInfo)
     //상단 필터 관련
     const refRBSheetFilter = useRef();
 
@@ -40,6 +39,8 @@ const HomeWeight = ({ userInfo }) => {
 
     //차트 몸무게
     const refRBSheetWeight = useRef();
+
+    const [lineData, setLineData] = useState([])
 
     const [date, setDate] = useState(new Date())
     const [weight, setWeight] = useState('0')
@@ -153,14 +154,16 @@ const HomeWeight = ({ userInfo }) => {
             endDay: endDate.getDate(),
         }
 
-        // try {
-        //     const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
-        //     const weightList = getStructedRangeWeight(rawWeightList)
-        //     console.log('getRangeWeight weightList', weightList)
+        try {
+            const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
+            const weightList = getStructedRangeWeight(rawWeightList)
+            console.log('getRangeWeight weightList', weightList)
 
-        // } catch (e) {
-        //     console.error(e)
-        // }
+            setLineData([...weightList])
+
+        } catch (e) {
+            console.error(e)
+        }
     }
 
     const handlePeriod = per =>{
@@ -197,12 +200,13 @@ const HomeWeight = ({ userInfo }) => {
 
             <View style={styles.chartView}>
                 <LineChart
-                    data={LineData}
+                    data={lineData}
+                    color={colors.primary}
                     onPress={item => handlePressChart(item)}
                     height={verticalScale(310)}
                     dataPointsHeight={10}
                     dataPointsWidth={10}
-                    dataPointsColor={colors.primary}
+                    dataPointsColor={colors.linePoint}
                     textFontSize={scale(12)}
                     adjustToWidth
                     scrollToEnd
