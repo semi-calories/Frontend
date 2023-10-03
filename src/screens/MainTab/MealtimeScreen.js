@@ -23,6 +23,7 @@ import { fonts, colors } from "~/constants/globalStyles";
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 import { registerRecord, updateRecord, deleteRecord } from "~/apis/api/diet";
+import { servingRegex } from "~/components/regex";
 
 const MealtimeScreen = ({ navigation, route }) => {
     const { userInfo, type } = route.params;
@@ -280,7 +281,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                         <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
                     </View>
                     <View style={styles.detailNutriView}>
-                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} valid/>
+                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} validType="섭취량" valid={servingRegex.test(serving)}/>
                         <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
                             <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodKcal]}</Text>
                             <Text style={styles.mtext}>{foodDetail?.foodKcal} kcal</Text>

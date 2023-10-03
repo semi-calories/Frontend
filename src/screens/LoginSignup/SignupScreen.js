@@ -70,9 +70,9 @@ const SignupScreen = ({ navigation }) => {
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} valid={emailRegex.test(email)} />
-            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password valid={passwordRegex.test(password)} />
-            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} valid={nameRegex.test(name)} />
+            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} validType="이메일" valid={emailRegex.test(email)} />
+            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password validType="비밀번호" valid={passwordRegex.test(password)} />
+            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} validType="이름" valid={nameRegex.test(name)} />
             <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );

@@ -13,7 +13,7 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 export function BasicTextInput(props) {
-  const { value, placeholder, width, inputStyle, password, unit, dark, valid, ...restProps } = props
+  const { value, width, inputStyle, password, unit, dark, validType, valid, ...restProps } = props
 
   const [secureMode, setSecureMode] = useState(true)
 
@@ -23,7 +23,6 @@ export function BasicTextInput(props) {
         <TextInput
           style={[{ flex: 1 }, inputStyle]}
           value={value}
-          placeholder={placeholder}
           secureTextEntry={password && secureMode ? true : false}
           editable={dark ? false : true}
           {...restProps}
@@ -36,7 +35,7 @@ export function BasicTextInput(props) {
         }
          {unit && <Text style={styles.unitText}>{unit}</Text>}
       </View>
-      {value && !valid && <Text style={styles.validateText}>{ValidFormat(placeholder)}</Text>}
+      {value && !valid && <Text style={styles.validateText}>{ValidFormat(validType)}</Text>}
     </View>
   );
 }

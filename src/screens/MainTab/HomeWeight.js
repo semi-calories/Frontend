@@ -13,6 +13,7 @@ import { Chip } from 'react-native-paper';
 import { MoveButton, PrimaryButton } from "~/components/button";
 import { BasicTextInput } from "~/components/textInput";
 import { StoreUserData } from "~/components/asyncStorageData";
+import { weightRegex } from "~/components/regex";
 
 import { LineData } from "~/constants/test";
 
@@ -296,7 +297,7 @@ const HomeWeight = ({ userInfo }) => {
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
-                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" valid/>
+                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)}/>
                     </View>
                 </View>
                 <View style={styles.btnView}>
