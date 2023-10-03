@@ -11,6 +11,8 @@ import { BackHeader } from "~/components/header";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
 
+import { signupEmailRegex, signupPasswordRegex, signupNameRegex } from "~/components/regex";
+
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { UserInfoType } from "~/constants/type";
 
@@ -29,41 +31,48 @@ const SignupScreen = ({ navigation }) => {
 
 
     const handleSignup = async () => {
+        if (!email || !password || !name) {
+            Alert.alert('항목들을 모두 입력해주세요.')
+            return;
+        }
+
+        if (!signupEmailRegex.test(email) || !signupPasswordRegex.test(password) || !signupNameRegex.test(name)) {
+            Alert.alert('올바른 형식이 맞는지 확인하세요')
+            return;
+        }
+
         const signupInfo = { email, password, name }
 
-        if (email && password && name) {
-            try {
-                const { duplicateResult } = await emailDuplicateCheck({email : email})
+        try {
+            const { duplicateResult } = await emailDuplicateCheck({ email: email })
 
-                if (duplicateResult) {
-                    Alert.alert('해당 이메일로 가입된 계정이 있습니다.')
+            if (duplicateResult) {
+                Alert.alert('해당 이메일로 가입된 계정이 있습니다.')
+            } else {
+                const { response: userCode } = await signup(signupInfo)
+                console.log(userCode)
+
+                const userInfo = { name, userCode, image: null, email }
+
+                if (userCode) {
+                    Alert.alert('회원가입 완료!')
+                    navigation.navigate('UserInfoEditScreen', { userInfo, infoType: UserInfoType.init })
                 } else {
-                    const { response: userCode } = await signup(signupInfo)
-                    console.log(userCode)
-
-                    const userInfo = { name, userCode, image: null, email}
-
-                    if (userCode) {
-                        Alert.alert('회원가입 완료!')
-                        navigation.navigate('UserInfoEditScreen', { userInfo, infoType: UserInfoType.init })
-                    } else {
-                        Alert.alert('회원가입 불가')
-                    }
+                    Alert.alert('회원가입 불가')
                 }
-            } catch (err) {
-                console.log(err)
             }
-        } else {
-            Alert.alert('항목들을 모두 입력해주세요.')
+        } catch (err) {
+            console.log(err)
         }
+
     }
 
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput type="light" text={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} />
-            <BasicTextInput type="light" text={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password/>
-            <BasicTextInput type="light" text={name} onChangeText={setName} placeholder="이름" width={scale(298)} />
+            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} valid={signupEmailRegex.test(email)} />
+            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password valid={signupPasswordRegex.test(password)} />
+            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} valid={signupNameRegex.test(name)} />
             <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );

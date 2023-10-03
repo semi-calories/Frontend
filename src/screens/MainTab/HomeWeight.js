@@ -11,7 +11,7 @@ import { LineChart } from "react-native-gifted-charts"
 import { Chip } from 'react-native-paper';
 
 import { MoveButton, PrimaryButton } from "~/components/button";
-import { LabelTextInput } from "~/components/textInput";
+import { BasicTextInput } from "~/components/textInput";
 import { StoreUserData } from "~/components/asyncStorageData";
 
 import { LineData } from "~/constants/test";
@@ -296,7 +296,7 @@ const HomeWeight = ({ userInfo }) => {
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
-                        <LabelTextInput type="light" text={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
+                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" valid/>
                     </View>
                 </View>
                 <View style={styles.btnView}>

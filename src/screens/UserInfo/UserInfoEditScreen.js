@@ -183,7 +183,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
                         </ImageBackground>
-                        <LabelTextInput type="light" label={UserInfo_ko[UserInfo.name]} text={name} onChangeText={setName} width={scale(320)} defaultValue={name} />
+                        <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={scale(320)} defaultValue={name} />
                     </View>
                 }
                 <View style={styles.flexRow}>
@@ -195,12 +195,12 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.age]} text={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.height]} text={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.age]} value={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.height]} value={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.weight]} text={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
-                    <LabelTextInput type="light" label={UserInfo_ko[UserInfo.goalWeight]} text={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.weight]} value={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.goalWeight]} value={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
                 </View>
 
                 <Text style={styles.labelText}>{UserInfo_ko[UserInfo.userActivity]}</Text>

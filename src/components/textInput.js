@@ -7,50 +7,50 @@ import React, { useState } from "react";
 import { TextInput, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
 
+import { ValidFormat } from "~/constants/validFormat";
+
 import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
 
 export function BasicTextInput(props) {
-  const { type, text, onChangeText, width, inputStyle, password, ...restProps } = props
+  const { value, placeholder, width, inputStyle, password, unit, dark, valid, ...restProps } = props
 
   const [secureMode, setSecureMode] = useState(true)
 
   return (
-    <View style={[styles.input, type == 'light' ? styles.light : styles.dark, { width: width, flexDirection: 'row' }]}>
-      <TextInput
-        style={[{ flex: 1 }, inputStyle]}
-        onChangeText={onChangeText}
-        value={text}
-        secureTextEntry={password&&secureMode ? true : false}
-        {...restProps}
-      />
-      { password &&
-        ( secureMode 
-          ? <Ionicons name="eye-off" size={22} color={colors.borderGrey} onPress={()=>setSecureMode(!secureMode)}/> 
-          : <Ionicons name="eye" size={22} color={colors.borderGrey} onPress={()=>setSecureMode(!secureMode)}/> 
-        )
-      }
+    <View>
+      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
+        <TextInput
+          style={[{ flex: 1 }, inputStyle]}
+          value={value}
+          placeholder={placeholder}
+          secureTextEntry={password && secureMode ? true : false}
+          editable={dark ? false : true}
+          {...restProps}
+        />
+        {password &&
+          (secureMode
+            ? <Ionicons name="eye-off" size={22} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
+            : <Ionicons name="eye" size={22} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
+          )
+        }
+         {unit && <Text style={styles.unitText}>{unit}</Text>}
+      </View>
+      {value && !valid && <Text style={styles.validateText}>{ValidFormat(placeholder)}</Text>}
     </View>
-
   );
 }
 
 export function LabelTextInput(props) {
-  const { type, label, required, text, onChangeText, unit, width, inputViewStyle, inputStyle, ...restProps } = props
+  const {value, label, unit, width, inputViewStyle, inputStyle, dark,  ...restProps } = props
   return (
     <View style={inputViewStyle}>
-      {label &&
-        <View style={styles.flexRow}>
-          <Text style={styles.labelText}>{label}</Text>
-          {required && <Text style={styles.required}> *</Text>}
-        </View>
-      }
-      <View style={[styles.input, type == 'light' ? styles.light : styles.dark, { width: width, flexDirection: 'row' }]}>
+      <Text style={styles.labelText}>{label}</Text>
+      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }]}>
         <TextInput
           style={[{ flex: 1 }, inputStyle]}
-          value={text}
-          onChangeText={onChangeText}
-          editable={type == 'dark' ? false : true}
+          value={value}
+          editable={dark ? false : true}
           {...restProps}
         />
         {unit && <Text style={styles.unitText}>{unit}</Text>}
@@ -95,9 +95,9 @@ const styles = StyleSheet.create({
     alignItems: 'center'
   },
 
-  required: {
+  validateText: {
+    fontFamily: fonts.regular,
+    fontSize: scale(10),
     color: 'red',
-    fontFamily: fonts.medium,
-    fontSize: scale(23),
   }
 });

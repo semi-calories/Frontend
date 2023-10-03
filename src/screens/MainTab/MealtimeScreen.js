@@ -13,7 +13,7 @@ import moment from "moment";
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
-import { LabelTextInput } from "~/components/textInput";
+import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
 
 import { Nutrition, Nutrition_ko, Satisfaction, Satisfaction_icon, Satisfaction_ko } from "~/constants/food";
@@ -280,7 +280,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                         <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
                     </View>
                     <View style={styles.detailNutriView}>
-                        <LabelTextInput type="light" text={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} />
+                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} valid/>
                         <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
                             <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodKcal]}</Text>
                             <Text style={styles.mtext}>{foodDetail?.foodKcal} kcal</Text>
