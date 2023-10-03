@@ -16,6 +16,7 @@ import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
 import { StoreUserData, GetUserData } from "~/components/asyncStorageData";
+import { ageRegex, heightRegex, nameRegex, weightRegex } from "~/components/regex";
 
 import { HeaderType, UserInfoType } from "~/constants/type";
 import { Gender, Gender_ko, Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/userInfo";
@@ -127,6 +128,16 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     }
 
     const handleComplete = () => {
+        if (!(name && gender && age && height && weight && goalWeight && userActivity)) {
+            Alert.alert('항목을 모두 입력해주세요.')
+            return;
+        }
+
+        if (!(ageRegex.test(age) && heightRegex.test(height) && weightRegex.test(weight) && weightRegex.test(goalWeight))) {
+            Alert.alert('올바른 형식인지 확인하세요')
+            return;
+        }
+
         const user = {
             userCode: userInfo.userCode,
             email: userInfo.email,
@@ -138,14 +149,10 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             weight,
             goalWeight,
             userActivity: userActivity,
-            userGoal:userInfo.userGoal,
+            userGoal: userInfo.userGoal,
         };
 
-        if (name && gender && age && height && weight && goalWeight && userActivity) {
-            handleNext(user)
-        } else {
-            Alert.alert('항목을 모두 입력해주세요.')
-        }
+        handleNext(user)
 
     }
 
@@ -157,7 +164,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             try {
                 const response = await updateInfo(user)
                 const userData = await getInfo({ userCode: userInfo.userCode })
-                StoreUserData({...userData, userCode : userInfo.userCode})
+                StoreUserData({ ...userData, userCode: userInfo.userCode })
 
                 Alert.alert('사용자 정보 수정 완료!')
             } catch (err) {
@@ -183,7 +190,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
                         </ImageBackground>
-                        <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={scale(320)} defaultValue={name} />
+                        <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={scale(320)} defaultValue={name} valid={nameRegex.test(name)} />
                     </View>
                 }
                 <View style={styles.flexRow}>
@@ -195,16 +202,16 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput label={UserInfo_ko[UserInfo.age]} value={age} onChangeText={setAge} unit="세" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
-                    <LabelTextInput label={UserInfo_ko[UserInfo.height]} value={height} onChangeText={setHeight} unit="cm" width={scale(153)} keyboardType="numeric" />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.age]} value={age} onChangeText={setAge} unit="세" width={scale(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={ageRegex.test(age)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.height]} value={height} onChangeText={setHeight} unit="cm" width={scale(155)} keyboardType="numeric" valid={heightRegex.test(height)} />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput label={UserInfo_ko[UserInfo.weight]} value={weight} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} />
-                    <LabelTextInput label={UserInfo_ko[UserInfo.goalWeight]} value={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(153)} keyboardType="numeric" />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.weight]} value={weight} onChangeText={setWeight} unit="kg" width={scale(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={weightRegex.test(weight)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.goalWeight]} value={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(155)} keyboardType="numeric" valid={weightRegex.test(goalWeight)} />
                 </View>
 
                 <Text style={styles.labelText}>{UserInfo_ko[UserInfo.userActivity]}</Text>
-                <View style={styles.contentView}>
+                <View style={[styles.contentView, { marginBottom: verticalScale(40) }]}>
                     <ActivityFunc label={Activity.less} onPress={() => setActivity(Activity.less)} activity={userActivity} />
                     <ActivityFunc label={Activity.normal} onPress={() => setActivity(Activity.normal)} activity={userActivity} />
                     <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={userActivity} />
@@ -227,7 +234,8 @@ export default UserInfoEditScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(30),
+        //paddingHorizontal: scale(30),
+        alignItems: 'center'
     },
 
     boldText: {
@@ -282,7 +290,8 @@ const styles = StyleSheet.create({
     },
 
     inputViewStyle: {
-        marginRight: scale(15),
+        marginRight: scale(20),
+        paddingBottom: scale(10)
     },
 
     imgBackground: {

@@ -11,7 +11,7 @@ import { BackHeader } from "~/components/header";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
 
-import { signupEmailRegex, signupPasswordRegex, signupNameRegex } from "~/components/regex";
+import { emailRegex, passwordRegex, nameRegex } from "~/components/regex";
 
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { UserInfoType } from "~/constants/type";
@@ -31,13 +31,13 @@ const SignupScreen = ({ navigation }) => {
 
 
     const handleSignup = async () => {
-        if (!email || !password || !name) {
+        if (!(email && password && name)) {
             Alert.alert('항목들을 모두 입력해주세요.')
             return;
         }
 
-        if (!signupEmailRegex.test(email) || !signupPasswordRegex.test(password) || !signupNameRegex.test(name)) {
-            Alert.alert('올바른 형식이 맞는지 확인하세요')
+        if (!(emailRegex.test(email) && passwordRegex.test(password) && nameRegex.test(name))) {
+            Alert.alert('올바른 형식인지 확인하세요')
             return;
         }
 
@@ -70,9 +70,9 @@ const SignupScreen = ({ navigation }) => {
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} valid={signupEmailRegex.test(email)} />
-            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password valid={signupPasswordRegex.test(password)} />
-            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} valid={signupNameRegex.test(name)} />
+            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} valid={emailRegex.test(email)} />
+            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password valid={passwordRegex.test(password)} />
+            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} valid={nameRegex.test(name)} />
             <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );

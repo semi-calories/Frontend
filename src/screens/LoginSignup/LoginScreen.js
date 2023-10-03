@@ -29,36 +29,38 @@ const LoginScreen = ({ navigation }) => {
     }, [navigation]);
 
     const handleLogin = async () => {
-        const userInfo = { 
+        if (!(email && password)) {
+            Alert.alert('항목들을 모두 입력해주세요.')
+            return;
+        }
+
+        const userInfo = {
             userEmail: email,
             userPassword: password
         }
 
-        if (email && password) {
-            try {
-                const rawResponse = await login(userInfo)
-                const { user, error } = getLoginInfo(rawResponse)
+        try {
+            const rawResponse = await login(userInfo)
+            const { user, error } = getLoginInfo(rawResponse)
 
-                if (user) {
-                    const userData = await getInfo({ userCode: user.userCode })
-                    StoreUserData({...userData, userCode : user.userCode})
-        
-                    navigation.navigate('MainTab')
-                } else {
-                    Alert.alert(error)
-                }
-            } catch (err) {
-                console.log(err)
+            if (user) {
+                const userData = await getInfo({ userCode: user.userCode })
+                StoreUserData({ ...userData, userCode: user.userCode })
+
+                navigation.navigate('MainTab')
+            } else {
+                Alert.alert(error)
             }
-        } else {
-            Alert.alert('아이디 또는 비밀번호를 입력해주세요.')
+        } catch (err) {
+            console.log(err)
         }
+
     }
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput value={email} onChangeText={onChangeEmail} placeholder="이메일" width={scale(298)} valid/>
-            <BasicTextInput value={password} onChangeText={onChangePassword} placeholder="비밀번호" width={scale(298)} password valid/>
+            <BasicTextInput value={email} onChangeText={onChangeEmail} placeholder="이메일" width={scale(298)} valid />
+            <BasicTextInput value={password} onChangeText={onChangePassword} placeholder="비밀번호" width={scale(298)} password valid />
             <PrimaryButton text='로그인' onPress={handleLogin} btnStyle={styles.btn} />
         </RootView>
     );

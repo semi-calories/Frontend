@@ -42,11 +42,12 @@ export function BasicTextInput(props) {
 }
 
 export function LabelTextInput(props) {
-  const {value, label, unit, width, inputViewStyle, inputStyle, dark,  ...restProps } = props
+  const {value, label, width, inputViewStyle, inputStyle, unit, dark, valid,  ...restProps } = props
+
   return (
     <View style={inputViewStyle}>
       <Text style={styles.labelText}>{label}</Text>
-      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }]}>
+      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
         <TextInput
           style={[{ flex: 1 }, inputStyle]}
           value={value}
@@ -55,6 +56,7 @@ export function LabelTextInput(props) {
         />
         {unit && <Text style={styles.unitText}>{unit}</Text>}
       </View>
+      {value && !valid && <Text style={styles.validateText}>{ValidFormat(label)}</Text>}
     </View>
   );
 }
@@ -99,5 +101,7 @@ const styles = StyleSheet.create({
     fontFamily: fonts.regular,
     fontSize: scale(10),
     color: 'red',
+
+    paddingLeft:scale(3),
   }
 });
