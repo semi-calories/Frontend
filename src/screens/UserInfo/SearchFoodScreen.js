@@ -73,7 +73,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
     const handleComplete = () => {
         if (selectFood.length) {
             if (type == SearchFoodType.add) {
-                navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo, type: RecordType.init})
+                navigation.navigate('MealtimeScreen', { foodParam: selectFood, userInfo, type: RecordType.init })
             } else {
                 // 이전 화면에 선택한 food 업데이트 해줘야함
                 navigation.navigate('SetFoodScreen', { type: type, foodParam: selectFood, userInfo })
@@ -86,13 +86,22 @@ const SearchFoodScreen = ({ navigation, route }) => {
 
     return (
         <RootView>
-            <FlatList
-                data={foodList}
-                renderItem={renderItem}
-                keyExtractor={(item, idx) => item + idx}
-                showsVerticalScrollIndicator={false}
-                style={{ paddingHorizontal: scale(30) }}
-            />
+            <View style={{ flex: 1 }}>
+                {(text && !foodList.length) ?
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <AntDesign name="exclamationcircleo" size={scale(60)} color={colors.btnBackground} />
+                        <Text style={[styles.text, { marginTop: verticalScale(15) }]}>검색 결과가 없습니다.</Text>
+                    </View>
+                    :
+                    <FlatList
+                        data={foodList}
+                        renderItem={renderItem}
+                        keyExtractor={(item, idx) => item + idx}
+                        showsVerticalScrollIndicator={false}
+                        style={{ paddingHorizontal: scale(30) }}
+                    />
+                }
+            </View>
             <View style={styles.selectBtnView}>
                 <ScrollView horizontal style={styles.chipView}>
                     {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setSelectFood([...selectFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
