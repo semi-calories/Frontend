@@ -133,7 +133,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             return;
         }
 
-        if (!(ageRegex.test(age) && heightRegex.test(height) && weightRegex.test(weight) && weightRegex.test(goalWeight))) {
+        if (!(nameRegex.test(name) && ageRegex.test(age) && heightRegex.test(height) && weightRegex.test(weight) && weightRegex.test(goalWeight))) {
             Alert.alert('올바른 형식인지 확인하세요')
             return;
         }

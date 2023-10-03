@@ -60,18 +60,17 @@ const MealtimeScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (foodDetail) {
-            const ratio = serving / foodDetail?.foodWeight
+            if (!serving) {
+                Alert.alert('섭취량을 입력해주세요.')
+                return;
+            }
 
-            setFoodDetail(prev => {
-                return {
-                    ...prev,
-                    [Nutrition.foodWeight]: serving,
-                    [Nutrition.foodKcal]: Math.round(prev.foodKcal * ratio * 10) / 10,
-                    [Nutrition.foodCarbo]: Math.round(prev.foodCarbo * ratio * 10) / 10,
-                    [Nutrition.foodProtein]: Math.round(prev.foodProtein * ratio * 10) / 10,
-                    [Nutrition.foodFat]: Math.round(prev.foodFat * ratio * 10) / 10,
-                }
-            })
+            if (!servingRegex.test(serving)) {
+                Alert.alert('올바른 형식인지 확인하세요.')
+                return;
+            }
+
+            caculateServing()
         }
     }, [editing])
 
@@ -95,6 +94,21 @@ const MealtimeScreen = ({ navigation, route }) => {
         setFoodDetail(food);
 
         refRBSheet.current.open()
+    }
+
+    const caculateServing = () => {
+        const ratio = serving / foodDetail?.foodWeight
+
+        setFoodDetail(prev => {
+            return {
+                ...prev,
+                [Nutrition.foodWeight]: serving,
+                [Nutrition.foodKcal]: Math.round(prev.foodKcal * ratio * 10) / 10,
+                [Nutrition.foodCarbo]: Math.round(prev.foodCarbo * ratio * 10) / 10,
+                [Nutrition.foodProtein]: Math.round(prev.foodProtein * ratio * 10) / 10,
+                [Nutrition.foodFat]: Math.round(prev.foodFat * ratio * 10) / 10,
+            }
+        })
     }
 
     const handleSatisfaction = satisfaction => {
@@ -122,10 +136,22 @@ const MealtimeScreen = ({ navigation, route }) => {
     }
 
     const handleDetailSave = () => {
+        if (!serving) {
+            Alert.alert('섭취량을 입력해주세요.')
+            return;
+        }
+
+        if (!servingRegex.test(serving)) {
+            Alert.alert('섭취량이 올바른 형식인지 확인하세요.')
+            return;
+        }
+
+
+
         const result = selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
         console.log('handleSave', result)
 
-        setSelectFoods([...selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)]);
+        setSelectFoods([...result]);
         setFoodDetail({})
 
         refRBSheet.current.close()
@@ -172,13 +198,13 @@ const MealtimeScreen = ({ navigation, route }) => {
 
     }
 
-    const handleUpdate = async() =>{
+    const handleUpdate = async () => {
         const dateOnly = moment(date).format('YYYY-MM-DD')
         const timeOnly = moment(time).format(' HH:mm')
 
         const dateTime = moment(dateOnly + timeOnly).format('YYYY-MM-DDTHH:mm:ss')
 
-        const recordInfo ={
+        const recordInfo = {
             userCode: userInfo.userCode,
             originalEatDate: route.params?.foodParam[0].eatDate,
             originalFoodCode: selectFoods[0].foodCode,
@@ -194,32 +220,32 @@ const MealtimeScreen = ({ navigation, route }) => {
             satisfaction: selectFoods[0].satisfaction ? selectFoods[0].satisfaction : null
         }
 
-        try{
+        try {
             const { response } = await updateRecord(recordInfo)
 
             Alert.alert('식사가 수정되었습니다.')
 
             navigation.pop()
-        }catch(e){
+        } catch (e) {
             console.error(e)
         }
     }
 
-    const handleDelete = async() =>{
+    const handleDelete = async () => {
         const recordInfo = {
-            userCode:userInfo.userCode,
-            foodCode:selectFoods[0].foodCode,
-            eatDate:route.params?.foodParam[0].eatDate,
+            userCode: userInfo.userCode,
+            foodCode: selectFoods[0].foodCode,
+            eatDate: route.params?.foodParam[0].eatDate,
         }
 
 
-        try{
+        try {
             const { response } = await deleteRecord(recordInfo)
 
             Alert.alert('식사가 삭제되었습니다.')
 
             navigation.pop()
-        }catch(e){
+        } catch (e) {
             console.error(e)
         }
     }
@@ -256,7 +282,7 @@ const MealtimeScreen = ({ navigation, route }) => {
             ) : (
                 <View style={styles.btnView}>
                     <MoveButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.white, borderWidth: 2 }]} textStyle={{ color: colors.black }} onPress={handleDelete} />
-                    <MoveButton text="수정" btnStyle={styles.btnStyle} onPress={handleUpdate}/>
+                    <MoveButton text="수정" btnStyle={styles.btnStyle} onPress={handleUpdate} />
                 </View>
             )}
 
@@ -281,7 +307,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                         <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
                     </View>
                     <View style={styles.detailNutriView}>
-                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} validType="섭취량" valid={servingRegex.test(serving)}/>
+                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} keyboardType="numeric" validType="섭취량" valid={servingRegex.test(serving)} />
                         <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
                             <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodKcal]}</Text>
                             <Text style={styles.mtext}>{foodDetail?.foodKcal} kcal</Text>
@@ -319,7 +345,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                     </View>
                 ) : (
                     <View style={{ alignSelf: 'center' }}>
-                        <PrimaryButton text="저장" btnStyle={{ width: scale(340), height: verticalScale(50)}} onPress={handleDetailSave} />
+                        <PrimaryButton text="저장" btnStyle={{ width: scale(340), height: verticalScale(50) }} onPress={handleDetailSave} />
                     </View>
                 )}
             </RBSheet>
