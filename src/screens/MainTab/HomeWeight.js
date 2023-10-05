@@ -42,13 +42,19 @@ const HomeWeight = ({ userInfo }) => {
     const refRBSheetWeight = useRef();
 
     const [lineData, setLineData] = useState([])
+    console.log('HomeWeight lineData', lineData)
 
     const [date, setDate] = useState(new Date())
     const [weight, setWeight] = useState('0')
 
+    //chart에러 나는거 막기 위함
+    const [isLoaded, setLoaded] = useState(false)
 
     useEffect(() => {
-        getRangeWeight()
+        if (userInfo.userCode) {
+            getRangeWeight()
+            setLoaded(true)
+        }
     }, [modal])
 
     const handlePressChart = item => {
@@ -60,7 +66,8 @@ const HomeWeight = ({ userInfo }) => {
     }
 
     //lineDataMaxValue 최대 몸무게 10자리 반올림 + 20
-    const lineDataMaxValue = Math.ceil(Math.max(...LineData.map(v => v.value)) / 10) * 10 + 20
+    const lineDataMaxValue = useMemo(() => Math.ceil(Math.max(...lineData.map(v => v.value)) / 10) * 10 + 20, [lineData])
+
 
     //몸무게 저장
     const handleSave = async () => {
@@ -76,7 +83,7 @@ const HomeWeight = ({ userInfo }) => {
             await saveWeight(weightInfo)
 
             const userData = await getInfo({ userCode: userInfo.userCode })
-            StoreUserData({...userData,userCode: userInfo.userCode, weight: userData.weight})
+            StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 저장되었습니다.')
             refRBSheetWeight.current.close()
@@ -104,7 +111,7 @@ const HomeWeight = ({ userInfo }) => {
             await deleteWeight(weightInfo)
 
             const userData = await getInfo({ userCode: userInfo.userCode })
-            StoreUserData({...userData,userCode: userInfo.userCode, weight: userData.weight})
+            StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 삭제되었습니다.')
             refRBSheetWeight.current.close()
@@ -167,12 +174,12 @@ const HomeWeight = ({ userInfo }) => {
         }
     }
 
-    const handlePeriod = per =>{
+    const handlePeriod = per => {
         setPeriod(per)
 
         let date = ''
 
-        switch(per){
+        switch (per) {
             case '최근 1개월':
                 date = new Date(new Date().setMonth(new Date().getMonth() - 1))
                 break;
@@ -200,30 +207,33 @@ const HomeWeight = ({ userInfo }) => {
 
 
             <View style={styles.chartView}>
-                <LineChart
-                    data={lineData}
-                    color={colors.primary}
-                    onPress={item => handlePressChart(item)}
-                    height={verticalScale(310)}
-                    dataPointsHeight={10}
-                    dataPointsWidth={10}
-                    dataPointsColor={colors.linePoint}
-                    textFontSize={scale(12)}
-                    adjustToWidth
-                    scrollToEnd
-                    //hideYAxisText
-                    xAxisType="dashed"
-                    xAxisColor={colors.textGrey}
-                    dashGap={scale(15)}
-                    thickness={3}
-                    yAxisThickness={0}
-                    //maxValue = noOfSections * stepValue;
-                    stepValue={lineDataMaxValue / 5}
-                    maxValue={lineDataMaxValue}
-                    noOfSections={5}
-                    roundToDigits={0.1}
-                //isAnimated
-                />
+                {isLoaded &&
+                    <LineChart
+                        data={lineData}
+                        color={colors.primary}
+                        onPress={item => handlePressChart(item)}
+                        height={verticalScale(310)}
+                        dataPointsHeight={10}
+                        dataPointsWidth={10}
+                        dataPointsColor={colors.linePoint}
+                        textFontSize={scale(12)}
+                        adjustToWidth
+                        scrollToEnd
+                        hideYAxisText
+                        xAxisType="dashed"
+                        xAxisColor={colors.textGrey}
+                        dashGap={scale(15)}
+                        thickness={3}
+                        yAxisThickness={0}
+                        //maxValue = noOfSections * stepValue;
+                        stepValue={lineDataMaxValue / 5}
+                        maxValue={lineDataMaxValue}
+                        noOfSections={5}
+                        roundToDigits={0.1}
+                    //isAnimated
+                    />
+                }
+
             </View>
 
             <View style={styles.textView}>
@@ -250,16 +260,16 @@ const HomeWeight = ({ userInfo }) => {
                 <View style={{ flex: 1 }}>
                     <Text style={styles.text}>기간설정</Text>
                     <View style={[styles.rangeView, { marginTop: verticalScale(20) }]}>
-                        {FILTERPERIOD.map((per,idx) => (
-                            <Chip 
-                                id={per+idx}
-                                mode="outlined" 
-                                onPress={() => handlePeriod(per)} 
-                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground}}
+                        {FILTERPERIOD.map((per, idx) => (
+                            <Chip
+                                id={per + idx}
+                                mode="outlined"
+                                onPress={() => handlePeriod(per)}
+                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground }}
                             >
                                 {per}
                             </Chip>
-                            ))
+                        ))
                         }
                     </View>
                     <View style={styles.rangeView}>
@@ -297,7 +307,7 @@ const HomeWeight = ({ userInfo }) => {
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
-                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)}/>
+                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
                     </View>
                 </View>
                 <View style={styles.btnView}>
