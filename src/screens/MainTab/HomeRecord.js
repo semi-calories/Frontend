@@ -6,7 +6,7 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 
 import { View, Text, StyleSheet, Pressable, TouchableOpacity, FlatList, PixelRatio } from "react-native";
 import { Calendar } from "react-native-calendars";
-import { Entypo, Ionicons } from '@expo/vector-icons';
+import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
 import moment from 'moment';
 import RBSheet from "react-native-raw-bottom-sheet";
 
@@ -172,14 +172,14 @@ const HomeRecord = ({ navigation, userInfo }) => {
             {/* 차트 및 기록 뷰 */}
             <View style={styles.chartView}>
                 <Pressable style={styles.chartContainer} onPress={() => refRBSheetRecord.current.open()}>
-                {isLoaded &&
-                     <DonutChart
-                    strokeWidth={STROKE_WIDTH}
-                    radius={radius}
-                    spentAmount={Math.round(caculateSpent(Nutrition.foodKcal)) }
-                    targetAmount={Math.round(userInfo?.kcal)}
-                />
-                }
+                    {isLoaded &&
+                        <DonutChart
+                            strokeWidth={STROKE_WIDTH}
+                            radius={radius}
+                            spentAmount={Math.round(caculateSpent(Nutrition.foodKcal))}
+                            targetAmount={Math.round(userInfo?.kcal)}
+                        />
+                    }
                 </Pressable>
             </View>
 
@@ -239,12 +239,19 @@ const HomeRecord = ({ navigation, userInfo }) => {
                     }
                 }}
             >
-                <FlatList
-                    data={records}
-                    renderItem={renderItem}
-                    keyExtractor={(item, idx) => item + idx}
-                    showsVerticalScrollIndicator="false"
-                />
+                {records.length ?
+                    <FlatList
+                        data={records}
+                        renderItem={renderItem}
+                        keyExtractor={(item, idx) => item + idx}
+                        showsVerticalScrollIndicator="false"
+                    />
+                    :
+                    <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
+                        <AntDesign name="exclamationcircleo" size={scale(60)} color={colors.btnBackground} />
+                        <Text style={[styles.text, { marginTop: verticalScale(15) }]}>식사 기록이 없습니다.</Text>
+                    </View>
+                }
             </RBSheet>
         </View>
     )
