@@ -11,7 +11,7 @@ import { PrimaryButton } from "~/components/button";
 
 import { scale, verticalScale } from "~/constants/globalSizes"; 
 
-const LOGO = require('@assets/Logo.png');
+const LOGO = require('~/assets/Logo.png');
 
 const LoginSignupScreen = ({ navigation }) => {
     return (

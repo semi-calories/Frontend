@@ -27,7 +27,7 @@ import { scale, verticalScale } from "~/constants/globalSizes";
 
 import { getInfo, updateInfo } from "~/apis/api/user";
 
-const EditIcon = require('@assets/EditIcon.png')
+const EditIcon = require('~/assets/EditIcon.png')
 
 const GenderFunc = ({ label, onPress, gender }) => {
     return (

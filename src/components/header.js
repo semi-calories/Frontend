@@ -13,7 +13,7 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
 import { HeaderType } from "~/constants/type";
 
-const LogoTitle = require('@assets/LogoTitle.png');
+const LogoTitle = require('~/assets/LogoTitle.png');
 
 const RightTypefunc = ({ type, rightPress }) => {
     switch (type) {

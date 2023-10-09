@@ -10,12 +10,12 @@ import { TabContextProvider } from '~/context/TabContext';
 
 export default function App() {
   let [fontsLoaded] = useFonts({
-    'NotoSans_100Thin': require('@assets/fonts/NotoSansKR-Thin.otf'),
-    'NotoSans_300Light': require('@assets/fonts/NotoSansKR-Light.otf'),
-    'NotoSans_400Regular': require('@assets/fonts/NotoSansKR-Regular.otf'),
-    'NotoSans_500Medium': require('@assets/fonts/NotoSansKR-Medium.otf'),
-    'NotoSans_700Bold': require('@assets/fonts/NotoSansKR-Bold.otf'),
-    'NotoSans_900Black': require('@assets/fonts/NotoSansKR-Black.otf'),
+    'NotoSans_100Thin': require('~/assets/fonts/NotoSansKR-Thin.otf'),
+    'NotoSans_300Light': require('~/assets/fonts/NotoSansKR-Light.otf'),
+    'NotoSans_400Regular': require('~/assets/fonts/NotoSansKR-Regular.otf'),
+    'NotoSans_500Medium': require('~/assets/fonts/NotoSansKR-Medium.otf'),
+    'NotoSans_700Bold': require('~/assets/fonts/NotoSansKR-Bold.otf'),
+    'NotoSans_900Black': require('~/assets/fonts/NotoSansKR-Black.otf'),
   });
 
   useEffect(() => {

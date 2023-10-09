@@ -4,10 +4,10 @@
     "slug": "Semi-Calories",
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/Logo.png",
+    "icon": "./src/assets/Logo.png",
     "userInterfaceStyle": "light",
     "splash": {
-      "image": "./assets/SplashLogo.png",
+      "image": "./src/assets/SplashLogo.png",
       "resizeMode": "contain",
       "backgroundColor": "#ffffff"
     },
@@ -19,12 +19,12 @@
     },
     "android": {
       "adaptiveIcon": {
-        "foregroundImage": "./assets/Logo.png",
+        "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#ffffff"
       }
     },
     "web": {
-      "favicon": "./assets/Logo.png"
+      "favicon": "./src/assets/Logo.png"
     },
     "plugins": [
       [

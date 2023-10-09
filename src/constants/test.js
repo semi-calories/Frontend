@@ -4,7 +4,7 @@
 import { Nutrition } from '~/constants/food'
 
 //User 정보
-export const Null_img = require('@assets/null_img.png');
+export const Null_img = require('~/assets/null_img.png');
 export const UserName = '김건국';
 
 //영양섭취

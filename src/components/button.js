@@ -16,9 +16,9 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { SearchFoodType } from "~/constants/type";
 
-const addIcon = require("@assets/Add.png");
-const pencilIcon = require('@assets/Pencil.png');
-const cameraIcon = require('@assets/Camera.png')
+const addIcon = require("~/assets/Add.png");
+const pencilIcon = require('~/assets/Pencil.png');
+const cameraIcon = require('~/assets/Camera.png')
 
 export function PrimaryButton({ text, onPress, btnStyle, textStyle }) {
     return (
