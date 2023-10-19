@@ -29,7 +29,7 @@ const NotificationScreen = ({ navigation }) => {
                 <View style={[styles.flexRow, styles.spaceBet, { marginBottom: verticalScale(10) }]}>
                     <View style={styles.flexRow}>
                         <Text style={styles.boldText}>{item.date}</Text>
-                        <Text style={styles.boldText}> {item.eatTime} 식단 추천</Text>
+                        <Text style={styles.boldText}> {item.eatTime} 추천</Text>
                     </View>
                     <View style={styles.flexRow}>
                         <Text style={styles.greyText}>{item.date}</Text>
