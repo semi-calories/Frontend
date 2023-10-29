@@ -11,6 +11,8 @@ import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 import { StoreUserData } from "~/components/asyncStorageData";
+import { periodRegex } from "~/components/regex";
+import { BasicTextInput } from "~/components/textInput";
 
 import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
@@ -19,7 +21,7 @@ import { UserInfoType } from "~/constants/type";
 import { scale, verticalScale } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 
-import { updateInfo, getInfo} from "~/apis/api/user";
+import { updateInfo, getInfo } from "~/apis/api/user";
 
 const GoalFunc = ({ label, onPress, goal }) => {
     return (
@@ -39,8 +41,8 @@ const SetGoalScreen = ({ navigation, route }) => {
     const { infoType, userInfo } = route.params;
     console.log('SetGoalScreen userInfo', userInfo)
 
-
     const [userGoal, setGoal] = useState(Goal.health);
+    const [period, setPeriod] = useState('')
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
@@ -55,22 +57,27 @@ const SetGoalScreen = ({ navigation, route }) => {
     }, [navigation, infoType]);
 
     useEffect(() => {
-        if(userInfo.userGoal){
+        if (userInfo.userGoal) {
             setGoal(userInfo.userGoal)
         }
     }, [route.params])
 
     const handleMove = async () => {
+        if (!periodRegex.test(period)) {
+            Alert.alert('올바른 형식인지 확인하세요')
+            return;
+        }
+
         const user = {
             userCode: userInfo.userCode,
-            email:userInfo.email,
-            image:userInfo.image,
-            name:userInfo.name,
+            email: userInfo.email,
+            image: userInfo.image,
+            name: userInfo.name,
             gender: userInfo.gender,
-            age:userInfo.age,
-            height:userInfo.height,
-            weight:userInfo.weight,
-            userActivity:userInfo.userActivity,
+            age: userInfo.age,
+            height: userInfo.height,
+            weight: userInfo.weight,
+            userActivity: userInfo.userActivity,
             goalWeight: userInfo.goalWeight,
             userGoal: userGoal
         }
@@ -78,8 +85,6 @@ const SetGoalScreen = ({ navigation, route }) => {
         try {
             const response = await updateInfo(user)
             const userData = await getUserInfo()
-
-
 
             navigation.navigate('CalculateGoalScreen', { userInfo: userData, infoType });
         } catch (err) {
@@ -90,9 +95,9 @@ const SetGoalScreen = ({ navigation, route }) => {
     const getUserInfo = async () => {
         try {
             const user = await getInfo({ userCode: userInfo.userCode })
-            await StoreUserData({...user, userCode : userInfo.userCode})
+            await StoreUserData({ ...user, userCode: userInfo.userCode })
 
-            return {...user, userCode : userInfo.userCode}
+            return { ...user, userCode: userInfo.userCode }
         } catch (err) {
             console.log(err)
         }
@@ -106,8 +111,17 @@ const SetGoalScreen = ({ navigation, route }) => {
                 <GoalFunc label={Goal.health} onPress={() => setGoal(Goal.health)} goal={userGoal} />
                 <GoalFunc label={Goal.lose} onPress={() => setGoal(Goal.lose)} goal={userGoal} />
                 <GoalFunc label={Goal.gain} onPress={() => setGoal(Goal.gain)} goal={userGoal} />
+                {userGoal !== Goal.health &&
+                    <View style={[styles.box, styles.flexRow]}>
+                        <View style={{ justifyContent: 'center', height: verticalScale(60) }}>
+                            <Text style={styles.labelText}>기간</Text>
+                        </View>
+                        <BasicTextInput value={period.toString()} onChangeText={setPeriod} unit="일" width={scale(170)} keyboardType="numeric" validType="기간" valid={periodRegex.test(period)} />
+                    </View>
+                }
+
             </View>
-            <MoveButton text="다음" onPress={handleMove} />
+            <MoveButton text="다음" onPress={handleMove}/>
         </RootView>
     );
 }
@@ -125,6 +139,12 @@ const styles = StyleSheet.create({
         color: colors.black,
 
         marginVertical: verticalScale(30)
+    },
+
+    labelText: {
+        fontFamily: fonts.bold,
+        fontSize: scale(20),
+        color: colors.borderGrey,
     },
 
     content: {
@@ -161,5 +181,18 @@ const styles = StyleSheet.create({
     icon: {
         alignSelf: 'center',
         marginLeft: scale(50)
-    }
+    },
+
+    box: {
+        flexDirection: 'row',
+        //alignItems: "center",
+        justifyContent: 'space-between',
+        paddingHorizontal: scale(15),
+        paddingVertical: verticalScale(20)
+    },
+
+    flexRow: {
+        flexDirection: 'row'
+    },
+
 });

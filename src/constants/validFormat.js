@@ -19,6 +19,8 @@ export const ValidFormat = type => {
             return '30이상 200이하,\n소수 첫째자리까지 입력해주세요.';
         case '섭취량':
             return '1이상 3000이하, 소수 첫째자리까지 입력해주세요.';
+        case '기간':
+            return '10이상 365이하 정수로 입력해주세요.';
         default:
             return ''
     }

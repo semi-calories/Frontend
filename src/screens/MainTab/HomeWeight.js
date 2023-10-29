@@ -306,7 +306,9 @@ const HomeWeight = ({ userInfo }) => {
                         <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
-                        <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
+                        <View style={{justifyContent:'center', height:verticalScale(60)}}>
+                            <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
+                        </View>
                         <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
                     </View>
                 </View>
@@ -372,7 +374,7 @@ const styles = StyleSheet.create({
 
     box: {
         flexDirection: 'row',
-        alignItems: "center",
+        //alignItems: "center",
         justifyContent: 'space-between',
         paddingHorizontal: scale(15),
         paddingVertical: verticalScale(20)
