@@ -12,7 +12,7 @@ import { RootView } from "~/components/container";
 
 import { UserInfoType, RecordType } from "~/constants/type";
 
-import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
+import { dWidth, rFont, rHeight, rWidth } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { recognizeUpload } from "~/apis/api/diet";
@@ -123,7 +123,7 @@ const CameraScreen = ({ navigation, route }) => {
                 style={styles.camera}
             />
             <View style={styles.touchView}>
-                <View style={{ width: scale(35) }} />
+                <View style={{ width: rWidth(35) }} />
                 <TouchableOpacity style={styles.btnView} activeOpacity={0.8} onPress={takePictureHandler} />
                 <TouchableOpacity activeOpacity={0.8} onPress={() => setType(type == CameraType.back ? CameraType.front : CameraType.back)}>
                     <AntDesign name="sync" size={30} color="black" />
@@ -138,7 +138,7 @@ export default CameraScreen;
 const styles = StyleSheet.create({
     camera: {
         width: dWidth,
-        height: verticalScale(550)
+        height: rHeight(550)
     },
 
     touchView: {
@@ -146,15 +146,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: scale(30)
+        paddingHorizontal: rWidth(30)
     },
 
     btnView: {
-        width: scale(80),
-        height: verticalScale(80),
+        width: rWidth(80),
+        height: rHeight(80),
         backgroundColor: colors.white,
         borderRadius: 40,
-        borderWidth: scale(4),
+        borderWidth: rWidth(4),
         borderColor: colors.primary,
 
         shadowColor: "#000",
@@ -168,6 +168,9 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rFont(20),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 })

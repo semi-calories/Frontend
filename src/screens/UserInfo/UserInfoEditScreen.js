@@ -23,9 +23,9 @@ import { Gender, Gender_ko, Gender_icon, UserInfo, UserInfo_ko, Activity, Activi
 import { Null_img } from "~/constants/test";
 
 import { fonts, colors } from "~/constants/globalStyles";
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
-import { getInfo, updateInfo } from "~/apis/api/user";
+import { getInfo, savePredictWeight, updateInfo } from "~/apis/api/user";
 
 const EditIcon = require('~/assets/EditIcon.png')
 
@@ -43,7 +43,7 @@ const GenderFunc = ({ label, onPress, gender }) => {
 const ActivityFunc = ({ label, onPress, activity }) => {
     return (
         <Pressable onPress={onPress} style={{ alignItems: 'center' }}>
-            <MaterialCommunityIcons name={Activity_icon[label]} size={scale(50)} color={label == activity ? colors.primary : colors.textGrey} />
+            <MaterialCommunityIcons name={Activity_icon[label]} size={rWidth(50)} color={label == activity ? colors.primary : colors.textGrey} />
             <Text style={[styles.smallLabelText, { color: label == activity ? colors.primary : colors.textGrey }]}>{Activity_ko[label]}</Text>
         </Pressable>
     )
@@ -127,7 +127,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleComplete = () => {
+    const onPressComplete = () => {
         if (!(name && gender && age && height && weight && goalWeight && userActivity)) {
             Alert.alert('항목을 모두 입력해주세요.')
             return;
@@ -152,17 +152,23 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             userGoal: userInfo.userGoal,
         };
 
-        handleNext(user)
+        const userWeight ={
+            userCode: userInfo.userCode,
+            goalWeight,
+            period:userInfo.period
+        }
 
+        handleSetUserInfo(user, userWeight)
     }
 
-    const handleNext = async (user) => {
+    const handleSetUserInfo = async (user, userWeight) => {
         if (infoType == UserInfoType.init) {
             navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
 
         } else if (infoType == UserInfoType.edit) {
             try {
                 const response = await updateInfo(user)
+                const res = await savePredictWeight(userWeight)
                 const userData = await getInfo({ userCode: userInfo.userCode })
                 StoreUserData({ ...userData, userCode: userInfo.userCode })
 
@@ -190,7 +196,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
                         </ImageBackground>
-                        <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={scale(320)} defaultValue={name} valid={nameRegex.test(name)} />
+                        <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={rWidth(320)} defaultValue={name} valid={nameRegex.test(name)} />
                     </View>
                 }
                 <View style={styles.flexRow}>
@@ -202,22 +208,22 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 </View>
 
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput label={UserInfo_ko[UserInfo.age]} value={age} onChangeText={setAge} unit="세" width={scale(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={ageRegex.test(age)} />
-                    <LabelTextInput label={UserInfo_ko[UserInfo.height]} value={height} onChangeText={setHeight} unit="cm" width={scale(155)} keyboardType="numeric" valid={heightRegex.test(height)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.age]} value={age} onChangeText={setAge} unit="세" width={rWidth(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={ageRegex.test(age)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.height]} value={height} onChangeText={setHeight} unit="cm" width={rWidth(155)} keyboardType="numeric" valid={heightRegex.test(height)} />
                 </View>
                 <View style={{ flexDirection: 'row' }}>
-                    <LabelTextInput label={UserInfo_ko[UserInfo.weight]} value={weight} onChangeText={setWeight} unit="kg" width={scale(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={weightRegex.test(weight)} />
-                    <LabelTextInput label={UserInfo_ko[UserInfo.goalWeight]} value={goalWeight} onChangeText={setGoalWeight} unit="kg" width={scale(155)} keyboardType="numeric" valid={weightRegex.test(goalWeight)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.weight]} value={weight} onChangeText={setWeight} unit="kg" width={rWidth(155)} keyboardType="numeric" inputViewStyle={styles.inputViewStyle} valid={weightRegex.test(weight)} />
+                    <LabelTextInput label={UserInfo_ko[UserInfo.goalWeight]} value={goalWeight} onChangeText={setGoalWeight} unit="kg" width={rWidth(155)} keyboardType="numeric" valid={weightRegex.test(goalWeight)} />
                 </View>
 
                 <Text style={styles.labelText}>{UserInfo_ko[UserInfo.userActivity]}</Text>
-                <View style={[styles.contentView, { marginBottom: verticalScale(40) }]}>
+                <View style={[styles.contentView, { marginBottom: rHeight(40) }]}>
                     <ActivityFunc label={Activity.less} onPress={() => setActivity(Activity.less)} activity={userActivity} />
                     <ActivityFunc label={Activity.normal} onPress={() => setActivity(Activity.normal)} activity={userActivity} />
                     <ActivityFunc label={Activity.more} onPress={() => setActivity(Activity.more)} activity={userActivity} />
                 </View>
             </ScrollView>
-            <MoveButton text={infoType == UserInfoType.init ? '다음' : '완료'} onPress={handleComplete} inActive={!(name && gender && age && height && weight && goalWeight && userActivity)} />
+            <MoveButton text={infoType == UserInfoType.init ? '다음' : '완료'} onPress={onPressComplete} inActive={!(name && gender && age && height && weight && goalWeight && userActivity)} />
 
             <ActionSheet
                 ref={o => this.ActionSheet = o}
@@ -240,38 +246,48 @@ const styles = StyleSheet.create({
 
     boldText: {
         fontFamily: fonts.bold,
-        fontSize: scale(30),
+        fontSize: rFont(30),
         color: colors.black,
+        
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         color: colors.black,
+
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     scrollView: {
-        paddingVertical: verticalScale(20),
+        paddingVertical: rHeight(20),
     },
 
     labelText: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rFont(20),
         color: colors.borderGrey,
 
-        marginVertical: verticalScale(15),
+        marginVertical: rHeight(15),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     contentView: {
         flexDirection: 'row',
-        paddingHorizontal: scale(20),
+        paddingHorizontal: rWidth(20),
         justifyContent: 'space-evenly',
-        marginBottom: verticalScale(25),
+        marginBottom: rHeight(25),
     },
 
     genderIconView: {
-        width: scale(109),
-        height: verticalScale(99),
+        width: rWidth(109),
+        height: rHeight(99),
         backgroundColor: colors.white,
 
         borderWidth: 2,
@@ -284,33 +300,36 @@ const styles = StyleSheet.create({
 
     smallLabelText: {
         fontFamily: fonts.medium,
-        fontSize: scale(15),
+        fontSize: rFont(15),
 
-        marginVertical: verticalScale(5),
+        marginVertical: rHeight(5),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     inputViewStyle: {
-        marginRight: scale(20),
-        paddingBottom: scale(10)
+        marginRight: rWidth(20),
+        paddingBottom: rWidth(10)
     },
 
     imgBackground: {
-        width: scale(120),
-        height: verticalScale(125),
+        width: rWidth(120),
+        height: rHeight(125),
         resizeMode: 'contain',
         alignSelf: 'center',
-        marginBottom: verticalScale(25),
+        marginBottom: rHeight(25),
     },
 
     imgView: {
         position: 'absolute',
-        bottom: scale(-5),
-        right: scale(-5),
+        bottom: rWidth(-5),
+        right: rWidth(-5),
     },
 
     img: {
-        width: scale(55),
-        height: verticalScale(50),
+        width: rWidth(55),
+        height: rHeight(50),
         resizeMode: 'contain',
     },
 
@@ -318,10 +337,4 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center'
     },
-
-    required: {
-        color: 'red',
-        fontFamily: fonts.medium,
-        fontSize: scale(23),
-    }
 });

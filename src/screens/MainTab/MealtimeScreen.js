@@ -20,7 +20,7 @@ import { Nutrition, Nutrition_ko, Satisfaction, Satisfaction_icon, Satisfaction_
 import { RecordType } from "~/constants/type";
 
 import { fonts, colors } from "~/constants/globalStyles";
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
 import { registerRecord, updateRecord, deleteRecord } from "~/apis/api/diet";
 import { servingRegex } from "~/components/regex";
@@ -78,7 +78,7 @@ const MealtimeScreen = ({ navigation, route }) => {
         return (
             <Pressable style={[styles.box, styles.border]} onPress={() => handlePressDetail(item)}>
                 <View>
-                    <Text style={[styles.boldText, { fontSize: scale(20) }]}>{item.foodName}</Text>
+                    <Text style={[styles.boldText, { fontSize: rWidth(20) }]}>{item.foodName}</Text>
                     <View style={styles.foodView}>
                         <Text style={styles.greyText}>{item.foodKcal}kcal</Text>
                         <Text style={styles.greyText}>  ㅣ  </Text>
@@ -122,7 +122,7 @@ const MealtimeScreen = ({ navigation, route }) => {
     const SatisfactionFunc = ({ label, onPress, satisfaction }) => {
         return (
             <Pressable onPress={onPress} style={{ alignItems: 'center' }}>
-                <MaterialCommunityIcons name={Satisfaction_icon[label]} size={scale(50)} color={label == satisfaction ? colors.primary : colors.textGrey} />
+                <MaterialCommunityIcons name={Satisfaction_icon[label]} size={rWidth(50)} color={label == satisfaction ? colors.primary : colors.textGrey} />
                 <Text style={[styles.smallLabelText, { color: label == satisfaction ? colors.primary : colors.textGrey }]}>{Satisfaction_ko[label]}</Text>
             </Pressable>
         )
@@ -255,7 +255,7 @@ const MealtimeScreen = ({ navigation, route }) => {
         <RootView>
             <View style={[styles.container, styles.borderThick]}>
                 <Text style={styles.boldText}>식사일시</Text>
-                <View style={{ marginTop: verticalScale(30) }}>
+                <View style={{ marginTop: rHeight(30) }}>
                     <View style={[styles.box, styles.border]}>
                         <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
                         <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
@@ -276,7 +276,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                 />
             </View>
             {type == RecordType.init ? (
-                <View style={{ paddingHorizontal: scale(30) }}>
+                <View style={{ paddingHorizontal: rWidth(30) }}>
                     <MoveButton text="완료" onPress={handleComplete} inActive={selectFoods.length ? false : true} />
                 </View>
             ) : (
@@ -291,7 +291,7 @@ const MealtimeScreen = ({ navigation, route }) => {
             {/* 음식상세 */}
             <RBSheet
                 ref={refRBSheet}
-                height={verticalScale(630)}
+                height={rHeight(630)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
@@ -303,12 +303,12 @@ const MealtimeScreen = ({ navigation, route }) => {
                 }}
             >
                 <View style={[styles.container, styles.borderThick]}>
-                    <View style={[styles.border, { alignItems: 'center', paddingBottom: verticalScale(15) }]}>
+                    <View style={[styles.border, { alignItems: 'center', paddingBottom: rHeight(15) }]}>
                         <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
                     </View>
                     <View style={styles.detailNutriView}>
-                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={scale(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} keyboardType="numeric" validType="섭취량" valid={servingRegex.test(serving)} />
-                        <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
+                        <BasicTextInput value={serving} unit="g" onChangeText={setServing} width={rWidth(250)} defaultValue={foodDetail?.foodWeight?.toString()} inputStyle={styles.inputStyle} onEndEditing={() => setEditing(!editing)} keyboardType="numeric" validType="섭취량" valid={servingRegex.test(serving)} />
+                        <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                             <Text style={styles.mtext}>{Nutrition_ko[Nutrition.foodKcal]}</Text>
                             <Text style={styles.mtext}>{foodDetail?.foodKcal} kcal</Text>
                         </View>
@@ -331,7 +331,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                     </View>
                 </View>
                 <View style={styles.container}>
-                    <Text style={[styles.boldText, { fontSize: scale(20) }]}>만족도</Text>
+                    <Text style={[styles.boldText, { fontSize: rWidth(20) }]}>만족도</Text>
                     <View style={styles.satisView}>
                         <SatisfactionFunc label={Satisfaction.dislike} onPress={() => handleSatisfaction(Satisfaction.dislike)} satisfaction={foodDetail?.satisfaction} />
                         <SatisfactionFunc label={Satisfaction.normal} onPress={() => handleSatisfaction(Satisfaction.normal)} satisfaction={foodDetail?.satisfaction} />
@@ -345,7 +345,7 @@ const MealtimeScreen = ({ navigation, route }) => {
                     </View>
                 ) : (
                     <View style={{ alignSelf: 'center' }}>
-                        <PrimaryButton text="저장" btnStyle={{ width: scale(340), height: verticalScale(50) }} onPress={handleDetailSave} />
+                        <PrimaryButton text="저장" btnStyle={{ width: rWidth(340), height: rHeight(50) }} onPress={handleDetailSave} />
                     </View>
                 )}
             </RBSheet>
@@ -357,75 +357,94 @@ export default MealtimeScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(35),
-        paddingVertical: verticalScale(10),
+        paddingHorizontal: rWidth(35),
+        paddingVertical: rHeight(10),
     },
 
     borderThick: {
-        borderBottomWidth: scale(5),
+        borderBottomWidth: rWidth(5),
         borderColor: colors.fat,
     },
 
     border: {
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderColor: colors.textGrey,
     },
 
     boldText: {
         fontFamily: fonts.bold,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     mtext: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         color: colors.black,
-        marginVertical: verticalScale(10)
+
+        marginVertical: rHeight(10),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     text: {
         fontFamily: fonts.regular,
-        fontSize: scale(20),
+        fontSize: rFont(20),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     smallLabelText: {
         fontFamily: fonts.medium,
-        fontSize: scale(15),
+        fontSize: rFont(15),
 
-        marginVertical: verticalScale(5),
+        marginVertical: rHeight(5),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     greyText: {
         fontFamily: fonts.regular,
-        fontSize: scale(15),
+        fontSize: rFont(15),
         color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     box: {
         flexDirection: 'row',
         alignItems: "center",
         justifyContent: 'space-between',
-        paddingHorizontal: scale(15),
-        paddingVertical: verticalScale(13)
+        paddingHorizontal: rWidth(15),
+        paddingVertical: rHeight(13)
     },
 
     foodView: {
         flexDirection: 'row',
-        paddingHorizontal: scale(10),
-        marginVertical: verticalScale(7)
+        paddingHorizontal: rWidth(10),
+        marginVertical: rHeight(7)
     },
 
     detailNutriView: {
-        paddingHorizontal: scale(35),
-        marginVertical: verticalScale(20)
+        paddingHorizontal: rWidth(35),
+        marginVertical: rHeight(20)
     },
 
     inputStyle: {
         fontFamily: fonts.regular,
-        fontSize: scale(20),
-        color: colors.black
+        fontSize: rFont(20),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     flexRow: {
@@ -435,31 +454,31 @@ const styles = StyleSheet.create({
     },
 
     nutri: {
-        width: scale(70),
+        width: rWidth(70),
         alignItems: 'center',
     },
 
     verticalBorder: {
-        width: scale(1),
-        height: verticalScale(55),
+        width: rWidth(1),
+        height: rHeight(55),
         backgroundColor: colors.textGrey
     },
 
     satisView: {
         flexDirection: 'row',
-        paddingHorizontal: scale(20),
+        paddingHorizontal: rWidth(20),
         justifyContent: 'space-evenly',
-        marginVertical: verticalScale(15),
+        marginVertical: rHeight(15),
     },
 
     btnView: {
         flexDirection: 'row',
-        paddingHorizontal: scale(19),
+        paddingHorizontal: rWidth(19),
         justifyContent: 'space-between'
     },
 
     btnStyle: {
-        width: scale(170),
-        height: verticalScale(50)
+        width: rWidth(170),
+        height: rHeight(50)
     }
 })

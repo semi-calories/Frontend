@@ -10,7 +10,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { ValidFormat } from "~/constants/validFormat";
 
 import { colors, fonts } from "~/constants/globalStyles"
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
 export function BasicTextInput(props) {
   const { value, width, inputStyle, password, unit, dark, validType, valid, ...restProps } = props
@@ -62,11 +62,11 @@ export function LabelTextInput(props) {
 
 const styles = StyleSheet.create({
   input: {
-    height: verticalScale(50),
-    padding: scale(12),
+    height: rHeight(50),
+    padding: rWidth(12),
 
     borderRadius: 10,
-    marginVertical: verticalScale(6),
+    marginVertical: rHeight(6),
   },
 
   light: {
@@ -81,14 +81,20 @@ const styles = StyleSheet.create({
 
   labelText: {
     fontFamily: fonts.bold,
-    fontSize: scale(20),
+    fontSize: rFont(20),
     color: colors.borderGrey,
+
+    includeFontPadding: false,
+    textAlignVertical: 'center'
   },
 
   unitText: {
     fontFamily: fonts.bold,
-    fontSize: scale(15),
+    fontSize: rFont(15),
     color: colors.textGrey,
+
+    includeFontPadding: false,
+    textAlignVertical: 'center'
   },
 
   flexRow: {
@@ -98,9 +104,12 @@ const styles = StyleSheet.create({
 
   validateText: {
     fontFamily: fonts.regular,
-    fontSize: scale(10),
+    fontSize: rFont(10),
     color: 'red',
 
-    paddingLeft:scale(3),
+    paddingLeft:rWidth(3),
+
+    includeFontPadding: false,
+    textAlignVertical: 'center'
   }
 });

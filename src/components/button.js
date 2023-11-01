@@ -13,7 +13,7 @@ import * as ImagePicker from 'expo-image-picker';
 import { GetUserData } from "~/components/asyncStorageData";
 
 import { colors, fonts } from "~/constants/globalStyles"
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { SearchFoodType } from "~/constants/type";
 
 const addIcon = require("~/assets/Add.png");
@@ -189,8 +189,8 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
 const styles = StyleSheet.create({
     primaryBtn: {
-        width: scale(298),
-        height: verticalScale(67),
+        width: rWidth(298),
+        height: rHeight(67),
         borderRadius: 15,
         backgroundColor: colors.primary,
 
@@ -199,8 +199,8 @@ const styles = StyleSheet.create({
     },
 
     moveBtn: {
-        width: scale(320),
-        height: verticalScale(50),
+        width: rWidth(320),
+        height: rHeight(50),
         borderRadius: 20,
         backgroundColor: colors.black,
 
@@ -209,8 +209,8 @@ const styles = StyleSheet.create({
     },
 
     moveBtnInactive: {
-        width: scale(320),
-        height: verticalScale(50),
+        width: rWidth(320),
+        height: rHeight(50),
         borderRadius: 20,
         backgroundColor: colors.textGrey,
 
@@ -220,8 +220,11 @@ const styles = StyleSheet.create({
 
     text: {
         color: colors.white,
-        fontSize: scale(20),
+        fontSize: rFont(20),
         fontFamily: fonts.bold,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     container: {
@@ -232,9 +235,9 @@ const styles = StyleSheet.create({
 
     box: {
         position: 'relative',
-        width: scale(80),
-        height: verticalScale(80),
-        marginTop: verticalScale(-20)
+        width: rWidth(80),
+        height: rHeight(80),
+        marginTop: rHeight(-20)
     },
 
     shadow: {
@@ -252,32 +255,32 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.primary,
-        width: scale(80),
-        height: verticalScale(80),
+        width: rWidth(80),
+        height: rHeight(80),
         borderRadius: 50
     },
 
     addIcon: {
-        width: scale(45),
-        height: verticalScale(45),
+        width: rWidth(45),
+        height: rHeight(45),
         tintColor: colors.white,
     },
 
     item: {
         position: 'absolute',
-        top: verticalScale(5),
-        left: scale(5),
+        top: rHeight(5),
+        left: rWidth(5),
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.btnBackground,
-        width: scale(65),
-        height: verticalScale(65),
+        width: rWidth(65),
+        height: rHeight(65),
         borderRadius: 50,
     },
 
     itemIcon: {
-        width: scale(40),
-        height: verticalScale(40),
+        width: rWidth(40),
+        height: rHeight(40),
         tintColor: colors.white,
     }
 });

@@ -8,7 +8,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 
 import HomeStatisticPeriod from "~/screens/MainTab/HomeStatisticPeriod";
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 
@@ -38,26 +38,29 @@ export default HomeStatistic;
 const styles = StyleSheet.create({
     tabView: {
         width: dWidth,
-        height: verticalScale(50),
+        height: rHeight(50),
         flexDirection: 'row',
         alignItems: 'center',
 
-        paddingHorizontal: scale(14),
+        paddingHorizontal: rWidth(14),
     },
 
     tab: {
-        width: scale(60),
-        height: verticalScale(30),
+        width: rWidth(60),
+        height: rHeight(30),
         borderRadius: 15,
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: scale(5)
+        marginHorizontal: rWidth(5)
     },
 
     tabLabel: {
         fontFamily: fonts.bold,
-        fontSize: scale(15),
+        fontSize: rFont(15),
         color: colors.white,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 
 })

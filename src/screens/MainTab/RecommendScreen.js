@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
-import { View, Text, StyleSheet, FlatList, Image } from "react-native";
+import { View, Text, StyleSheet, FlatList, Image, Platform } from "react-native";
 
 import { TabContainer, RootView } from "~/components/container";
 import { MainHeader } from "~/components/header";
@@ -14,7 +14,7 @@ import { GetUserData } from "~/components/asyncStorageData";
 import { RecommendFood } from "~/constants/test";
 import { Nutrition, Nutrition_ko } from "~/constants/food";
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { recommendRequest } from "~/apis/api/diet";
@@ -59,13 +59,13 @@ const RecommendScreen = ({ navigation }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.container}>
-                {item.foodImgUrl ? <Image source={{uri: item.foodImgUrl}} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
+                {item.foodImgUrl ? <Image source={{ uri: item.foodImgUrl }} style={styles.image} /> : <View style={[styles.image, { borderWidth: 1, borderColor: colors.textGrey }]} />}
                 <View style={styles.foodView}>
                     <View style={styles.flexRow}>
                         <Text style={styles.text}>{item.foodName}</Text>
-                        <Text style={[styles.greyText, { fontSize: scale(14) }]}>{item.foodKcal} kcal</Text>
+                        <Text style={[styles.greyText, { fontSize: rWidth(14) }]}>{item.foodKcal} kcal</Text>
                     </View>
-                    <View style={[styles.flexRow, { marginTop: verticalScale(5), paddingHorizontal: scale(5) }]}>
+                    <View style={[styles.flexRow, { marginTop: rHeight(5), paddingHorizontal: rWidth(5) }]}>
                         <View style={styles.nutri}>
                             <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
                             <Text style={styles.greyText}>{item.foodCarbon} g</Text>
@@ -113,11 +113,11 @@ const RecommendScreen = ({ navigation }) => {
                 <FlatList
                     data={recommends}
                     renderItem={renderItem}
-                    keyExtractor={(item,idx) => item+idx}
+                    keyExtractor={(item, idx) => item + idx}
                     onRefresh={fetchItems}
                     refreshing={isRefreshing}
-                    showsVerticalScrollIndicator="false"
-                    contentContainerStyle={{ paddingBottom: verticalScale(80) }}
+                    showsVerticalScrollIndicator={Platform.OS == "android" ? true : false}
+                    contentContainerStyle={{ paddingBottom: rHeight(80) }}
                 />
             </RootView>
         </TabContainer>
@@ -128,40 +128,46 @@ export default RecommendScreen;
 
 const styles = StyleSheet.create({
     viewStyle: {
-        paddingHorizontal: scale(34),
+        paddingHorizontal: rWidth(34),
     },
 
     container: {
-        paddingVertical: verticalScale(24),
+        paddingVertical: rHeight(24),
         flexDirection: 'row',
 
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderBottomColor: colors.textGrey,
     },
 
     image: {
-        width: scale(90),
-        height: verticalScale(75),
+        width: rWidth(90),
+        height: rHeight(75),
         borderRadius: 10,
-        resizeMode:'contain'
+        resizeMode: 'contain'
     },
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
-        color: colors.black
+        fontSize: rFont(18),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     greyText: {
         fontFamily: fonts.medium,
-        fontSize: scale(13),
+        fontSize: rFont(13),
         color: colors.textGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     foodView: {
         flex: 1,
-        marginLeft: scale(18),
-        paddingVertical: verticalScale(3)
+        marginLeft: rWidth(18),
+        paddingVertical: rHeight(3)
     },
 
     flexRow: {
@@ -171,15 +177,13 @@ const styles = StyleSheet.create({
     },
 
     nutri: {
-        width: scale(50),
+        width: rWidth(50),
         alignItems: 'center',
     },
 
     verticalBorder: {
-        width: scale(1),
-        height: verticalScale(24),
+        width: rWidth(1),
+        height: rHeight(24),
         backgroundColor: colors.textGrey
     },
-
-
 });

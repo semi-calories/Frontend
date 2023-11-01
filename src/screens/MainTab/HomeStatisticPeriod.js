@@ -16,7 +16,7 @@ import { CalculateStatisticDate, CalculateWeek, FormatWeekData } from "~/compone
 import { WeekData, MonthData } from "~/constants/test";
 import { Nutrition, Nutrition_ko } from '~/constants/food'
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { getMonthStats, getWeekStats } from "~/apis/api/diet";
@@ -141,7 +141,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
                 </Pressable>
                 <Pressable onPress={() => refRBSheet.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{formatDate}</Text>
-                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
+                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: rWidth(5) }} />
                 </Pressable>
                 <Pressable onPress={() => setSelectDate(CalculateStatisticDate(type, 'add', selectDate))}>
                     <Entypo name="chevron-right" size={35} color="black" />
@@ -153,8 +153,8 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
                 <StackedBarChart
                     style={styles.chartView}
                     data={type == '주간' ? ChartWeekData : ChartMonthData}
-                    width={type == '주간' ? scale(350) : scale(600)}
-                    height={verticalScale(350)}
+                    width={type == '주간' ? rWidth(350) : rWidth(600)}
+                    height={rHeight(350)}
                     chartConfig={styles.chartConfig}
                     hideLegend={true}
                 />
@@ -171,7 +171,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
             {/* 날짜 선택 bottomSheet */}
             <RBSheet
                 ref={refRBSheet}
-                height={verticalScale(320)}
+                height={rHeight(320)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
@@ -187,7 +187,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
                 </Pressable>
                 {type == '주간' ?
                     <WheelPickerExpo
-                        height={verticalScale(260)}
+                        height={rHeight(260)}
                         width={dWidth}
                         initialSelectedIndex={yearMonthArray.indexOf(moment(selectDate).format('YYYY년 M월'))}
                         items={yearMonthArray.map(name => ({ label: name, value: name }))}
@@ -195,7 +195,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
                     />
                     :
                     <WheelPickerExpo
-                        height={verticalScale(260)}
+                        height={rHeight(260)}
                         width={dWidth}
                         initialSelectedIndex={yearArray.indexOf(selectDate.getFullYear().toString())}
                         items={yearArray.map(name => ({ label: name, value: name }))}
@@ -212,9 +212,9 @@ export default HomeStatisticPeriod;
 const styles = StyleSheet.create({
     dayView: {
         width: dWidth,
-        height: verticalScale(35),
-        marginTop: verticalScale(20),
-        paddingHorizontal: scale(20),
+        height: rHeight(35),
+        marginTop: rHeight(20),
+        paddingHorizontal: rWidth(20),
 
         flexDirection: 'row',
         alignItems: 'center',
@@ -223,18 +223,21 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     selectView: {
-        paddingHorizontal: scale(20),
+        paddingHorizontal: rWidth(20),
         alignItems: 'flex-end'
     },
 
     chartView: {
-        marginTop: verticalScale(40),
-        paddingHorizontal: scale(20),
+        marginTop: rHeight(40),
+        paddingHorizontal: rWidth(20),
         alignItems: 'center'
     },
 
@@ -249,18 +252,21 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         justifyContent: 'space-between',
         alignItems: 'center',
-        paddingHorizontal: scale(95),
+        paddingHorizontal: rWidth(95),
     },
 
     label: {
-        width: scale(12),
-        height: verticalScale(12),
+        width: rWidth(12),
+        height: rHeight(12),
         borderRadius: 30,
     },
 
     labelText: {
         fontFamily: fonts.regular,
-        fontSize: scale(12),
+        fontSize: rFont(12),
         color: colors.label,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 })

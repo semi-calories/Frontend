@@ -16,7 +16,7 @@ import { RecordType, SearchFoodType } from "~/constants/type";
 import { FoodTemp } from "~/constants/test";
 
 import { colors, fonts } from "~/constants/globalStyles";
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
 import { foodSearch } from "~/apis/api/diet";
 
@@ -56,7 +56,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
         return (
             <Pressable style={styles.foodView} onPress={() => handleSelect(item)}>
                 <Text style={styles.text}>{item.foodName}</Text>
-                <AntDesign name={selectFood.includes(item) ? "checkcircle" : 'checkcircleo'} size={scale(20)} color={colors.borderGrey} />
+                <AntDesign name={selectFood.includes(item) ? "checkcircle" : 'checkcircleo'} size={rWidth(20)} color={colors.borderGrey} />
             </Pressable>
         );
     };
@@ -89,8 +89,8 @@ const SearchFoodScreen = ({ navigation, route }) => {
             <View style={{ flex: 1 }}>
                 {(text && !foodList.length) ?
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <AntDesign name="exclamationcircleo" size={scale(60)} color={colors.btnBackground} />
-                        <Text style={[styles.text, { marginTop: verticalScale(15) }]}>검색 결과가 없습니다.</Text>
+                        <AntDesign name="exclamationcircleo" size={rWidth(60)} color={colors.btnBackground} />
+                        <Text style={[styles.text, { marginTop: rHeight(15) }]}>검색 결과가 없습니다.</Text>
                     </View>
                     :
                     <FlatList
@@ -98,7 +98,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
                         renderItem={renderItem}
                         keyExtractor={(item, idx) => item + idx}
                         showsVerticalScrollIndicator={false}
-                        style={{ paddingHorizontal: scale(30) }}
+                        style={{ paddingHorizontal: rWidth(30) }}
                     />
                 }
             </View>
@@ -106,7 +106,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
                 <ScrollView horizontal style={styles.chipView}>
                     {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setSelectFood([...selectFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
                 </ScrollView>
-                <PrimaryButton text={`${selectFood.length}개 선택`} btnStyle={{ width: scale(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleComplete} />
+                <PrimaryButton text={`${selectFood.length}개 선택`} btnStyle={{ width: rWidth(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleComplete} />
             </View>
         </RootView>
     );
@@ -118,38 +118,42 @@ const styles = StyleSheet.create({
     foodView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        paddingHorizontal: scale(10),
-        paddingVertical: verticalScale(24),
+        paddingHorizontal: rWidth(10),
+        paddingVertical: rHeight(24),
 
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderBottomColor: colors.textGrey,
     },
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     selectBtnView: {
         width: dWidth,
-        height: verticalScale(150),
-        paddingHorizontal: scale(20),
-        paddingVertical: verticalScale(10),
+        height: rHeight(150),
+        paddingHorizontal: rWidth(20),
+        paddingVertical: rHeight(10),
 
-        borderWidth: scale(2),
+        borderWidth: rWidth(2),
         borderColor: colors.textGrey,
+        borderBlockEndColor:colors.white,
         borderBottomColor: colors.white,
         borderTopLeftRadius: 10,
         borderTopRightRadius: 10,
     },
 
     chipView: {
-        marginVertical: verticalScale(10),
+        marginVertical: rHeight(10),
     },
 
     chip: {
-        marginHorizontal: scale(3),
+        marginHorizontal: rWidth(3),
         borderRadius: 20
     },
 });

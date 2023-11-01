@@ -17,7 +17,7 @@ import { weightRegex } from "~/components/regex";
 
 import { LineData } from "~/constants/test";
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { getInfo, getWeight, saveWeight, deleteWeight, getMonthRangeWeight } from "~/apis/api/user";
@@ -44,6 +44,9 @@ const HomeWeight = ({ userInfo }) => {
     const [lineData, setLineData] = useState([])
     console.log('HomeWeight lineData', lineData)
 
+    const [predictLine, setPredictLine] = useState([])
+    console.log('HomeWeight predictLine', predictLine)
+
     const [date, setDate] = useState(new Date())
     const [weight, setWeight] = useState('0')
 
@@ -52,7 +55,8 @@ const HomeWeight = ({ userInfo }) => {
 
     useEffect(() => {
         if (userInfo.userCode) {
-            getRangeWeight()
+            handleRangeWeight()
+            handlePredictWeight()
             setLoaded(true)
         }
     }, [modal])
@@ -212,17 +216,18 @@ const HomeWeight = ({ userInfo }) => {
                         data={lineData}
                         color={colors.primary}
                         onPress={item => handlePressChart(item)}
-                        height={verticalScale(310)}
+                        height={rHeight(310)}
                         dataPointsHeight={10}
                         dataPointsWidth={10}
                         dataPointsColor={colors.linePoint}
                         textFontSize={scale(12)}
+                        textFontSize={rWidth(12)}
                         adjustToWidth
                         scrollToEnd
                         hideYAxisText
                         xAxisType="dashed"
                         xAxisColor={colors.textGrey}
-                        dashGap={scale(15)}
+                        dashGap={rWidth(15)}
                         thickness={3}
                         yAxisThickness={0}
                         //maxValue = noOfSections * stepValue;
@@ -244,13 +249,13 @@ const HomeWeight = ({ userInfo }) => {
             {/* 상단 필터 - 기간설정 */}
             <RBSheet
                 ref={refRBSheetFilter}
-                height={verticalScale(320)}
+                height={rHeight(320)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
                         borderRadius: 10,
-                        paddingHorizontal: scale(20),
-                        paddingBottom: verticalScale(30),
+                        paddingHorizontal: rWidth(20),
+                        paddingBottom: rHeight(30),
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -259,7 +264,7 @@ const HomeWeight = ({ userInfo }) => {
             >
                 <View style={{ flex: 1 }}>
                     <Text style={styles.text}>기간설정</Text>
-                    <View style={[styles.rangeView, { marginTop: verticalScale(20) }]}>
+                    <View style={[styles.rangeView, { marginTop: rHeight(20) }]}>
                         {FILTERPERIOD.map((per, idx) => (
                             <Chip
                                 id={per + idx}
@@ -287,13 +292,13 @@ const HomeWeight = ({ userInfo }) => {
             {/* 몸무게 추가 bottomSheet */}
             <RBSheet
                 ref={refRBSheetWeight}
-                height={verticalScale(450)}
+                height={rHeight(450)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
                         borderRadius: 10,
-                        paddingHorizontal: scale(20),
-                        paddingBottom: verticalScale(30)
+                        paddingHorizontal: rWidth(20),
+                        paddingBottom: rHeight(30)
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -306,10 +311,10 @@ const HomeWeight = ({ userInfo }) => {
                         <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
-                        <View style={{justifyContent:'center', height:verticalScale(60)}}>
+                        <View style={{justifyContent:'center', height:rHeight(60)}}>
                             <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
                         </View>
-                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={scale(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
+                        <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={rWidth(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
                     </View>
                 </View>
                 <View style={styles.btnView}>
@@ -326,9 +331,9 @@ export default HomeWeight;
 const styles = StyleSheet.create({
     dayView: {
         width: dWidth,
-        height: verticalScale(35),
-        marginTop: verticalScale(20),
-        paddingHorizontal: scale(20),
+        height: rHeight(35),
+        marginTop: rHeight(20),
+        paddingHorizontal: rWidth(20),
 
         flexDirection: 'row',
         alignItems: 'center',
@@ -337,47 +342,53 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     rangeView: {
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-evenly',
-        marginVertical: verticalScale(8),
+        marginVertical: rHeight(8),
         //paddingHorizontal: scale(20)
     },
 
     selectView: {
-        paddingHorizontal: scale(20),
+        paddingHorizontal: rWidth(20),
         alignItems: 'flex-end'
     },
 
     chartView: {
-        marginTop: verticalScale(30),
+        marginTop: rHeight(30),
         //paddingHorizontal: scale(20),
         alignItems: 'center'
     },
 
     textView: {
-        marginTop: verticalScale(30),
-        marginHorizontal: scale(15),
+        marginTop: rHeight(30),
+        marginHorizontal: rWidth(15),
         alignItems: 'flex-end'
     },
 
     greyText: {
         fontFamily: fonts.medium,
-        fontSize: scale(12),
+        fontSize: rFont(12),
         color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     box: {
         flexDirection: 'row',
         //alignItems: "center",
         justifyContent: 'space-between',
-        paddingHorizontal: scale(15),
-        paddingVertical: verticalScale(20)
+        paddingHorizontal: rWidth(15),
+        paddingVertical: rHeight(20)
     },
 
     flexRow: {
@@ -390,7 +401,7 @@ const styles = StyleSheet.create({
     },
 
     btnStyle: {
-        width: scale(170),
-        height: verticalScale(50)
+        width: rWidth(170),
+        height: rHeight(50)
     }
 })

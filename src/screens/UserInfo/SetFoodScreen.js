@@ -18,7 +18,7 @@ import { UserInfoType } from "~/constants/type";
 import { FoodTemp } from "~/constants/test";
 
 import { fonts, colors } from "~/constants/globalStyles";
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
 import { getPrefer, getDislike, savePrefer, saveDislike } from "~/apis/api/user";
 import { getDislikeFood, getPreferFood } from "~/apis/services/user";
@@ -164,7 +164,7 @@ export default SetFoodScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(30),
+        paddingHorizontal: rWidth(30),
     },
 
     scrollView: {
@@ -173,26 +173,29 @@ const styles = StyleSheet.create({
 
     titleText: {
         fontFamily: fonts.bold,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         color: colors.black,
 
-        marginTop: verticalScale(40),
+        marginTop: rHeight(40),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     chipView: {
         flexDirection: 'row',
         flexWrap: 'wrap',
-        marginVertical: verticalScale(15),
+        marginVertical: rHeight(15),
     },
 
     chip: {
-        marginHorizontal: scale(3),
+        marginHorizontal: rWidth(3),
     },
 
     add: {
-        width: scale(35),
-        height: verticalScale(35),
-        borderWidth: scale(1.5),
+        width: rWidth(35),
+        height: rHeight(35),
+        borderWidth: rWidth(1.5),
         borderColor: colors.borderGrey,
         borderRadius: 10,
 

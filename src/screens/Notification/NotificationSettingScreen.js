@@ -12,7 +12,7 @@ import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const NotificationSettingScreen = ({ navigation }) => {
@@ -53,16 +53,16 @@ const NotificationSettingScreen = ({ navigation }) => {
             </View>
             <Text style={styles.greyText}>정해진 시간에 맞춰 식단 추천 알람을 보내드려요</Text>
             {isEnabled && (
-                <View style={{ paddingTop: verticalScale(20), paddingHorizontal: scale(40) }}>
-                    <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
+                <View style={{ paddingTop: rHeight(20), paddingHorizontal: rWidth(40) }}>
+                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                         <Text style={styles.boldGreyText}>아침</Text>
                         <DateTimePicker mode="time" value={breakfast} onChange={(event, selectedDate) => setBreakfast(selectedDate)} />
                     </View>
-                    <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
+                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                         <Text style={styles.boldGreyText}>점심</Text>
                         <DateTimePicker mode="time" value={lunch} onChange={(event, selectedDate) => setLunch(selectedDate)} />
                     </View>
-                    <View style={[styles.flexRow, { marginVertical: verticalScale(10) }]}>
+                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                         <Text style={styles.boldGreyText}>저녁</Text>
                         <DateTimePicker mode="time" value={dinner} onChange={(event, selectedDate) => setDinner(selectedDate)} />
                     </View>
@@ -78,14 +78,18 @@ export default NotificationSettingScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(37),
-        paddingTop: verticalScale(25)
+        paddingHorizontal: rWidth(37),
+        paddingTop: rHeight(25),
+        
     },
 
     text: {
         fontFamily: fonts.bold,
-        fontSize: scale(18),
-        color: colors.black
+        fontSize: rFont(18),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     flexRow: {
@@ -96,13 +100,19 @@ const styles = StyleSheet.create({
 
     greyText: {
         fontFamily: fonts.medium,
-        fontSize: scale(12),
+        fontSize: rFont(12),
         color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     boldGreyText: {
         fontFamily: fonts.bold,
-        fontSize: scale(15),
-        color: colors.borderGrey
+        fontSize: rFont(15),
+        color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 });

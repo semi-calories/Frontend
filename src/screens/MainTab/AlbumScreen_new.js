@@ -11,7 +11,7 @@ import { RootView } from "~/components/container";
 
 import { RecordType, UserInfoType } from "~/constants/type";
 
-import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
+import { dWidth, rFont, rHeight, rWidth } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { recognizeUpload } from "~/apis/api/diet";
@@ -119,7 +119,7 @@ export default AlbumScreen_new;
 const styles = StyleSheet.create({
     album: {
         width: dWidth,
-        height: verticalScale(550)
+        height: rHeight(550)
     },
 
     touchView: {
@@ -127,11 +127,14 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: scale(30)
+        paddingHorizontal: rWidth(30)
     },
 
     text: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rFont(20),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 })

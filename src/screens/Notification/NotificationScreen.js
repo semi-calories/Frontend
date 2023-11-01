@@ -12,7 +12,7 @@ import { RootView } from "~/components/container";
 import { HeaderType } from "~/constants/type";
 import { NotiData } from "~/constants/test";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const NotificationScreen = ({ navigation }) => {
@@ -26,7 +26,7 @@ const NotificationScreen = ({ navigation }) => {
     const renderItem = ({ item }) => {
         return (
             <View style={styles.foodView}>
-                <View style={[styles.flexRow, styles.spaceBet, { marginBottom: verticalScale(10) }]}>
+                <View style={[styles.flexRow, styles.spaceBet, { marginBottom: rHeight(10) }]}>
                     <View style={styles.flexRow}>
                         <Text style={styles.boldText}>{item.date}</Text>
                         <Text style={styles.boldText}> {item.eatTime} 추천</Text>
@@ -51,7 +51,7 @@ const NotificationScreen = ({ navigation }) => {
                 data={NotiData}
                 renderItem={renderItem}
                 keyExtractor={(item, idx) => item + idx}
-                showsVerticalScrollIndicator="false"
+               //showsVerticalScrollIndicator="false"
             />
         </RootView>
     );
@@ -61,10 +61,10 @@ export default NotificationScreen;
 
 const styles = StyleSheet.create({
     foodView: {
-        paddingHorizontal: scale(30),
-        paddingVertical: verticalScale(25),
+        paddingHorizontal: rWidth(30),
+        paddingVertical: rHeight(25),
 
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderBottomColor: colors.textGrey,
     },
 
@@ -79,19 +79,28 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(15),
-        color: colors.black
+        fontSize: rFont(15),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     boldText: {
         fontFamily: fonts.bold,
-        fontSize: scale(18),
-        color: colors.black
+        fontSize: rFont(18),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     greyText: {
         fontFamily: fonts.medium,
-        fontSize: scale(13),
-        color: colors.textGrey
+        fontSize: rFont(13),
+        color: colors.textGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 });

@@ -9,7 +9,7 @@ import { Image, StyleSheet, View } from "react-native";
 import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
-import { scale, verticalScale } from "~/constants/globalSizes"; 
+import { rWidth, rHeight } from "~/constants/globalSizes"; 
 
 const LOGO = require('~/assets/Logo.png');
 
@@ -36,19 +36,19 @@ const styles = StyleSheet.create({
     },
 
     imageView:{
-        paddingTop:verticalScale(310),
+        paddingTop:rHeight(310),
     },
 
     image:{
-        width:scale(120),
-        height:verticalScale(120),
+        width:rWidth(120),
+        height:rHeight(120),
     },
 
     btnView:{
-        padding:verticalScale(100),
+        padding:rHeight(100),
     },
 
     btn:{
-        margin:scale(10),
+        margin:rWidth(10),
     }
 });

@@ -13,7 +13,7 @@ import { PrimaryButton } from "~/components/button";
 
 import { emailRegex, passwordRegex, nameRegex } from "~/components/regex";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight } from "~/constants/globalSizes";
 import { UserInfoType } from "~/constants/type";
 
 import { signup, emailDuplicateCheck } from "~/apis/api/loginSignup";
@@ -70,9 +70,9 @@ const SignupScreen = ({ navigation }) => {
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={scale(298)} validType="이메일" valid={emailRegex.test(email)} />
-            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={scale(298)} password validType="비밀번호" valid={passwordRegex.test(password)} />
-            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={scale(298)} validType="이름" valid={nameRegex.test(name)} />
+            <BasicTextInput value={email} onChangeText={setEmail} placeholder="이메일" width={rWidth(298)} validType="이메일" valid={emailRegex.test(email)} />
+            <BasicTextInput value={password} onChangeText={setPassword} placeholder="비밀번호" width={rWidth(298)} password validType="비밀번호" valid={passwordRegex.test(password)} />
+            <BasicTextInput value={name} onChangeText={setName} placeholder="이름" width={rWidth(298)} validType="이름" valid={nameRegex.test(name)} />
             <PrimaryButton text='회원가입' onPress={handleSignup} btnStyle={styles.btn} />
         </RootView>
     );
@@ -87,6 +87,6 @@ const styles = StyleSheet.create({
     },
 
     btn: {
-        marginTop: verticalScale(20)
+        marginTop: rHeight(20)
     },
 });

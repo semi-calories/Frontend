@@ -11,7 +11,7 @@ import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { GetUserData } from "~/components/asyncStorageData";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
 import { Null_img, UserName } from "~/constants/test";
@@ -52,15 +52,15 @@ const UserInfoMainScreen = ({ navigation }) => {
 
             {/* 화면이동 */}
             <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: user, infoType: UserInfoType.edit })}>
-                <Text style={[styles.boldText, { fontSize: scale(18) }]}>사용자 정보</Text>
+                <Text style={styles.menuText}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
             <Pressable style={styles.flexRow} onPress={() => navigation.push('SetGoalScreen', { userInfo: user, infoType: UserInfoType.edit })}>
-                <Text style={[styles.boldText, { fontSize: scale(18) }]}>목표 설정</Text>
+                <Text style={styles.menuText}>목표 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
             <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
-                <Text style={[styles.boldText, { fontSize: scale(18) }]}>선호 / 비선호 음식 설정</Text>
+                <Text style={styles.menuText}>선호 / 비선호 음식 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
         </RootView>
@@ -71,31 +71,43 @@ export default UserInfoMainScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: verticalScale(17),
-        paddingHorizontal: scale(24),
+        paddingVertical: rHeight(17),
+        paddingHorizontal: rWidth(24),
     },
 
     profile: {
-        paddingHorizontal: scale(107),
+        paddingHorizontal: rWidth(107),
         alignItems: 'center',
 
-        marginBottom: verticalScale(15)
+        marginBottom: rHeight(15)
     },
 
     img: {
-        width: scale(120),
-        height: verticalScale(125),
+        width: rWidth(120),
+        height: rHeight(125),
         resizeMode: 'contain',
-        marginBottom: verticalScale(8),
+        marginBottom: rHeight(8),
 
         borderRadius:100,
     },
 
     boldText: {
         fontFamily: fonts.bold,
-        fontSize: scale(30),
+        fontSize: rFont(30),
         color: colors.black,
-        textAlign: 'center'
+        textAlign: 'center',
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
+    },
+
+    menuText:{
+        fontFamily: fonts.bold,
+        fontSize: rFont(18),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     flexRow: {
@@ -103,10 +115,10 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
 
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderColor: colors.textGrey,
 
-        paddingHorizontal: scale(10),
-        paddingVertical: verticalScale(22),
+        paddingHorizontal: rWidth(10),
+        paddingVertical: rHeight(22),
     }
 });

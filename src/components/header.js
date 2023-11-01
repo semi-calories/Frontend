@@ -10,7 +10,7 @@ import { MaterialIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-ic
 import { useTabMenu } from "~/context/TabContext";
 
 import { colors, fonts } from "~/constants/globalStyles"
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { HeaderType } from "~/constants/type";
 
 const LogoTitle = require('~/assets/LogoTitle.png');
@@ -55,7 +55,7 @@ export function BackHeader({ back, title, rightType, backPress, rightPress }) {
                 </View>}
             {rightType ?
                 <RightTypefunc type={rightType} rightPress={rightPress} />
-                : <View style={{ width: scale(26.3) }} />
+                : <View style={{ width: rWidth(26.3) }} />
             }
         </View>
 
@@ -122,7 +122,7 @@ export function MainHeader({ notiPress, userInfoPress }) {
 const styles = StyleSheet.create({
     container: {
         width: dWidth,
-        height: verticalScale(60),
+        height: rHeight(60),
         backgroundColor: colors.white,
         flexDirection: 'row',
         alignItems: 'center',
@@ -130,11 +130,11 @@ const styles = StyleSheet.create({
     },
 
     paddingBack: {
-        paddingHorizontal: scale(26),
+        paddingHorizontal: rWidth(26),
     },
 
     paddingLogo: {
-        paddingHorizontal: scale(14),
+        paddingHorizontal: rWidth(14),
         justifyContent: 'space-between'
     },
 
@@ -143,44 +143,53 @@ const styles = StyleSheet.create({
 
     title: {
         color: colors.black,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         fontFamily: fonts.bold,
+        
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     skip: {
         color: colors.textGrey,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         fontFamily: fonts.regular,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     save: {
         color: colors.black,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         fontFamily: fonts.medium,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     searchView: {
-        width: scale(300),
-        height: verticalScale(40),
+        width: rWidth(300),
+        height: rHeight(40),
         flexDirection: 'row',
 
-        borderWidth: scale(2),
+        borderWidth: rWidth(2),
         borderColor: colors.textGrey,
         borderRadius: 10,
 
-        marginLeft: scale(10),
-        paddingHorizontal: scale(12),
-        paddingVertical: verticalScale(6),
+        marginLeft: rWidth(10),
+        paddingHorizontal: rWidth(12),
+        paddingVertical: rHeight(6),
     },
 
     searchInput: {
         flex: 1,
-        marginLeft: scale(10)
+        marginLeft: rWidth(10)
     },
 
     logoTitle: {
-        width: scale(218),
-        height: verticalScale(43),
+        width: rWidth(218),
+        height: rHeight(43),
         resizeMode: 'contain',
     },
 

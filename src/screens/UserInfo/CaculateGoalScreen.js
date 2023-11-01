@@ -15,7 +15,7 @@ import { HeaderType } from "~/constants/type";
 import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { UserInfoType } from "~/constants/type";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 import { TargetIntake } from "~/constants/test";
 
@@ -42,18 +42,18 @@ const CalculateGoalScreen = ({ navigation, route }) => {
             <View style={{ flex: 1 }}>
                 <Text style={styles.text}>목표량을 계산했어요</Text>
                 <View style={styles.inputViewStyle}>
-                    <LabelTextInput dark label='목표 섭취열량' unit="kcal" width={scale(298)} defaultValue={Math.round(userInfo?.kcal).toString()} inputStyle={styles.inputStyle} />
-                    <View style={{ marginTop: verticalScale(40) }}>
+                    <LabelTextInput dark label='목표 섭취열량' unit="kcal" width={rWidth(298)} defaultValue={Math.round(userInfo?.kcal).toString()} inputStyle={styles.inputStyle} />
+                    <View style={{ marginTop: rHeight(40) }}>
                         <View style={styles.contentView}>
-                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodCarbo]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.carbo).toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodCarbo]} unit="g" width={rWidth(180)} defaultValue={Math.round(userInfo?.carbo).toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{Math.round(userInfo?.carbo) * 4 } kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodProtein]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.protein).toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodProtein]} unit="g" width={rWidth(180)} defaultValue={Math.round(userInfo?.protein).toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{Math.round(userInfo?.protein) * 4} kcal</Text>
                         </View>
                         <View style={styles.contentView}>
-                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodFat]} unit="g" width={scale(180)} defaultValue={Math.round(userInfo?.fat).toString()} inputStyle={styles.inputStyle} />
+                            <LabelTextInput dark label={Nutrition_ko[Nutrition.foodFat]} unit="g" width={rWidth(180)} defaultValue={Math.round(userInfo?.fat).toString()} inputStyle={styles.inputStyle} />
                             <Text style={styles.calText}>{Math.round(userInfo?.fat) * 9} kcal</Text>
                         </View>
                     </View>
@@ -71,36 +71,46 @@ export default CalculateGoalScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(30),
+        paddingHorizontal: rWidth(30),
     },
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         color: colors.black,
 
-        marginVertical: verticalScale(30)
+        marginVertical: rHeight(30),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     inputViewStyle: {
-        marginHorizontal: scale(10),
+        marginHorizontal: rWidth(10),
     },
 
     inputStyle: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rFont(20),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     contentView: {
         flexDirection: 'row',
         justifyContent: 'space-between',
-        marginVertical: verticalScale(10),
+        marginVertical: rHeight(10),
     },
 
     calText: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
-        marginTop: verticalScale(47),
-        marginRight: scale(15),
+        fontSize: rFont(20),
+        
+        marginTop: rHeight(47),
+        marginRight: rWidth(15),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 });

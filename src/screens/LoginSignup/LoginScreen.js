@@ -12,7 +12,7 @@ import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
 import { StoreUserData } from "~/components/asyncStorageData";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight } from "~/constants/globalSizes";
 
 import { login } from "~/apis/api/loginSignup";
 import { getLoginInfo } from "~/apis/services/loginSignup";
@@ -59,8 +59,8 @@ const LoginScreen = ({ navigation }) => {
 
     return (
         <RootView viewStyle={styles.container}>
-            <BasicTextInput value={email} onChangeText={onChangeEmail} placeholder="이메일" width={scale(298)} valid/>
-            <BasicTextInput value={password} onChangeText={onChangePassword} placeholder="비밀번호" width={scale(298)} password valid/>
+            <BasicTextInput value={email} onChangeText={onChangeEmail} placeholder="이메일" width={rWidth(298)} valid/>
+            <BasicTextInput value={password} onChangeText={onChangePassword} placeholder="비밀번호" width={rWidth(298)} password valid/>
             <PrimaryButton text='로그인' onPress={handleLogin} btnStyle={styles.btn} />
         </RootView>
     );
@@ -75,6 +75,6 @@ const styles = StyleSheet.create({
     },
 
     btn: {
-        marginTop: verticalScale(20)
+        marginTop: rHeight(20)
     },
 });

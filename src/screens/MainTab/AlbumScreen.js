@@ -11,7 +11,7 @@ import { RootView } from "~/components/container";
 
 import { UserInfoType } from "~/constants/type";
 
-import { dWidth, verticalScale, scale } from "~/constants/globalSizes";
+import { dWidth, rHeight, rWidth } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const AlbumScreen = ({ navigation, route }) => {
@@ -126,22 +126,22 @@ export default AlbumScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(5),
+        paddingHorizontal: rWidth(5),
     },
 
     imageView: {
-        marginHorizontal: scale(2),
-        marginVertical: verticalScale(2),
+        marginHorizontal: rWidth(2),
+        marginVertical: rHeight(2),
     },
 
     image: {
-        width: dWidth / 3 - scale(7.5),
-        height: verticalScale(120)
+        width: dWidth / 3 - rWidth(7.5),
+        height: rHeight(120)
     },
 
     album: {
         width: dWidth,
-        height: verticalScale(550)
+        height: rHeight(550)
     },
 
     touchView: {
@@ -149,11 +149,11 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         alignItems: 'center',
         justifyContent: 'space-between',
-        paddingHorizontal: scale(30)
+        paddingHorizontal: rWidth(30)
     },
 
     text: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rWidth(20),
     }
 })

@@ -14,7 +14,7 @@ import { RootView, TabContainer } from "~/components/container";
 import { MainHeader } from "~/components/header";
 import { GetUserData } from "~/components/asyncStorageData";
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const tabs = ['기록', '통계','몸무게'];
@@ -78,17 +78,20 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     tab: {
         width: dWidth,
-        height: verticalScale(40),
+        height: rHeight(40),
         flexDirection: 'row',
         alignItems: 'center',
 
-        paddingHorizontal: scale(14),
+        paddingHorizontal: rWidth(14),
     },
 
     tabLabel: {
         fontFamily: fonts.bold,
-        fontSize: scale(23),
+        fontSize: rFont(23),
 
-        marginHorizontal: scale(7)
+        marginHorizontal: rWidth(7),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 });

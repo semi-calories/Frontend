@@ -7,7 +7,7 @@ import React, { useRef, useEffect } from "react";
 import { StyleSheet, View, Text, Animated, Easing } from "react-native";
 import Svg, { G, Circle } from "react-native-svg";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle)
@@ -98,16 +98,22 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: 25,
+        fontSize: rFont(25),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     unitText: {
         fontFamily: fonts.regular,
-        fontSize: 15,
+        fontSize: rFont(15),
         color: colors.black,
 
-        marginBottom: verticalScale(3)
+        marginBottom: rHeight(3),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 
 })

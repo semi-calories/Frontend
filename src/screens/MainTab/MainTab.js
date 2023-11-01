@@ -12,7 +12,7 @@ import { useTabMenu } from "~/context/TabContext";
 import { TabBarButton } from "~/components/button";
 
 import { colors } from "~/constants/globalStyles";
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight } from "~/constants/globalSizes";
 
 const Tab = createBottomTabNavigator();
 
@@ -31,10 +31,11 @@ const MainTab = ({ navigation }) => {
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: colors.white,
-                    height: scale(78),
+                    height: rWidth(78),
 
-                    borderWidth: scale(2),
+                    borderWidth: rWidth(2),
                     borderColor: colors.textGrey,
+                    borderBlockEndColor:colors.white,
                     borderBottomColor: colors.white,
                     borderTopLeftRadius: 10,
                     borderTopRightRadius: 10,
@@ -81,9 +82,9 @@ export default MainTab;
 
 const styles = StyleSheet.create({
     btn: {
-        top: verticalScale(-30),
-        width: scale(80),
-        height: verticalScale(80),
+        top: rHeight(-30),
+        width: rWidth(80),
+        height: rHeight(80),
         borderRadius: 40,
         backgroundColor: colors.primary,
 

@@ -17,15 +17,15 @@ import { Nutrition, Nutrition_ko } from "~/constants/food";
 import { RecordType } from "~/constants/type";
 import { SpentAmount, TargetAmount, SpentNutri, TargetNutri, FoodRecord } from "~/constants/test";
 
-import { dWidth, scale, verticalScale } from "~/constants/globalSizes";
+import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 import { getRecord } from "~/apis/api/diet";
 
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
-const radius = PixelRatio.roundToNearestPixel(scale(110));
-const STROKE_WIDTH = scale(30);
+const radius = PixelRatio.roundToNearestPixel(rWidth(110));
+const STROKE_WIDTH = rWidth(30);
 
 const HomeRecord = ({ navigation, userInfo }) => {
 
@@ -90,13 +90,13 @@ const HomeRecord = ({ navigation, userInfo }) => {
         const ratio = Math.round(spent / target * 100);
 
         return (
-            <View style={[styles.flexRowSpaceBetween, { marginVertical: verticalScale(17) }]}>
-                <Text style={[styles.text, { width: scale(67) }]}>{Nutrition_ko[name]}</Text>
-                <View style={[styles.flexRow, { width: scale(72) }]}>
+            <View style={[styles.flexRowSpaceBetween, { marginVertical: rHeight(17) }]}>
+                <Text style={[styles.text, { width: rWidth(67) }]}>{Nutrition_ko[name]}</Text>
+                <View style={[styles.flexRow, { width: rWidth(72) }]}>
                     <Text style={[styles.text, { fontFamily: fonts.bold }]}>{spent}</Text>
                     <Text style={styles.greyText}> / {target} g</Text>
                 </View>
-                <View style={[styles.flexRow, { width: scale(38) }]}>
+                <View style={[styles.flexRow, { width: rWidth(38) }]}>
                     <Text style={[styles.text, { fontFamily: fonts.bold }]}>{ratio}</Text>
                     <Text style={styles.greyText}> %</Text>
                 </View>
@@ -111,7 +111,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                     <Text style={styles.text}>{item.dietRecordList.foodName}</Text>
                     <Text style={styles.greyText}>{item.dietRecordList.foodKcal} kcal</Text>
                 </View>
-                <View style={[styles.flexRowSpaceBetween, { marginTop: verticalScale(10), paddingHorizontal: scale(5) }]}>
+                <View style={[styles.flexRowSpaceBetween, { marginTop: rHeight(10), paddingHorizontal: rWidth(5) }]}>
                     <View style={styles.nutri}>
                         <Text style={styles.greyText}>{Nutrition_ko[Nutrition.foodCarbo]}</Text>
                         <Text style={styles.greyText}>{item.dietRecordList.foodCarbo} g</Text>
@@ -162,7 +162,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                 </Pressable>
                 <Pressable onPress={() => refRBSheetCalendar.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
-                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: scale(5) }} />
+                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: rWidth(5) }} />
                 </Pressable>
                 <Pressable onPress={() => setSelectDate(CalculateRecordDate('add', selectDate))}>
                     <Entypo name="chevron-right" size={35} color="black" />
@@ -193,7 +193,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
             {/* 캘린더 */}
             <RBSheet
                 ref={refRBSheetCalendar}
-                height={verticalScale(320)}
+                height={rHeight(320)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
@@ -226,13 +226,13 @@ const HomeRecord = ({ navigation, userInfo }) => {
             {/* 식단조회 */}
             <RBSheet
                 ref={refRBSheetRecord}
-                height={verticalScale(500)}
+                height={rHeight(500)}
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
                         borderRadius: 10,
-                        paddingHorizontal: scale(30),
-                        paddingBottom: verticalScale(30)
+                        paddingHorizontal: rWidth(30),
+                        paddingBottom: rHeight(30)
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -248,8 +248,8 @@ const HomeRecord = ({ navigation, userInfo }) => {
                     />
                     :
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>
-                        <AntDesign name="exclamationcircleo" size={scale(60)} color={colors.btnBackground} />
-                        <Text style={[styles.text, { marginTop: verticalScale(15) }]}>식사 기록이 없습니다.</Text>
+                        <AntDesign name="exclamationcircleo" size={rWidth(60)} color={colors.btnBackground} />
+                        <Text style={[styles.text, { marginTop: rHeight(15) }]}>식사 기록이 없습니다.</Text>
                     </View>
                 }
             </RBSheet>
@@ -262,9 +262,9 @@ export default HomeRecord;
 const styles = StyleSheet.create({
     dayView: {
         width: dWidth,
-        height: verticalScale(35),
-        marginTop: verticalScale(20),
-        paddingHorizontal: scale(20),
+        height: rHeight(35),
+        marginTop: rHeight(20),
+        paddingHorizontal: rWidth(20),
 
         flexDirection: 'row',
         alignItems: 'center',
@@ -273,17 +273,23 @@ const styles = StyleSheet.create({
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(18),
+        fontSize: rFont(18),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     calendarText: {
         textAlign: 'center',
-        fontSize: scale(15)
+        fontSize: rFont(15),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     chartView: {
-        paddingVertical: verticalScale(30),
+        paddingVertical: rHeight(30),
         //flex:1,
         alignItems: "center",
         justifyContent: "center",
@@ -295,15 +301,15 @@ const styles = StyleSheet.create({
     },
 
     nutritionView: {
-        width: scale(280),
-        height: verticalScale(202),
-        borderWidth: scale(2),
+        width: rWidth(280),
+        height: rHeight(202),
+        borderWidth: rWidth(2),
         borderRadius: 10,
         borderColor: colors.textGrey,
-        marginHorizontal: scale(55),
+        marginHorizontal: rWidth(55),
 
-        paddingHorizontal: scale(22),
-        paddingVertical: verticalScale(10),
+        paddingHorizontal: rWidth(22),
+        paddingVertical: rHeight(10),
     },
 
     flexRow: {
@@ -319,25 +325,28 @@ const styles = StyleSheet.create({
 
     greyText: {
         fontFamily: fonts.medium,
-        fontSize: scale(16),
+        fontSize: rFont(16),
         color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     container: {
-        paddingVertical: verticalScale(24),
+        paddingVertical: rHeight(24),
 
-        borderBottomWidth: scale(1),
+        borderBottomWidth: rWidth(1),
         borderBottomColor: colors.textGrey,
     },
 
     nutri: {
-        width: scale(80),
+        width: rWidth(80),
         alignItems: 'center',
     },
 
     verticalBorder: {
-        width: scale(1),
-        height: verticalScale(24),
+        width: rWidth(1),
+        height: rHeight(24),
         backgroundColor: colors.textGrey
     },
 })

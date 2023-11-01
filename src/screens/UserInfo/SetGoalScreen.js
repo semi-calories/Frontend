@@ -18,16 +18,16 @@ import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
 import { UserInfoType } from "~/constants/type";
 
-import { scale, verticalScale } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { fonts, colors } from "~/constants/globalStyles";
 
-import { updateInfo, getInfo } from "~/apis/api/user";
+import { updateInfo, getInfo, savePredictWeight } from "~/apis/api/user";
 
 const GoalFunc = ({ label, onPress, goal }) => {
     return (
         <Pressable style={[styles.content, label == goal ? styles.selectedView : styles.noSelectedView]} onPress={onPress}>
             <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: scale(180), height: verticalScale(70) }}>
+                <View style={{ width: rWidth(180), height: rHeight(70) }}>
                     <Text style={[styles.contentTitle, { color: label == goal ? colors.white : colors.black }]}>{Goal_ko[label]}</Text>
                     <Text style={[styles.labelTitle, { color: label == goal ? colors.white : colors.black }]}>{Goal_explain[label]}</Text>
                 </View>
@@ -60,9 +60,12 @@ const SetGoalScreen = ({ navigation, route }) => {
         if (userInfo.userGoal) {
             setGoal(userInfo.userGoal)
         }
+        if(userInfo.period){
+            setPeriod(userInfo.period)
+        }
     }, [route.params])
 
-    const handleMove = async () => {
+    const onPressMove = async () => {
         if (!periodRegex.test(period)) {
             Alert.alert('올바른 형식인지 확인하세요')
             return;
@@ -82,8 +85,15 @@ const SetGoalScreen = ({ navigation, route }) => {
             userGoal: userGoal
         }
 
+        const userWeight ={
+            userCode: userInfo.userCode,
+            goalWeight: userInfo.goalWeight,
+            period: Number(period)
+        }
+
         try {
             const response = await updateInfo(user)
+            const res = await savePredictWeight(userWeight)
             const userData = await getUserInfo()
 
             navigation.navigate('CalculateGoalScreen', { userInfo: userData, infoType });
@@ -113,15 +123,15 @@ const SetGoalScreen = ({ navigation, route }) => {
                 <GoalFunc label={Goal.gain} onPress={() => setGoal(Goal.gain)} goal={userGoal} />
                 {userGoal !== Goal.health &&
                     <View style={[styles.box, styles.flexRow]}>
-                        <View style={{ justifyContent: 'center', height: verticalScale(60) }}>
+                        <View style={{ justifyContent: 'center', height: rHeight(60) }}>
                             <Text style={styles.labelText}>기간</Text>
                         </View>
-                        <BasicTextInput value={period.toString()} onChangeText={setPeriod} unit="일" width={scale(170)} keyboardType="numeric" validType="기간" valid={periodRegex.test(period)} />
+                        <BasicTextInput value={period.toString()} onChangeText={setPeriod} unit="일" width={rWidth(170)} keyboardType="numeric" validType="기간" valid={periodRegex.test(period)} />
                     </View>
                 }
 
             </View>
-            <MoveButton text="다음" onPress={handleMove}/>
+            <MoveButton text="다음" onPress={onPressMove}/>
         </RootView>
     );
 }
@@ -130,31 +140,37 @@ export default SetGoalScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingHorizontal: scale(30),
+        paddingHorizontal: rWidth(30),
     },
 
     text: {
         fontFamily: fonts.medium,
-        fontSize: scale(25),
+        fontSize: rFont(25),
         color: colors.black,
 
-        marginVertical: verticalScale(30)
+        marginVertical: rHeight(30),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     labelText: {
         fontFamily: fonts.bold,
-        fontSize: scale(20),
+        fontSize: rFont(20),
         color: colors.borderGrey,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     content: {
-        width: scale(320),
-        height: verticalScale(90),
+        width: rWidth(320),
+        height: rHeight(90),
         borderRadius: 10,
 
-        marginVertical: verticalScale(5),
-        paddingHorizontal: scale(20),
-        paddingVertical: verticalScale(6),
+        marginVertical: rHeight(5),
+        paddingHorizontal: rWidth(20),
+        paddingVertical: rHeight(6),
     },
 
     selectedView: {
@@ -163,32 +179,38 @@ const styles = StyleSheet.create({
 
     noSelectedView: {
         backgroundColor: colors.white,
-        borderWidth: scale(2),
+        borderWidth: rWidth(2),
         borderColor: colors.textGrey,
     },
 
     contentTitle: {
         fontFamily: fonts.bold,
-        fontSize: scale(19),
-        marginVertical: verticalScale(3),
+        fontSize: rFont(19),
+        marginVertical: rHeight(3),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     contentLabel: {
         fontFamily: fonts.regular,
-        fontSize: scale(14),
+        fontSize: rFont(14),
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     },
 
     icon: {
         alignSelf: 'center',
-        marginLeft: scale(50)
+        marginLeft: rWidth(50)
     },
 
     box: {
         flexDirection: 'row',
         //alignItems: "center",
         justifyContent: 'space-between',
-        paddingHorizontal: scale(15),
-        paddingVertical: verticalScale(20)
+        paddingHorizontal: rWidth(15),
+        paddingVertical: rHeight(20)
     },
 
     flexRow: {
