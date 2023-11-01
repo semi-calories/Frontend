@@ -1,6 +1,7 @@
 import React, { useEffect } from 'react';
 
-import { SafeAreaView } from "react-native";
+//import { SafeAreaView } from 'react-native-safe-area-context';
+import { SafeAreaView, StyleSheet, Platform } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
@@ -32,13 +33,21 @@ export default function App() {
     return null;
   } else {
     return (
-      <SafeAreaView style={{ flex: 1 }}>
-          <TabContextProvider>
-            <NavigationContainer>
-              <RootStack />
-            </NavigationContainer>
-          </TabContextProvider>
+      <SafeAreaView style={styles.container}>
+        <TabContextProvider>
+          <NavigationContainer>
+            <RootStack />
+          </NavigationContainer>
+        </TabContextProvider>
       </SafeAreaView>
     );
   }
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    paddingTop: Platform.OS == "android" ? 45 : 0,
+    paddingBottom: Platform.OS == "android" ? 15 : 0
+  }
+})
