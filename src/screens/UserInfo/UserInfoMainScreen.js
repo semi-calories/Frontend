@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
-import { View, Text, StyleSheet, Image, Pressable } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { RootView } from "~/components/container";
@@ -15,6 +15,8 @@ import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
 import { Null_img, UserName } from "~/constants/test";
+
+import { deleteInfo } from "~/apis/api/loginSignup";
 
 const UserInfoMainScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
@@ -41,6 +43,23 @@ const UserInfoMainScreen = ({ navigation }) => {
         setUser({ ...data })
     }
 
+    const onPressLogout = () =>{
+        Alert.alert('로그아웃!!')
+    }
+
+    const onPressQuit = async()=>{
+        try {
+            const response = await deleteInfo({userCode: user.userCode})
+            Alert.alert('회원탈퇴에 성공하였습니다.')
+
+            navigation.navigate('LoginSignupScreen')
+        } catch (err) {
+            console.log(err)
+
+            Alert.alert('회원탈퇴에 실패하였습니다.')
+        }
+    }
+
 
     return (
         <RootView viewStyle={styles.container}>
@@ -62,6 +81,13 @@ const UserInfoMainScreen = ({ navigation }) => {
             <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
                 <Text style={styles.menuText}>선호 / 비선호 음식 설정</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+            </Pressable>
+            <Pressable style={styles.flexRow} onPress={onPressLogout}>
+                <Text style={styles.menuText}>로그아웃</Text>
+                <MaterialIcons name="chevron-right" size={35} color={colors.white} />
+            </Pressable>
+            <Pressable onPress={onPressQuit}>
+                <Text style={styles.quitText}>회원탈퇴</Text>
             </Pressable>
         </RootView>
     );
@@ -105,6 +131,18 @@ const styles = StyleSheet.create({
         fontFamily: fonts.bold,
         fontSize: rFont(18),
         color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
+    },
+
+    quitText:{
+        fontFamily: fonts.regular,
+        fontSize: rFont(15),
+        color: colors.borderGrey,
+
+        marginVertical:rHeight(10),
+        textDecorationLine:'underline',
 
         includeFontPadding: false,
         textAlignVertical: 'center'

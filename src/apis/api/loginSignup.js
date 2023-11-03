@@ -33,3 +33,15 @@ export const emailDuplicateCheck = async (email) => {
         console.error(err)
     }
 }
+
+//유저 정보 삭제(탈퇴)
+export const deleteInfo = async (userCode) => {
+    console.log('deleteInfo userCode', userCode)
+
+    try {
+        const { data } = await frontendInstance.post(`/deleteInfo`, userCode)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
