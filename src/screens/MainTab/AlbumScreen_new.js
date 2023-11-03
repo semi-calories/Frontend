@@ -5,6 +5,7 @@ import React, { useState, useEffect, useLayoutEffect } from 'react';
 
 import { Image, View, Platform, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
+import { manipulateAsync } from 'expo-image-manipulator';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
@@ -46,13 +47,22 @@ const AlbumScreen_new = ({ navigation, route }) => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            base64: true,
+            quality:0.5,
+            //base64: true,
         });
-        //console.log(result);
+        //console.log('#####',result);
 
-        if (!result.canceled) {
-            setImage(result.assets[0]);
-        }
+        await manipulateAsync(
+            result.assets[0].uri,
+            [{ resize: { width: result.assets[0].width / 4, height: result.assets[0].height / 4 } }],
+            { base64:true, format: 'jpeg', compress: 0.5 } // 원하는 형식 및 압축률 설정
+          ).then((data)=>{
+                console.log('####', data)
+            if (!result.canceled) {
+                setImage(data);
+            }
+          })
+
     };
 
     const uploadPictureHandler = async () => {

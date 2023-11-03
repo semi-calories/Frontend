@@ -5,6 +5,7 @@ import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
 
 import { StyleSheet, TouchableOpacity, View, Image, Text, Alert } from "react-native";
 import { Camera, CameraType, AutoFocus } from 'expo-camera';
+import { manipulateAsync } from 'expo-image-manipulator';
 import { AntDesign } from '@expo/vector-icons';
 
 import { BackHeader } from "~/components/header";
@@ -46,16 +47,21 @@ const CameraScreen = ({ navigation, route }) => {
         // cameraRef가 없으면 해당 함수가 실행되지 않게 가드
         if (!cameraRef.current) return;
 
-        // takePictureAsync를 통해 사진을 찍습니다.
-        // 찍은 사진은 base64 형식으로 저장합니다.
-        await cameraRef.current
-            .takePictureAsync({
-                base64: true,
-            })
-            .then((data) => {
-                setPreviewVisible(true);
-                setCapturedImage(data);
-            });
+        const options = {
+            quality: 0.5, // 이미지 품질 (0.0에서 1.0 사이의 값, 1.0이 최상의 품질)
+           // base64: true, // true로 설정하면 이미지를 base64 문자열로 반환
+          };
+
+        const photo = await cameraRef.current.takePictureAsync(options)
+
+        await manipulateAsync(
+            photo.uri,
+            [{ resize: { width: photo.width / 4, height: photo.height / 4 } }],
+            { base64:true, format: 'jpeg', compress: 0.5 } // 원하는 형식 및 압축률 설정
+          ).then((data)=>{
+            setPreviewVisible(true);
+            setCapturedImage(data);
+          })
     };
 
     const retakePictureHandler = () => {
@@ -63,20 +69,20 @@ const CameraScreen = ({ navigation, route }) => {
         setCapturedImage(null);
     };
 
-    const uploadPictureHandler = async() => {
+    const uploadPictureHandler = async () => {
         if (nextScreen == 'MealtimeScreen') {
             const dietLists = await recognizeUploadDiet()
 
-            if(dietLists.length){
+            if (dietLists.length) {
                 params = { foodParam: dietLists, userInfo, type: RecordType.init }
 
                 navigation.navigate(nextScreen, params)
-            }else{
+            } else {
                 Alert.alert('사진 인식이 되지 않습니다. 다시 촬영해주세요.')
             }
 
         } else {
-            const params = { 
+            const params = {
                 userInfo: user,
                 infoType: UserInfoType.edit
             }
@@ -88,15 +94,15 @@ const CameraScreen = ({ navigation, route }) => {
     const recognizeUploadDiet = async () => {
         const uploadInfo = {
             userCode: userInfo.userCode,
-            file:capturedImage.base64,
+            file: capturedImage.base64,
         }
 
-        try{
+        try {
             const { dietLists } = await recognizeUpload(uploadInfo)
             console.log('recognizeUploadDiet dietLists', dietLists)
 
             return dietLists;
-        }catch(e){
+        } catch (e) {
             console.error()
         }
 
