@@ -23,7 +23,7 @@ const RecommendScreen = ({ navigation }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
 
     const [user, setUser] = useState({})
-    //console.log('RecommendScreen user', user)
+    console.log('RecommendScreen user', user)
     const [recommends, setRecommends] = useState([]);
     console.log('RecommendScreen recommends', recommends)
 
@@ -34,9 +34,12 @@ const RecommendScreen = ({ navigation }) => {
     }, [navigation]);
 
     useEffect(() => {
-        if (user) {
-            recommendRequestDiet()
-        }
+        if(user.constructor === Object
+            && Object.keys(user).length === 0)  {
+           return;
+         }
+         
+        recommendRequestDiet()
     }, [user])
 
     useEffect(() => {
