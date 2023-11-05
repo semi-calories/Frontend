@@ -150,6 +150,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             goalWeight,
             userActivity: userActivity,
             userGoal: userInfo.userGoal,
+            period: userInfo.period,
         };
 
         const userWeight ={
@@ -167,8 +168,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
 
         } else if (infoType == UserInfoType.edit) {
             try {
-                const response = await updateInfo(user)
                 const res = await savePredictWeight(userWeight)
+                const response = await updateInfo(user)
                 const userData = await getInfo({ userCode: userInfo.userCode })
                 StoreUserData({ ...userData, userCode: userInfo.userCode })
 

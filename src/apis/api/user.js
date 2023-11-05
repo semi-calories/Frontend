@@ -117,3 +117,24 @@ export const deleteWeight = async (weightInfo) => {
         console.error(err)
     }
 }
+
+//예상 몸무게 조회
+export const getPredictWeight = async (userCode) => {
+    try {
+        const { data } = await frontendInstance.get('/record/getPredictWeight', { params: userCode })
+        return data;
+    } catch (e) {
+        console.error(e)
+    }
+}
+
+//예상 몸무게 저장
+export const savePredictWeight = async (weightInfo) => {
+    console.log('savePredictWeight weightInfo', weightInfo)
+    try {
+        const { data } = await frontendInstance.post('/record/savePredictWeight', weightInfo)
+        return data;
+    } catch (e) {
+        console.error(e)
+    }
+}

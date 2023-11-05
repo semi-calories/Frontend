@@ -66,7 +66,7 @@ const SetGoalScreen = ({ navigation, route }) => {
     }, [route.params])
 
     const onPressMove = async () => {
-        if (!periodRegex.test(period)) {
+        if (userGoal!==Goal.health &&!periodRegex.test(period)) {
             Alert.alert('올바른 형식인지 확인하세요')
             return;
         }
@@ -82,7 +82,8 @@ const SetGoalScreen = ({ navigation, route }) => {
             weight: userInfo.weight,
             userActivity: userInfo.userActivity,
             goalWeight: userInfo.goalWeight,
-            userGoal: userGoal
+            userGoal: userGoal,
+            period: period,
         }
 
         const userWeight ={
@@ -92,8 +93,8 @@ const SetGoalScreen = ({ navigation, route }) => {
         }
 
         try {
-            const response = await updateInfo(user)
             const res = await savePredictWeight(userWeight)
+            const response = await updateInfo(user)
             const userData = await getUserInfo()
 
             navigation.navigate('CalculateGoalScreen', { userInfo: userData, infoType });

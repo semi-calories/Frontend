@@ -6,6 +6,7 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { LineChart } from "react-native-gifted-charts"
 import { Chip } from 'react-native-paper';
@@ -20,8 +21,8 @@ import { LineData } from "~/constants/test";
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-import { getInfo, getWeight, saveWeight, deleteWeight, getMonthRangeWeight } from "~/apis/api/user";
-import { getStructedRangeWeight } from "~/apis/services/user";
+import { getInfo, getWeight, saveWeight, deleteWeight, getMonthRangeWeight, getPredictWeight } from "~/apis/api/user";
+import { getStructedRangeWeight, getStructedPredictWeight } from "~/apis/services/user";
 
 const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 
@@ -46,6 +47,8 @@ const HomeWeight = ({ userInfo }) => {
 
     const [predictLine, setPredictLine] = useState([])
     console.log('HomeWeight predictLine', predictLine)
+    const [predictStartIndex, setPredictStartIndex] = useState(0)
+    //console.log('predictStartIndex', predictStartIndex)
 
     const [date, setDate] = useState(new Date())
     const [weight, setWeight] = useState('0')
@@ -56,13 +59,13 @@ const HomeWeight = ({ userInfo }) => {
     useEffect(() => {
         if (userInfo.userCode) {
             handleRangeWeight()
-            handlePredictWeight()
             setLoaded(true)
         }
     }, [modal])
 
     const handlePressChart = item => {
-        console.log(item)
+        console.log('handlePressChart item', item)
+
         // item.label로 setDate
         getDayWeight()
 
@@ -90,6 +93,7 @@ const HomeWeight = ({ userInfo }) => {
             StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 저장되었습니다.')
+            handleRangeWeight()
             refRBSheetWeight.current.close()
         } catch (e) {
             console.error(e)
@@ -118,6 +122,7 @@ const HomeWeight = ({ userInfo }) => {
             StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 삭제되었습니다.')
+            handleRangeWeight()
             refRBSheetWeight.current.close()
         } catch (e) {
             console.error(e)
@@ -155,7 +160,7 @@ const HomeWeight = ({ userInfo }) => {
     }
 
     //기간 몸무게 조회
-    const getRangeWeight = async () => {
+    const handleRangeWeight = async () => {
         const weightInfo = {
             userCode: userInfo.userCode,
             startYear: startDate.getFullYear(),
@@ -169,10 +174,13 @@ const HomeWeight = ({ userInfo }) => {
         try {
             const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
             const weightList = getStructedRangeWeight(rawWeightList)
-            console.log('getRangeWeight weightList', weightList)
+            const [index, ...predictWeightList] = getStructedPredictWeight(rawWeightList)
+            //console.log('handleRangeWeight weightList', weightList)
+
+            setPredictStartIndex(index)
 
             setLineData([...weightList])
-
+            setPredictLine([...predictWeightList])
         } catch (e) {
             console.error(e)
         }
@@ -205,7 +213,7 @@ const HomeWeight = ({ userInfo }) => {
     return (
         <View>
             <View style={styles.dayView}>
-                <Text style={styles.text}>최근 1개월</Text>
+                <Text style={styles.text}>{period}</Text>
                 <FontAwesome name="sliders" onPress={() => refRBSheetFilter.current.open()} size={23} color={colors.borderGrey} />
             </View>
 
@@ -213,15 +221,19 @@ const HomeWeight = ({ userInfo }) => {
             <View style={styles.chartView}>
                 {isLoaded &&
                     <LineChart
+                        data2={predictLine}
                         data={lineData}
-                        color={colors.primary}
+                        endIndex={predictStartIndex+1}
+                        startIndex2={predictStartIndex + 1}
+                        color1={colors.primary}
+                        color2="orange"
                         onPress={item => handlePressChart(item)}
                         height={rHeight(310)}
                         dataPointsHeight={10}
                         dataPointsWidth={10}
-                        dataPointsColor={colors.linePoint}
-                        textFontSize={scale(12)}
-                        textFontSize={rWidth(12)}
+                        dataPointsColor1={colors.linePoint}
+                        dataPointsColor2="red"
+                        textFontSize={rFont(12)}
                         adjustToWidth
                         scrollToEnd
                         hideYAxisText
@@ -241,8 +253,15 @@ const HomeWeight = ({ userInfo }) => {
 
             </View>
 
+            <View style={styles.labelView}>
+                <View style={[styles.label, { backgroundColor: colors.primary}]} />
+                <Text style={styles.labelText}>몸무게</Text>
+                <View style={[styles.label, { backgroundColor: "orange" }]} />
+                <Text style={styles.labelText}>예상 몸무게</Text>
+            </View>
+
             <View style={styles.textView}>
-                <Text style={styles.greyText}>* 그래프 점을 클릭하면 몸무게를 수정할 수 있습니다 </Text>
+                <Text style={styles.greyText}>* 몸무게 점을 클릭하면 몸무게를 수정할 수 있습니다 </Text>
             </View>
 
 
@@ -270,7 +289,7 @@ const HomeWeight = ({ userInfo }) => {
                                 id={per + idx}
                                 mode="outlined"
                                 onPress={() => handlePeriod(per)}
-                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground }}
+                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground, paddingVertical: rHeight(0.3) }}
                             >
                                 {per}
                             </Chip>
@@ -287,7 +306,6 @@ const HomeWeight = ({ userInfo }) => {
                     <MoveButton text="조회" onPress={handleRange} />
                 </View>
             </RBSheet>
-
 
             {/* 몸무게 추가 bottomSheet */}
             <RBSheet
@@ -311,7 +329,7 @@ const HomeWeight = ({ userInfo }) => {
                         <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
-                        <View style={{justifyContent:'center', height:rHeight(60)}}>
+                        <View style={{ justifyContent: 'center', height: rHeight(60) }}>
                             <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
                         </View>
                         <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={rWidth(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
@@ -369,7 +387,7 @@ const styles = StyleSheet.create({
     },
 
     textView: {
-        marginTop: rHeight(30),
+        marginTop: rHeight(20),
         marginHorizontal: rWidth(15),
         alignItems: 'flex-end'
     },
@@ -403,5 +421,44 @@ const styles = StyleSheet.create({
     btnStyle: {
         width: rWidth(170),
         height: rHeight(50)
+    },
+
+    timeView: {
+        paddingVertical: rHeight(4),
+        paddingHorizontal: rWidth(15),
+        backgroundColor: colors.btnBackground,
+        borderRadius: 10,
+    },
+
+    timeText: {
+        fontFamily: fonts.medium,
+        fontSize: rFont(16),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
+    },
+
+    labelView: {
+        flexDirection: 'row',
+        justifyContent: 'space-between',
+        alignItems: 'center',
+        paddingHorizontal: rWidth(115),
+        marginTop:rHeight(40)
+    },
+
+    label: {
+        width: rWidth(12),
+        height: rHeight(12),
+        borderRadius: 30,
+    },
+
+    labelText: {
+        fontFamily: fonts.regular,
+        fontSize: rFont(12),
+        color: colors.label,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 })
