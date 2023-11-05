@@ -5,8 +5,6 @@ import React, { useState, useRef, useMemo, useEffect } from "react";
 
 import { View, Text, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
-import DateTimePicker from '@react-native-community/datetimepicker';
-import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { LineChart } from "react-native-gifted-charts"
 import { Chip } from 'react-native-paper';
@@ -15,6 +13,7 @@ import { MoveButton, PrimaryButton } from "~/components/button";
 import { BasicTextInput } from "~/components/textInput";
 import { StoreUserData } from "~/components/asyncStorageData";
 import { weightRegex } from "~/components/regex";
+import { DateTimePickerSelect } from "~/components/date";
 
 import { LineData } from "~/constants/test";
 
@@ -36,8 +35,8 @@ const HomeWeight = ({ userInfo }) => {
 
     const [modal, setModal] = useState(false)
 
+    const [filterPeriod, setFilterPeriod] = useState('최근 1개월')
     const [period, setPeriod] = useState('최근 1개월')
-
 
     //차트 몸무게
     const refRBSheetWeight = useRef();
@@ -154,6 +153,7 @@ const HomeWeight = ({ userInfo }) => {
     }
 
     const handleRange = () => {
+        setPeriod(filterPeriod)
         setModal(!modal)
 
         refRBSheetFilter.current.close()
@@ -187,7 +187,7 @@ const HomeWeight = ({ userInfo }) => {
     }
 
     const handlePeriod = per => {
-        setPeriod(per)
+        setFilterPeriod(per)
 
         let date = ''
 
@@ -223,7 +223,7 @@ const HomeWeight = ({ userInfo }) => {
                     <LineChart
                         data2={predictLine}
                         data={lineData}
-                        endIndex={predictStartIndex+1}
+                        endIndex={predictStartIndex + 1}
                         startIndex2={predictStartIndex + 1}
                         color1={colors.primary}
                         color2="orange"
@@ -254,7 +254,7 @@ const HomeWeight = ({ userInfo }) => {
             </View>
 
             <View style={styles.labelView}>
-                <View style={[styles.label, { backgroundColor: colors.primary}]} />
+                <View style={[styles.label, { backgroundColor: colors.primary }]} />
                 <Text style={styles.labelText}>몸무게</Text>
                 <View style={[styles.label, { backgroundColor: "orange" }]} />
                 <Text style={styles.labelText}>예상 몸무게</Text>
@@ -289,7 +289,7 @@ const HomeWeight = ({ userInfo }) => {
                                 id={per + idx}
                                 mode="outlined"
                                 onPress={() => handlePeriod(per)}
-                                style={{ backgroundColor: per == period ? colors.btnBackground : colors.white, borderColor: per == period ? colors.white : colors.btnBackground, paddingVertical: rHeight(0.3) }}
+                                style={{ backgroundColor: per == filterPeriod ? colors.btnBackground : colors.white, borderColor: per == filterPeriod ? colors.white : colors.btnBackground, height: rHeight(35) }}
                             >
                                 {per}
                             </Chip>
@@ -297,9 +297,9 @@ const HomeWeight = ({ userInfo }) => {
                         }
                     </View>
                     <View style={styles.rangeView}>
-                        <DateTimePicker mode="date" value={startDate} onChange={(event, selectedDate) => setStartDate(selectedDate)} />
+                        <DateTimePickerSelect mode="date" value={startDate} onChange={(event, selectedDate) => setStartDate(selectedDate)} />
                         <Text style={styles.text}>-</Text>
-                        <DateTimePicker mode="date" value={endDate} onChange={(event, selectedDate) => setEndDate(selectedDate)} />
+                        <DateTimePickerSelect mode="date" value={endDate} onChange={(event, selectedDate) => setEndDate(selectedDate)} />
                     </View>
                 </View>
                 <View style={{ alignItems: 'center' }}>
@@ -326,7 +326,7 @@ const HomeWeight = ({ userInfo }) => {
                 <View style={{ flex: 1 }}>
                     <View style={styles.box}>
                         <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
-                        <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
+                        <DateTimePickerSelect mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <View style={{ justifyContent: 'center', height: rHeight(60) }}>
@@ -444,7 +444,7 @@ const styles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         paddingHorizontal: rWidth(115),
-        marginTop:rHeight(40)
+        marginTop: rHeight(40)
     },
 
     label: {

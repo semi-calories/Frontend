@@ -4,13 +4,12 @@
 
 import React, { useLayoutEffect, useState } from "react";
 
-import { View, Text, StyleSheet, Switch, Alert } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
-import moment from "moment";
+import { View, Text, StyleSheet, Switch, Alert} from "react-native";
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
+import { DateTimePickerSelect } from "~/components/date";
 
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -18,9 +17,9 @@ import { colors, fonts } from "~/constants/globalStyles";
 const NotificationSettingScreen = ({ navigation }) => {
     const [isEnabled, setIsEnabled] = useState(true);
 
-    const [breakfast, setBreakfast] = useState(new Date(2023,8,19,7));
-    const [lunch, setLunch] = useState(new Date(2023,8,19,13));
-    const [dinner, setDinner] = useState(new Date(2023,8,19,18,30))
+    const [breakfast, setBreakfast] = useState(new Date(2023, 8, 19, 7));
+    const [lunch, setLunch] = useState(new Date(2023, 8, 19, 13));
+    const [dinner, setDinner] = useState(new Date(2023, 8, 19, 18, 30))
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -28,46 +27,41 @@ const NotificationSettingScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    //날짜 포맷; HH:mm 형식 (0~24시간)
-    const FormatDate = date =>{
-        return moment(date).format('HH:mm')
-    }
-
-    const handleComplete=()=>{
+    const handleComplete = () => {
         //알림 데이터 서버에 저장
 
-       Alert.alert('식단 알림이 설정되었습니다.')
+        Alert.alert('식단 알림이 설정되었습니다.')
     }
-   
+
     return (
         <RootView viewStyle={styles.container}>
-            <View style={{flex:1}}>
-            <View style={styles.flexRow}>
-                <Text style={styles.text}>식단 알림 설정</Text>
-                <Switch
-                    trackColor={{ false: colors.textGrey, true: colors.switch }}
-                    thumbColor={colors.white}
-                    onValueChange={() => setIsEnabled(!isEnabled)}
-                    value={isEnabled}
-                />
-            </View>
-            <Text style={styles.greyText}>정해진 시간에 맞춰 식단 추천 알람을 보내드려요</Text>
-            {isEnabled && (
-                <View style={{ paddingTop: rHeight(20), paddingHorizontal: rWidth(40) }}>
-                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
-                        <Text style={styles.boldGreyText}>아침</Text>
-                        <DateTimePicker mode="time" value={breakfast} onChange={(event, selectedDate) => setBreakfast(selectedDate)} />
-                    </View>
-                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
-                        <Text style={styles.boldGreyText}>점심</Text>
-                        <DateTimePicker mode="time" value={lunch} onChange={(event, selectedDate) => setLunch(selectedDate)} />
-                    </View>
-                    <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
-                        <Text style={styles.boldGreyText}>저녁</Text>
-                        <DateTimePicker mode="time" value={dinner} onChange={(event, selectedDate) => setDinner(selectedDate)} />
-                    </View>
+            <View style={{ flex: 1 }}>
+                <View style={styles.flexRow}>
+                    <Text style={styles.text}>식단 알림 설정</Text>
+                    <Switch
+                        trackColor={{ false: colors.textGrey, true: colors.switch }}
+                        thumbColor={colors.white}
+                        onValueChange={() => setIsEnabled(!isEnabled)}
+                        value={isEnabled}
+                    />
                 </View>
-            )}
+                <Text style={styles.greyText}>정해진 시간에 맞춰 식단 추천 알람을 보내드려요</Text>
+                {isEnabled && (
+                    <View style={{ paddingTop: rHeight(20), paddingHorizontal: rWidth(40) }}>
+                        <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
+                            <Text style={styles.boldGreyText}>아침</Text>
+                            <DateTimePickerSelect mode="time" value={breakfast} onChange={(event, selectedDate) => setBreakfast(selectedDate)} />
+                        </View>
+                        <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
+                            <Text style={styles.boldGreyText}>점심</Text>
+                            <DateTimePickerSelect mode="time" value={lunch} onChange={(event, selectedDate) => setLunch(selectedDate)} />
+                      </View>
+                        <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
+                            <Text style={styles.boldGreyText}>저녁</Text>
+                            <DateTimePickerSelect mode="time" value={dinner} onChange={(event, selectedDate) => setDinner(selectedDate)} />
+                        </View>
+                    </View>
+                )}
             </View>
             <MoveButton text="완료" onPress={handleComplete} />
         </RootView>
@@ -80,7 +74,6 @@ const styles = StyleSheet.create({
     container: {
         paddingHorizontal: rWidth(37),
         paddingTop: rHeight(25),
-        
     },
 
     text: {
@@ -114,5 +107,5 @@ const styles = StyleSheet.create({
 
         includeFontPadding: false,
         textAlignVertical: 'center'
-    }
+    },
 });

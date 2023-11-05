@@ -1,9 +1,14 @@
 //
-//date 관련 계산 함수들
+//date 관련 
 //
-
+import { Platform, StyleSheet, Pressable, Text } from "react-native";
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
+import DateTimePicker from '@react-native-community/datetimepicker';
+import { DateTimePickerAndroid } from '@react-native-community/datetimepicker';
+
+import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
+import { colors, fonts } from "~/constants/globalStyles";
 
 const moment = extendMoment(Moment);
 
@@ -63,7 +68,7 @@ export const CalculateWeek = (year, month) => {
         if (lastWeekDay.isAfter(endDay)) {
             lastWeekDay = endDay;
         }
-        
+
         weekRange = moment.range(firstWeekDay, lastWeekDay)
         calendar.push(weekRange)
     }
@@ -71,17 +76,61 @@ export const CalculateWeek = (year, month) => {
     return calendar
 }
 
-export const FormatWeekData = rawWeekData =>{
+export const FormatWeekData = rawWeekData => {
     //console.log('FormatWeekData', rawWeekData)
 
     let weekData = [];
 
-    for(let week of rawWeekData){
+    for (let week of rawWeekData) {
         let formatStartDate = moment(week.start).format('YYYY-MM-DD')
         let formatEndDate = moment(week.end).format('YYYY-MM-DD')
 
-        weekData.push({start: formatStartDate, end: formatEndDate})
+        weekData.push({ start: formatStartDate, end: formatEndDate })
     }
 
     return weekData
 }
+
+//시간 포맷 - 8:30 PM 형태
+export const FormatTime = date => {
+    return moment(date).format('LT')
+}
+
+//날짜 포맷 - 09/04/1986 형태
+export const FormatDate = date => {
+    return moment(date).format('L')
+}
+
+//날짜, 시간 선택하는 picker - android, ios 둘 다 사용
+export const DateTimePickerSelect = ({mode, value, onChange}) => {
+    return (
+        Platform.OS == "android" ?
+            <Pressable style={styles.pickerView} onPress={() => DateTimePickerAndroid.open({
+                mode:mode,
+                value:value,
+                onChange:onChange,
+            })}>
+                <Text style={styles.pickerText}>{mode=='time' ? FormatTime(value) : FormatDate(value)}</Text>
+            </Pressable>
+            :
+            <DateTimePicker mode={mode} value={value} onChange={onChange} />
+    )
+}
+
+const styles = StyleSheet.create({
+    pickerView: {
+        paddingVertical: rHeight(4),
+        paddingHorizontal: rWidth(15),
+        backgroundColor: colors.btnBackground,
+        borderRadius: 10,
+    },
+
+    pickerText: {
+        fontFamily: fonts.medium,
+        fontSize: rFont(16),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
+    }
+})

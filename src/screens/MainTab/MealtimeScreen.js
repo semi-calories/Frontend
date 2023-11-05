@@ -5,7 +5,6 @@
 import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 
 import { Pressable, FlatList, StyleSheet, Text, View, Alert } from "react-native";
-import DateTimePicker from '@react-native-community/datetimepicker';
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import moment from "moment";
@@ -15,6 +14,7 @@ import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
+import { DateTimePickerSelect } from "~/components/date";
 
 import { Nutrition, Nutrition_ko, Satisfaction, Satisfaction_icon, Satisfaction_ko } from "~/constants/food";
 import { RecordType } from "~/constants/type";
@@ -146,8 +146,6 @@ const MealtimeScreen = ({ navigation, route }) => {
             return;
         }
 
-
-
         const result = selectFoods.map(food => food.foodCode == foodDetail.foodCode ? foodDetail : food)
         console.log('handleSave', result)
 
@@ -258,12 +256,12 @@ const MealtimeScreen = ({ navigation, route }) => {
                 <View style={{ marginTop: rHeight(30) }}>
                     <View style={[styles.box, styles.border]}>
                         <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
-                        <DateTimePicker mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
+                        <DateTimePickerSelect mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={styles.box}>
                         <MaterialCommunityIcons name="clock-outline" size={33} color={colors.black} />
-                        <DateTimePicker mode="time" value={time} onChange={(event, selectedDate) => setTime(selectedDate)} />
-                    </View>
+                        <DateTimePickerSelect mode="time" value={time} onChange={(event, selectedDate) => setTime(selectedDate)} />
+                     </View>
                 </View>
             </View>
             <View style={[styles.container, { flex: 1 }]}>
@@ -480,5 +478,5 @@ const styles = StyleSheet.create({
     btnStyle: {
         width: rWidth(170),
         height: rHeight(50)
-    }
+    },
 })
