@@ -11,8 +11,14 @@ export const getDislikeFood = rawData => {
 }
 
 export const getStructedRangeWeight = rawData => {
-    //console.log('getStructedRangeWeight rawData', rawData)
+    console.log('getStructedRangeWeight rawData', rawData)
+
+    let endIndex = 0;
     const data = rawData.map(v => {
+        if (v.weight !== 0) {
+            endIndex++;
+        }
+
         const year = v.timestamp.substring(2, 4);
         const month = v.timestamp.substring(5, 7);
         const day = v.timestamp.substring(8, 10);
@@ -25,7 +31,7 @@ export const getStructedRangeWeight = rawData => {
         }
     })
 
-    return [{ value: data[0].value }, ...data]
+    return [endIndex, { value: data[0].value }, ...data]
 }
 
 export const getStructedPredictWeight = rawData => {

@@ -47,9 +47,11 @@ const HomeWeight = ({ userInfo }) => {
     const [predictLine, setPredictLine] = useState([])
     console.log('HomeWeight predictLine', predictLine)
     const [predictStartIndex, setPredictStartIndex] = useState(0)
-    //console.log('predictStartIndex', predictStartIndex)
+    const [predictEndIndex, setPredictEndIndex] = useState(0)
+    //console.log('predictStartIndex', predictEndIndex)
 
-    const [date, setDate] = useState(new Date())
+    const [selectDate, setSelectDate] = useState(new Date())
+    console.log('selectDate', selectDate)
     const [weight, setWeight] = useState('0')
 
     //chart에러 나는거 막기 위함
@@ -62,10 +64,21 @@ const HomeWeight = ({ userInfo }) => {
         }
     }, [modal])
 
+    useEffect(() => {
+        getDayWeight()
+    }, [selectDate])
+
     const handlePressChart = item => {
         console.log('handlePressChart item', item)
 
-        // item.label로 setDate
+        //TODO: 올해로만 됨
+        const year = new Date().getFullYear()
+        const month = item.label.substring(0, 2)
+        const day = item.label.substring(3, 5)
+        // console.log(year, month, day)
+
+        setSelectDate(new Date(year, month - 1, day))
+
         getDayWeight()
 
         refRBSheetWeight.current.open()
@@ -77,6 +90,9 @@ const HomeWeight = ({ userInfo }) => {
 
     //몸무게 저장
     const handleSave = async () => {
+        const date = new Date(selectDate)
+        date.setDate(date.getDate() + 1)
+
         const dateString = date.toISOString().substring(0, 19)
 
         const weightInfo = {
@@ -107,6 +123,9 @@ const HomeWeight = ({ userInfo }) => {
             return;
         }
 
+        const date = new Date(selectDate)
+        date.setDate(date.getDate() + 1)
+
         const dateString = date.toISOString().substring(0, 19)
 
         const weightInfo = {
@@ -131,6 +150,9 @@ const HomeWeight = ({ userInfo }) => {
 
     //특정날 몸무게 조회
     const getDayWeight = async () => {
+        const date = new Date(selectDate)
+        date.setDate(date.getDate() + 1)
+
         const dateString = date.toISOString().substring(0, 19)
 
         const weightInfo = {
@@ -173,11 +195,12 @@ const HomeWeight = ({ userInfo }) => {
 
         try {
             const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
-            const weightList = getStructedRangeWeight(rawWeightList)
+            const [i, ...weightList] = getStructedRangeWeight(rawWeightList)
             const [index, ...predictWeightList] = getStructedPredictWeight(rawWeightList)
             //console.log('handleRangeWeight weightList', weightList)
 
             setPredictStartIndex(index)
+            setPredictEndIndex(i)
 
             setLineData([...weightList])
             setPredictLine([...predictWeightList])
@@ -223,7 +246,7 @@ const HomeWeight = ({ userInfo }) => {
                     <LineChart
                         data2={predictLine}
                         data={lineData}
-                        endIndex={predictStartIndex + 1}
+                        endIndex={predictEndIndex}
                         startIndex2={predictStartIndex + 1}
                         color1={colors.primary}
                         color2="orange"
@@ -234,7 +257,7 @@ const HomeWeight = ({ userInfo }) => {
                         dataPointsColor1={colors.linePoint}
                         dataPointsColor2="red"
                         textFontSize={rFont(12)}
-                        adjustToWidth
+                        adjustToWidth={lineData.length > 6 ? false : true}
                         scrollToEnd
                         hideYAxisText
                         xAxisType="dashed"
@@ -326,7 +349,7 @@ const HomeWeight = ({ userInfo }) => {
                 <View style={{ flex: 1 }}>
                     <View style={styles.box}>
                         <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
-                        <DateTimePickerSelect mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
+                        <DateTimePickerSelect mode="date" value={selectDate} onChange={(event, selectedDate) => setSelectDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <View style={{ justifyContent: 'center', height: rHeight(60) }}>
