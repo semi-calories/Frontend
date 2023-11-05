@@ -2,6 +2,8 @@
 //api 요청시 받아오는 데이터 정제
 //
 
+import { rHeight } from "~/constants/globalSizes"
+
 export const getPreferFood = rawData => {
     return rawData.map(food => food.preferFoodCode)
 }
@@ -51,7 +53,8 @@ export const getStructedPredictWeight = rawData => {
             value: v.predictWeight,
             dataPointText: v.predictWeight.toString(),
             //label: `${year}.${month}.${day}`
-            label: `${month}.${day}`
+            label: `${month}.${day}`,
+            textShiftY: rHeight(25)
         }
     })
     //console.log(data, startIndex)
