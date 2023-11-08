@@ -1,12 +1,12 @@
 //
 //user 관련 api 요청 및 응답
 //
-import { frontendInstance } from "~/apis/utils/instance"
+import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 //유저 정보 조회
 export const getInfo = async (userCode) => {
     try {
-        const { data } = await frontendInstance.get(`/user/getInfo`, { params: userCode })
+        const { data } = await fetchDataGet(`/user/getInfo`, { params: userCode })
         return data
     } catch (err) {
         console.error(err)
@@ -18,7 +18,7 @@ export const updateInfo = async (userInfo) => {
     console.log('updateInfo userInfo', userInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/user/updateInfo`, userInfo)
+        const { data } = await fetchDataPost(`/user/updateInfo`, userInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -28,7 +28,7 @@ export const updateInfo = async (userInfo) => {
 //선호 음식 조회
 export const getPrefer = async (userCode) => {
     try {
-        const { data } = await frontendInstance.get(`/user/getPrefer`, { params: userCode })
+        const { data } = await fetchDataGet(`/user/getPrefer`, { params: userCode })
         return data
     } catch (err) {
         console.error(err)
@@ -38,7 +38,7 @@ export const getPrefer = async (userCode) => {
 //비선호 음식 조회
 export const getDislike = async (userCode) => {
     try {
-        const { data } = await frontendInstance.get(`/user/getDislike`, { params: userCode })
+        const { data } = await fetchDataGet(`/user/getDislike`, { params: userCode })
         return data
     } catch (err) {
         console.error(err)
@@ -50,7 +50,7 @@ export const savePrefer = async (preferInfo) => {
     console.log('savePrefer preferInfo', preferInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/user/savePrefer`, preferInfo)
+        const { data } = await fetchDataPost(`/user/savePrefer`, preferInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -62,7 +62,7 @@ export const saveDislike = async (dislikeInfo) => {
     console.log('saveDislike dislikeInfo', dislikeInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/user/saveDislike`, dislikeInfo)
+        const { data } = await fetchDataPost(`/user/saveDislike`, dislikeInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -75,7 +75,7 @@ export const getMonthRangeWeight = async (weightInfo) => {
     console.log('getMonthRangeWeight weightInfo', weightInfo)
 
     try {
-        const { data } = await frontendInstance.get('/record/getMonthRangeWeight', { params: weightInfo })
+        const { data } = await fetchDataGet('/record/getMonthRangeWeight', { params: weightInfo })
         return data
     } catch (err) {
         console.error(err)
@@ -87,7 +87,7 @@ export const getWeight = async (weightInfo) => {
     console.log('getWeight weightInfo', weightInfo)
 
     try {
-        const { data } = await frontendInstance.get('/record/getWeight', { params: weightInfo })
+        const { data } = await fetchDataGet('/record/getWeight', { params: weightInfo })
         return data
     } catch (err) {
         console.error(err)
@@ -99,7 +99,7 @@ export const saveWeight = async (weightInfo) => {
     console.log('saveWeight weightInfo', weightInfo)
 
     try {
-        const { data } = await frontendInstance.post('/record/saveWeight', weightInfo)
+        const { data } = await fetchDataPost('/record/saveWeight', weightInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -111,7 +111,7 @@ export const deleteWeight = async (weightInfo) => {
     console.log('deleteWeight weightInfo', weightInfo)
 
     try {
-        const { data } = await frontendInstance.post('/record/deleteWeight', weightInfo)
+        const { data } = await fetchDataPost('/record/deleteWeight', weightInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -121,7 +121,7 @@ export const deleteWeight = async (weightInfo) => {
 //예상 몸무게 조회
 export const getPredictWeight = async (userCode) => {
     try {
-        const { data } = await frontendInstance.get('/record/getPredictWeight', { params: userCode })
+        const { data } = await fetchDataGet('/record/getPredictWeight', { params: userCode })
         return data;
     } catch (e) {
         console.error(e)
@@ -132,7 +132,7 @@ export const getPredictWeight = async (userCode) => {
 export const savePredictWeight = async (weightInfo) => {
     console.log('savePredictWeight weightInfo', weightInfo)
     try {
-        const { data } = await frontendInstance.post('/record/savePredictWeight', weightInfo)
+        const { data } = await fetchDataPost('/record/savePredictWeight', weightInfo)
         return data;
     } catch (e) {
         console.error(e)

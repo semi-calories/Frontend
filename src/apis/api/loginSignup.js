@@ -1,7 +1,7 @@
 //
 //로그인, 회원가입 관련 Api 요청 및 응답
 //
-import { frontendInstance } from "~/apis/utils/instance"
+import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 export const login = async (loginInfo) => {
     try {
@@ -27,7 +27,7 @@ export const signup = async (signupInfo) => {
 
 export const emailDuplicateCheck = async (email) => {
     try {
-        const { data } = await frontendInstance.get(`/emailDuplicateCheck`, { params: email })
+        const { data } = await fetchDataGet(`/emailDuplicateCheck`, { params: email })
         return data
     } catch (err) {
         console.error(err)
@@ -39,7 +39,7 @@ export const deleteInfo = async (userCode) => {
     console.log('deleteInfo userCode', userCode)
 
     try {
-        const { data } = await frontendInstance.post(`/deleteInfo`, userCode)
+        const { data } = await fetchDataPost(`/deleteInfo`, userCode)
         return data
     } catch (err) {
         console.error(err)

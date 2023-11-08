@@ -1,14 +1,14 @@
 //
 //diet 관련 api 요청 및 응답
 //
-import { frontendInstance } from "~/apis/utils/instance"
+import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 //날짜별 식단 기록 조회
 export const getRecord = async (recordInfo) => {
     console.log('getRecord recordInfo', recordInfo)
 
     try {
-        const { data } = await frontendInstance.get(`/record/getRecord`, { params: recordInfo })
+        const { data } = await fetchDataGet(`/record/getRecord`, { params: recordInfo })
         return data
     } catch (err) {
         console.error(err)
@@ -19,7 +19,7 @@ export const getRecord = async (recordInfo) => {
 export const foodSearch = async (foodName) => {
     console.log('foodSearch foodname', foodName)
     try {
-        const { data } = await frontendInstance.get(`/record/foodSearch`, { params: foodName })
+        const { data } = await fetchDataGet(`/record/foodSearch`, { params: foodName })
         return data
     } catch (err) {
         console.error(err)
@@ -31,7 +31,7 @@ export const getMonthStats = async (statInfo) => {
     console.log('getMonthStats statInfo', statInfo)
 
     try {
-        const { data } = await frontendInstance.get(`/record/getMonthStats`, { params: statInfo })
+        const { data } = await fetchDataGet(`/record/getMonthStats`, { params: statInfo })
         return data
     } catch (err) {
         console.error(err)
@@ -43,7 +43,7 @@ export const getWeekStats = async (userCode, month) => {
     console.log('getWeekStats  userCode month', userCode, month)
 
     try {
-        const { data } = await frontendInstance.post(`/record/getWeekStats`, month, { params: userCode })
+        const { data } = await fetchDataPost(`/record/getWeekStats`, month, { params: userCode })
         return data
     } catch (err) {
         console.error(err)
@@ -55,7 +55,7 @@ export const registerRecord = async (recordInfo) => {
     console.log('registerRecord recordInfo', recordInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/record/text`, recordInfo)
+        const { data } = await fetchDataPost(`/record/text`, recordInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -63,11 +63,11 @@ export const registerRecord = async (recordInfo) => {
 }
 
 //식단 기록 수정
-export const updateRecord = async(recordInfo) =>{
+export const updateRecord = async (recordInfo) => {
     console.log('updateRecord recordInfo', recordInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/record/updateRecord`, recordInfo)
+        const { data } = await fetchDataPost(`/record/updateRecord`, recordInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -75,11 +75,11 @@ export const updateRecord = async(recordInfo) =>{
 }
 
 //식단 기록 삭제
-export const deleteRecord = async(recordInfo) =>{
+export const deleteRecord = async (recordInfo) => {
     console.log('deleteRecord recordInfo', recordInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/record/deleteRecord`, recordInfo)
+        const { data } = await fetchDataPost(`/record/deleteRecord`, recordInfo)
         return data
     } catch (err) {
         console.error(err)
@@ -92,9 +92,9 @@ export const recognizeUpload = async (uploadInfo) => {
     //console.log('recognizeUpload uploadInfo', uploadInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/recognizer/recognizerFood`, uploadInfo)
+        const { data } = await fetchDataPost(`/recognizer/recognizerFood`, uploadInfo)
         //console.log('recognizeUpload data', data)
-        
+
         return data
     } catch (err) {
         console.log(err)
@@ -102,13 +102,13 @@ export const recognizeUpload = async (uploadInfo) => {
 }
 
 //음식 추천 요청
-export const recommendRequest= async (requestInfo) => {
+export const recommendRequest = async (requestInfo) => {
     console.log('recommendRequest requestInfo', requestInfo)
 
     try {
-        const { data } = await frontendInstance.post(`/recommend/request`, requestInfo)
+        const { data } = await fetchDataPost(`/recommend/request`, requestInfo)
         //console.log('recommendRequest data', data)
-        
+
         return data
     } catch (err) {
         console.log(err)

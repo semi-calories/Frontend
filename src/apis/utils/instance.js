@@ -1,11 +1,14 @@
 //
 //axios 인스턴스 
 //
+
 import axios from "axios";
 
-const SPRING_BASE_URL = 'http://54.235.159.48:8080';
-const FASTAPI_BASE_URL = 'http://34.207.37.53:8000';
+import { getToken } from "~/components/expoSecureStore";
+
+
 const FRONTEND_BASE_URL = 'http://34.236.139.24:8080';
+
 
 const axiosAPI = (url, options) => {
     return axios.create({
@@ -15,20 +18,53 @@ const axiosAPI = (url, options) => {
     })
 }
 
-// const axiosAuthAPI = (url, options) => {
-//     const token = getItem('jwt_token')
-//     return axios.create({
-//       baseURL: url,
-//       headers: {
-//         Authorization: `bearer ${token}`,
-//       },
-//       ...options,
-//     })
-//   }
-
-
-export const springInstance = axiosAPI(SPRING_BASE_URL);
-export const fastApiInstance = axiosAPI(FASTAPI_BASE_URL);
 export const frontendInstance = axiosAPI(FRONTEND_BASE_URL);
+
+
+const createAxiosInstance = async (url, options) => {
+    const token = await getToken('accessToken');
+
+    if (token) {
+        // Axios 인스턴스 생성
+        const instance = axios.create({
+            baseURL: url,
+            headers: {
+                'Authorization': `Bearer ${token}`,
+            },
+            ...options,
+        });
+
+        return instance;
+    } else {
+        console.error('Token not available.');
+        return null;
+    }
+};
+
+// API 요청 함수
+export const fetchDataGet = async (endPoint, params) => {
+    try {
+        const axiosInstance = await createAxiosInstance(FRONTEND_BASE_URL);
+
+        const response = await axiosInstance.get(endPoint, params);
+        return response;
+    } catch (error) {
+        console.error('API 요청 오류:', error);
+        throw error;
+    }
+};
+
+export const fetchDataPost = async (endPoint, data, params) => {
+    try {
+        const axiosInstance = await createAxiosInstance(FRONTEND_BASE_URL);
+
+        const response = await axiosInstance.post(endPoint, data, params);
+        return response;
+    } catch (error) {
+        console.error('API 요청 오류:', error);
+        throw error;
+    }
+};
+
 
 
