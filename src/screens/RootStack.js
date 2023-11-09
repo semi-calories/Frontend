@@ -18,6 +18,7 @@ import SetGoalScreen from "~/screens/UserInfo/SetGoalScreen";
 import CalculateGoalScreen from "~/screens/UserInfo/CaculateGoalScreen";
 import SetFoodScreen from "~/screens/UserInfo/SetFoodScreen";
 import SearchFoodScreen from "~/screens/UserInfo/SearchFoodScreen";
+import InquiryScreen from "~/screens/UserInfo/InquiryScreen";
 
 import NotificationScreen from "~/screens/Notification/NotificationScreen";
 import NotificationSettingScreen from "~/screens/Notification/NotificationSettingScreen";
@@ -43,6 +44,7 @@ const RootStack = () => {
             <Stack.Screen name="CalculateGoalScreen" component={CalculateGoalScreen} />
             <Stack.Screen name="SetFoodScreen" component={SetFoodScreen} />
             <Stack.Screen name="SearchFoodScreen" component={SearchFoodScreen} />
+            <Stack.Screen name="InquiryScreen" component={InquiryScreen} />
 
             <Stack.Screen name="NotificationScreen" component={NotificationScreen} />
             <Stack.Screen name="NotificationSettingScreen" component={NotificationSettingScreen} />

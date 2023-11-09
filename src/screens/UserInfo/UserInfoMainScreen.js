@@ -43,13 +43,13 @@ const UserInfoMainScreen = ({ navigation }) => {
         setUser({ ...data })
     }
 
-    const onPressLogout = () =>{
+    const onPressLogout = () => {
         Alert.alert('로그아웃!!')
     }
 
-    const onPressQuit = async()=>{
+    const onPressQuit = async () => {
         try {
-            const response = await deleteInfo({userCode: user.userCode})
+            const response = await deleteInfo({ userCode: user.userCode })
             Alert.alert('회원탈퇴에 성공하였습니다.')
 
             navigation.navigate('LoginSignupScreen')
@@ -60,12 +60,16 @@ const UserInfoMainScreen = ({ navigation }) => {
         }
     }
 
+    const onPressInquiry = () => {
+
+    }
+
 
     return (
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
             <View style={styles.profile}>
-                <Image source={user.image ? {uri: user.image} : Null_img} style={styles.img} resizeMode="cover"/>
+                <Image source={user.image ? { uri: user.image } : Null_img} style={styles.img} resizeMode="cover" />
                 <Text style={styles.boldText}>{user?.name}</Text>
             </View>
 
@@ -80,6 +84,10 @@ const UserInfoMainScreen = ({ navigation }) => {
             </Pressable>
             <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
                 <Text style={styles.menuText}>선호 / 비선호 음식 설정</Text>
+                <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+            </Pressable>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('InquiryScreen')}>
+                <Text style={styles.menuText}>문의하기</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
             <Pressable style={styles.flexRow} onPress={onPressLogout}>
@@ -114,7 +122,7 @@ const styles = StyleSheet.create({
         resizeMode: 'contain',
         marginBottom: rHeight(8),
 
-        borderRadius:100,
+        borderRadius: 100,
     },
 
     boldText: {
@@ -127,7 +135,7 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center'
     },
 
-    menuText:{
+    menuText: {
         fontFamily: fonts.bold,
         fontSize: rFont(18),
         color: colors.black,
@@ -136,13 +144,13 @@ const styles = StyleSheet.create({
         textAlignVertical: 'center'
     },
 
-    quitText:{
+    quitText: {
         fontFamily: fonts.regular,
         fontSize: rFont(15),
         color: colors.borderGrey,
 
-        marginVertical:rHeight(10),
-        textDecorationLine:'underline',
+        marginVertical: rHeight(10),
+        textDecorationLine: 'underline',
 
         includeFontPadding: false,
         textAlignVertical: 'center'
