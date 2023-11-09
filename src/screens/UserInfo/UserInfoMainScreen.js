@@ -16,7 +16,7 @@ import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
 import { Null_img, UserName } from "~/constants/test";
 
-import { deleteInfo } from "~/apis/api/loginSignup";
+import { deleteInfo, userLogout } from "~/apis/api/loginSignup";
 
 const UserInfoMainScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
@@ -43,8 +43,17 @@ const UserInfoMainScreen = ({ navigation }) => {
         setUser({ ...data })
     }
 
-    const onPressLogout = () => {
-        Alert.alert('로그아웃!!')
+    const onPressLogout = async() => {
+        try {
+            const response = await userLogout()
+            Alert.alert('로그아웃에 성공하였습니다.')
+
+            navigation.navigate('LoginSignupScreen')
+        } catch (err) {
+            console.log(err)
+
+            Alert.alert('로그아웃에 실패하였습니다.')
+        }
     }
 
     const onPressQuit = async () => {

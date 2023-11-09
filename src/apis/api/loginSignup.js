@@ -45,3 +45,13 @@ export const deleteInfo = async (userCode) => {
         console.error(err)
     }
 }
+
+//로그아웃
+export const userLogout = async() =>{
+    try {
+        const { data } = await fetchDataGet(`/userLogout`)
+        return data
+    } catch (err) {
+        console.error(err)
+    }
+}
