@@ -108,9 +108,11 @@ export function MainHeader({ notiPress, userInfoPress }) {
             <Image source={LogoTitle} style={styles.logoTitle} />
 
             <View style={styles.logoRight}>
-                <Pressable onPress={notiPress}>
-                    <MaterialIcons name="notifications-none" size={35} color="black" />
-                </Pressable>
+                {notiPress &&
+                    <Pressable onPress={notiPress}>
+                        <MaterialIcons name="notifications-none" size={35} color="black" />
+                    </Pressable>
+                }
                 <Pressable onPress={userInfoPress}>
                     <MaterialCommunityIcons name="account-outline" size={38} color="black" />
                 </Pressable>
@@ -145,7 +147,7 @@ const styles = StyleSheet.create({
         color: colors.black,
         fontSize: rFont(25),
         fontFamily: fonts.bold,
-        
+
         includeFontPadding: false,
         textAlignVertical: 'center'
     },

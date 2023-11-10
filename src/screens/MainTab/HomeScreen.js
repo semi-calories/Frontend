@@ -17,7 +17,7 @@ import { GetUserData } from "~/components/asyncStorageData";
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
-const tabs = ['기록', '통계','몸무게'];
+const tabs = ['기록', '통계', '몸무게'];
 
 const HomeScreen = ({ navigation }) => {
     const [tabLabel, setTabLabel] = useState(tabs[0])
@@ -27,7 +27,8 @@ const HomeScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+            //     header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+            header: () => <MainHeader userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
 
@@ -61,13 +62,13 @@ const HomeScreen = ({ navigation }) => {
                 </View>
 
                 {/* 기록 화면 */}
-                {tabLabel == tabs[0] && <HomeRecord navigation={navigation} userInfo={user}/>}
+                {tabLabel == tabs[0] && <HomeRecord navigation={navigation} userInfo={user} />}
 
                 {/* 통계 화면 */}
-                {tabLabel == tabs[1] && <HomeStatistic userInfo={user}/>}
+                {tabLabel == tabs[1] && <HomeStatistic userInfo={user} />}
 
                 {/* 몸무게 화면 */}
-                {tabLabel == tabs[2] && <HomeWeight userInfo={user}/>}
+                {tabLabel == tabs[2] && <HomeWeight userInfo={user} />}
             </RootView>
         </TabContainer>
     );
