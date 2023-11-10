@@ -12,6 +12,7 @@
       "distribution": "internal"
     },
     "production": {
+      "autoIncrement":true,
       "channel": "production",
       "yarn": "1.22.19",
       "node": "18.14.2"
