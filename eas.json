@@ -20,7 +20,7 @@
   "submit": {
     "production": {
       "android": {
-        "serviceAccountKeyPath": "../semi-calories-5f4e539eaaf1",
+        "serviceAccountKeyPath": "../semi-calories-5f4e539eaaf1.json",
         "track": "internal"
       }
     }
