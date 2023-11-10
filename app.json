@@ -2,7 +2,7 @@
   "expo": {
     "name": "Semi-Calories",
     "slug": "Semi-Calories",
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./src/assets/Logo.png",
     "userInterfaceStyle": "light",
