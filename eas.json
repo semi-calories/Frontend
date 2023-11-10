@@ -12,7 +12,7 @@
       "distribution": "internal"
     },
     "production": {
-      "channel": "preview",
+      "channel": "production",
       "yarn": "1.22.19",
       "node": "18.14.2"
     }
