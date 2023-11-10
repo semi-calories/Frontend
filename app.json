@@ -15,13 +15,25 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSPhotoLibraryUsageDescription": "Allow Semi-Calories to access your photos.",
+        "NSPhotoLibraryAddUsageDescription": "Allow Semi-Calories to save photos."
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#ffffff"
-      }
+      },
+      "permissions": [
+        "android.permission.CAMERA",
+        "android.permission.RECORD_AUDIO",
+        "android.permission.READ_EXTERNAL_STORAGE",
+        "android.permission.WRITE_EXTERNAL_STORAGE",
+        "android.permission.ACCESS_MEDIA_LOCATION"
+      ],
+      "package": "com.shimhyesu.SemiCalories"
     },
     "web": {
       "favicon": "./src/assets/Logo.png"
@@ -41,6 +53,17 @@
           "isAccessMediaLocationEnabled": true
         }
       ]
-    ]
+    ],
+    "extra": {
+      "eas": {
+        "projectId": "011405d4-54e5-458c-a39c-e40ce940e685"
+      }
+    },
+    "runtimeVersion": {
+      "policy": "appVersion"
+    },
+    "updates": {
+      "url": "https://u.expo.dev/011405d4-54e5-458c-a39c-e40ce940e685"
+    }
   }
 }
