@@ -24,6 +24,11 @@
       "android": {
         "serviceAccountKeyPath": "../semi-calories-5f4e539eaaf1.json",
         "track": "internal"
+      },
+      "ios": {
+        "appleId": "hesushim@gmail.com",
+        "ascAppId": "1234567890",
+        "appleTeamId": "Semi-Calories"
       }
     }
   }
