@@ -3,9 +3,9 @@
 //
 import { saveTokens } from "~/components/expoSecureStore"
 
-export const getLoginInfo = (rawLoginInfo) => {
-    const { userExists, user, matchResult, accessToken, refreshToken } = rawLoginInfo
-      
+export const getLoginInfo = (rawInfo) => {
+    const { userExists, user, matchResult, accessToken, refreshToken } = rawInfo
+
     if (userExists && matchResult) {
         saveTokens(accessToken, refreshToken)
         return { user, error: '' }
@@ -14,4 +14,12 @@ export const getLoginInfo = (rawLoginInfo) => {
     } else {
         return { user, error: '존재하지 않는 회원입니다.' }
     }
+}
+
+export const getSignupInfo = (rawInfo) => {
+    console.log('###', rawInfo)
+    const { userCode, accessToken, refreshToken } = rawInfo
+
+    saveTokens(accessToken, refreshToken)
+    return userCode
 }
