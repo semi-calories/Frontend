@@ -40,7 +40,9 @@ const styles = StyleSheet.create({
     },
 
     image:{
-        width:rWidth(120),
+        // width:rWidth(120),
+        // height:rHeight(120),
+        width:rHeight(120),
         height:rHeight(120),
     },
 

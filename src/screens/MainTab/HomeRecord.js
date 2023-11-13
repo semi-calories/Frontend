@@ -24,8 +24,8 @@ import { getRecord } from "~/apis/api/diet";
 
 
 const DAYS = ["일", "월", "화", "수", "목", "금", "토"];
-const radius = PixelRatio.roundToNearestPixel(rWidth(110));
-const STROKE_WIDTH = rWidth(30);
+const radius = PixelRatio.roundToNearestPixel(rHeight(110));
+const STROKE_WIDTH = rHeight(30);
 
 const HomeRecord = ({ navigation, userInfo }) => {
 
@@ -158,14 +158,14 @@ const HomeRecord = ({ navigation, userInfo }) => {
             {/* 날짜 선택하는 뷰 */}
             <View style={styles.dayView}>
                 <Pressable onPress={() => setSelectDate(CalculateRecordDate('sub', selectDate))}>
-                    <Entypo name="chevron-left" size={35} color="black" />
+                    <Entypo name="chevron-left" size={rHeight(35)} color="black" />
                 </Pressable>
                 <Pressable onPress={() => refRBSheetCalendar.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{moment(selectDate).format(`MM월 DD일 (${day})`)}</Text>
-                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: rWidth(5) }} />
+                    <Ionicons name="md-caret-down-outline" size={rWidth(16)} color="black" style={{ marginLeft: rWidth(5) }} />
                 </Pressable>
                 <Pressable onPress={() => setSelectDate(CalculateRecordDate('add', selectDate))}>
-                    <Entypo name="chevron-right" size={35} color="black" />
+                    <Entypo name="chevron-right" size={rHeight(35)} color="black" />
                 </Pressable>
             </View>
 
@@ -197,7 +197,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
-                        borderRadius: 10,
+                        borderRadius: rHeight(10),
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
@@ -289,7 +289,7 @@ const styles = StyleSheet.create({
     },
 
     chartView: {
-        paddingVertical: rHeight(30),
+        paddingVertical: rHeight(20),
         //flex:1,
         alignItems: "center",
         justifyContent: "center",
@@ -302,9 +302,9 @@ const styles = StyleSheet.create({
 
     nutritionView: {
         width: rWidth(280),
-        height: rHeight(202),
+       // height: rHeight(202),
         borderWidth: rWidth(2),
-        borderRadius: 10,
+        borderRadius: rHeight(10),
         borderColor: colors.textGrey,
         marginHorizontal: rWidth(55),
 

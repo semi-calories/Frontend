@@ -47,11 +47,12 @@ const styles = StyleSheet.create({
 
     tab: {
         width: rWidth(60),
-        height: rHeight(30),
-        borderRadius: 15,
+        //height: rHeight(30),
+        borderRadius: rWidth(15),
         alignItems: 'center',
         justifyContent: 'center',
-        marginHorizontal: rWidth(5)
+        marginHorizontal: rWidth(5),
+        paddingVertical:rHeight(5),
     },
 
     tabLabel: {

@@ -28,7 +28,7 @@ const RightTypefunc = ({ type, rightPress }) => {
         case HeaderType.setting:
             return (
                 <TouchableOpacity onPress={rightPress}>
-                    <Ionicons name="settings-outline" size={40} color={colors.textGrey} />
+                    <Ionicons name="settings-outline" size={rHeight(40)} color={colors.textGrey} />
                 </TouchableOpacity>
             )
         case HeaderType.save:
@@ -47,7 +47,7 @@ export function BackHeader({ back, title, rightType, backPress, rightPress }) {
         <View style={[styles.container, styles.paddingBack]}>
             {back &&
                 <TouchableOpacity onPress={backPress}>
-                    <MaterialIcons name="arrow-back-ios" size={26} color={colors.textGrey} />
+                    <MaterialIcons name="arrow-back-ios" size={rHeight(26)} color={colors.textGrey} />
                 </TouchableOpacity>}
             {title &&
                 <View style={styles.titleView}>
@@ -66,12 +66,12 @@ export function SearchHeader({ backPress, text, onChangeText, clearText }) {
     return (
         <View style={[styles.container, styles.paddingBack]}>
             <TouchableOpacity onPress={backPress}>
-                <MaterialIcons name="arrow-back-ios" size={26} color={colors.textGrey} />
+                <MaterialIcons name="arrow-back-ios" size={rHeight(26)} color={colors.textGrey} />
             </TouchableOpacity>
             <View style={styles.searchView}>
-                <MaterialIcons name="search" size={24} color={colors.borderGrey} />
+                <MaterialIcons name="search" size={rHeight(24)} color={colors.borderGrey} style={{alignSelf:'center'}}/>
                 <TextInput
-                    style={styles.searchInput}
+                    style={[styles.searchInput, styles.textStyle]}
                     //value={text}
                     onChangeText={onChangeText}
                 />
@@ -110,11 +110,11 @@ export function MainHeader({ notiPress, userInfoPress }) {
             <View style={styles.logoRight}>
                 {notiPress &&
                     <Pressable onPress={notiPress}>
-                        <MaterialIcons name="notifications-none" size={35} color="black" />
+                        <MaterialIcons name="notifications-none" size={rHeight(35)} color="black" />
                     </Pressable>
                 }
                 <Pressable onPress={userInfoPress}>
-                    <MaterialCommunityIcons name="account-outline" size={38} color="black" />
+                    <MaterialCommunityIcons name="account-outline" size={rHeight(38)} color="black" />
                 </Pressable>
             </View>
         </View>
@@ -145,7 +145,7 @@ const styles = StyleSheet.create({
 
     title: {
         color: colors.black,
-        fontSize: rFont(25),
+        fontSize: rFont(23),
         fontFamily: fonts.bold,
 
         includeFontPadding: false,
@@ -172,12 +172,12 @@ const styles = StyleSheet.create({
 
     searchView: {
         width: rWidth(300),
-        height: rHeight(40),
+        //height: rHeight(40),
         flexDirection: 'row',
 
-        borderWidth: rWidth(2),
+        borderWidth: rHeight(2),
         borderColor: colors.textGrey,
-        borderRadius: 10,
+        borderRadius: rHeight(10),
 
         marginLeft: rWidth(10),
         paddingHorizontal: rWidth(12),
@@ -186,11 +186,11 @@ const styles = StyleSheet.create({
 
     searchInput: {
         flex: 1,
-        marginLeft: rWidth(10)
+        marginLeft: rWidth(10),
     },
 
     logoTitle: {
-        width: rWidth(218),
+        width: rHeight(218),
         height: rHeight(43),
         resizeMode: 'contain',
     },
@@ -207,5 +207,14 @@ const styles = StyleSheet.create({
         bottom: 0,
         zIndex: 1,
         opacity: 0.3,
+    },
+
+    textStyle: {
+        fontFamily: fonts.regular,
+        fontSize: rFont(14),
+        color: colors.black,
+
+        includeFontPadding: false,
+        textAlignVertical: 'center'
     }
 });

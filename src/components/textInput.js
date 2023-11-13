@@ -21,17 +21,14 @@ export function BasicTextInput(props) {
     <View>
       <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
         <TextInput
-          style={[{ flex: 1 }, inputStyle]}
+          style={[{ flex: 1 }, inputStyle, styles.textStyle]}
           value={value}
           secureTextEntry={password && secureMode ? true : false}
           editable={dark ? false : true}
           {...restProps}
         />
         {password &&
-          (secureMode
-            ? <Ionicons name="eye-off" size={22} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
-            : <Ionicons name="eye" size={22} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
-          )
+            <Ionicons name={secureMode ? "eye-off" : "eye"} size={rHeight(22)} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
         }
          {unit && <Text style={styles.unitText}>{unit}</Text>}
       </View>
@@ -48,7 +45,7 @@ export function LabelTextInput(props) {
       <Text style={styles.labelText}>{label}</Text>
       <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
         <TextInput
-          style={[{ flex: 1 }, inputStyle]}
+          style={[{ flex: 1 }, inputStyle, styles.textStyle]}
           value={value}
           editable={dark ? false : true}
           {...restProps}
@@ -63,9 +60,10 @@ export function LabelTextInput(props) {
 const styles = StyleSheet.create({
   input: {
     height: rHeight(50),
-    padding: rWidth(12),
+    alignItems:'center',
+    paddingHorizontal:rHeight(15),
 
-    borderRadius: 10,
+    borderRadius: rHeight(10),
     marginVertical: rHeight(6),
   },
 
@@ -108,6 +106,15 @@ const styles = StyleSheet.create({
     color: 'red',
 
     paddingLeft:rWidth(3),
+
+    includeFontPadding: false,
+    textAlignVertical: 'center'
+  },
+
+  textStyle:{
+    fontFamily: fonts.regular,
+    fontSize: rFont(14),
+    color: colors.black,
 
     includeFontPadding: false,
     textAlignVertical: 'center'

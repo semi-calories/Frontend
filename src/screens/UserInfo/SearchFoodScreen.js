@@ -5,12 +5,12 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, ScrollView, FlatList, Pressable, Alert } from "react-native";
-import { Chip } from 'react-native-paper';
 import { AntDesign } from '@expo/vector-icons';
 
 import { SearchHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
+import { CloseChip } from "~/components/chip";
 
 import { RecordType, SearchFoodType } from "~/constants/type";
 import { FoodTemp } from "~/constants/test";
@@ -104,7 +104,7 @@ const SearchFoodScreen = ({ navigation, route }) => {
             </View>
             <View style={styles.selectBtnView}>
                 <ScrollView horizontal style={styles.chipView}>
-                    {selectFood && [...selectFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setSelectFood([...selectFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
+                    {selectFood && [...selectFood].map((food, idx) => <CloseChip key={food+idx} onClose={() => setSelectFood([...selectFood.filter(fd => fd !== food)])} text={food.foodName}/>) }
                 </ScrollView>
                 <PrimaryButton text={`${selectFood.length}개 선택`} btnStyle={{ width: rWidth(345), backgroundColor: type == SearchFoodType.dislike ? colors.pink : colors.primary }} onPress={handleComplete} />
             </View>
@@ -136,24 +136,19 @@ const styles = StyleSheet.create({
 
     selectBtnView: {
         width: dWidth,
-        height: rHeight(150),
+        //height: rHeight(150),
         paddingHorizontal: rWidth(20),
         paddingVertical: rHeight(10),
 
         borderWidth: rWidth(2),
         borderColor: colors.textGrey,
-        borderBlockEndColor:colors.white,
+        borderBlockEndColor: colors.white,
         borderBottomColor: colors.white,
-        borderTopLeftRadius: 10,
-        borderTopRightRadius: 10,
+        borderTopLeftRadius: rWidth(10),
+        borderTopRightRadius: rWidth(10),
     },
 
     chipView: {
         marginVertical: rHeight(10),
-    },
-
-    chip: {
-        marginHorizontal: rWidth(3),
-        borderRadius: 20
     },
 });

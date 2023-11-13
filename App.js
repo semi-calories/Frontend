@@ -9,6 +9,8 @@ import { useFonts } from 'expo-font';
 import RootStack from "~/screens/RootStack";
 import { TabContextProvider } from '~/context/TabContext';
 
+import { rHeight } from "~/constants/globalSizes";
+
 export default function App() {
   let [fontsLoaded] = useFonts({
     'NotoSans_100Thin': require('~/assets/fonts/NotoSansKR-Thin.otf'),
@@ -47,7 +49,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS == "android" ? 45 : 0,
-    paddingBottom: Platform.OS == "android" ? 15 : 0
+    paddingTop: Platform.OS == "android" ? rHeight(45) : 0,
+    paddingBottom: Platform.OS == "android" ? rHeight(15) : 0
   }
 })

@@ -22,7 +22,7 @@ import { TargetIntake } from "~/constants/test";
 
 const CalculateGoalScreen = ({ navigation, route }) => {
     const { infoType, userInfo } = route.params;
-    console.log('CalculateGoalScreen userInfo', userInfo)
+    console.log('CalculateGoalScreen', userInfo, infoType)
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {

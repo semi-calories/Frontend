@@ -137,14 +137,14 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
             {/* 날짜 선택하는 뷰 */}
             <View style={styles.dayView}>
                 <Pressable onPress={() => setSelectDate(CalculateStatisticDate(type, 'sub', selectDate))}>
-                    <Entypo name="chevron-left" size={35} color="black" />
+                    <Entypo name="chevron-left" size={rHeight(35)} color="black" />
                 </Pressable>
                 <Pressable onPress={() => refRBSheet.current.open()} style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text style={styles.text}>{formatDate}</Text>
-                    <Ionicons name="md-caret-down-outline" size={16} color="black" style={{ marginLeft: rWidth(5) }} />
+                    <Ionicons name="md-caret-down-outline" size={rWidth(16)} color="black" style={{ marginLeft: rWidth(5) }} />
                 </Pressable>
                 <Pressable onPress={() => setSelectDate(CalculateStatisticDate(type, 'add', selectDate))}>
-                    <Entypo name="chevron-right" size={35} color="black" />
+                    <Entypo name="chevron-right" size={rHeight(35)} color="black" />
                 </Pressable>
             </View>
 
@@ -238,7 +238,8 @@ const styles = StyleSheet.create({
     chartView: {
         marginTop: rHeight(40),
         paddingHorizontal: rWidth(20),
-        alignItems: 'center'
+        alignItems: 'center',
+
     },
 
     chartConfig: {
@@ -256,9 +257,9 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        width: rWidth(12),
+        width: rHeight(12),
         height: rHeight(12),
-        borderRadius: 30,
+        borderRadius: rHeight(30),
     },
 
     labelText: {

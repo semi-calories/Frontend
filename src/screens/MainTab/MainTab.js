@@ -31,14 +31,14 @@ const MainTab = ({ navigation }) => {
                 tabBarStyle: {
                     position: 'absolute',
                     backgroundColor: colors.white,
-                    height: rWidth(78),
+                    height: rHeight(78),
 
                     borderWidth: rWidth(2),
                     borderColor: colors.textGrey,
-                    borderBlockEndColor:colors.white,
+                    borderBlockEndColor: colors.white,
                     borderBottomColor: colors.white,
-                    borderTopLeftRadius: 10,
-                    borderTopRightRadius: 10,
+                    borderTopLeftRadius: rHeight(10),
+                    borderTopRightRadius: rHeight(10),
                 },
             }}
         >
@@ -46,7 +46,9 @@ const MainTab = ({ navigation }) => {
                 options={{
                     tabBarLabel: '홈',
                     tabBarIcon: ({ color }) => (
-                        <Foundation name="home" size={40} color={color} />
+                        <View style={{ width: rHeight(30) }}>
+                            <Foundation name="home" size={rHeight(40)} color={color} />
+                        </View>
                     )
                 }}
                 listeners={{
@@ -67,7 +69,9 @@ const MainTab = ({ navigation }) => {
                 options={{
                     tabBarLabel: '추천',
                     tabBarIcon: ({ color }) => (
-                        <MaterialIcons name="thumb-up" size={40} color={color} />
+                        <View style={{ width: rHeight(40)}}>
+                            <MaterialIcons name="thumb-up" size={rHeight(40)} color={color} />
+                        </View>
                     )
                 }}
                 listeners={{

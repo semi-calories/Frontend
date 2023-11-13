@@ -7,13 +7,13 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { LineChart } from "react-native-gifted-charts"
-import { Chip } from 'react-native-paper';
 
 import { MoveButton, PrimaryButton } from "~/components/button";
 import { BasicTextInput } from "~/components/textInput";
 import { StoreUserData } from "~/components/asyncStorageData";
 import { weightRegex } from "~/components/regex";
 import { DateTimePickerSelect } from "~/components/date";
+import { BasicChip } from "~/components/chip";
 
 import { LineData } from "~/constants/test";
 
@@ -237,7 +237,7 @@ const HomeWeight = ({ userInfo }) => {
         <View>
             <View style={styles.dayView}>
                 <Text style={styles.text}>{period}</Text>
-                <FontAwesome name="sliders" onPress={() => refRBSheetFilter.current.open()} size={23} color={colors.borderGrey} />
+                <FontAwesome name="sliders" onPress={() => refRBSheetFilter.current.open()} size={rHeight(23)} color={colors.borderGrey} />
             </View>
 
 
@@ -295,7 +295,7 @@ const HomeWeight = ({ userInfo }) => {
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
-                        borderRadius: 10,
+                        borderRadius: rHeight(10),
                         paddingHorizontal: rWidth(20),
                         paddingBottom: rHeight(30),
                     },
@@ -308,14 +308,12 @@ const HomeWeight = ({ userInfo }) => {
                     <Text style={styles.text}>기간설정</Text>
                     <View style={[styles.rangeView, { marginTop: rHeight(20) }]}>
                         {FILTERPERIOD.map((per, idx) => (
-                            <Chip
+                            <BasicChip
                                 id={per + idx}
-                                mode="outlined"
                                 onPress={() => handlePeriod(per)}
-                                style={{ backgroundColor: per == filterPeriod ? colors.btnBackground : colors.white, borderColor: per == filterPeriod ? colors.white : colors.btnBackground, height: rHeight(35) }}
-                            >
-                                {per}
-                            </Chip>
+                                chipStyle={{ backgroundColor: per == filterPeriod ? colors.btnBackground : colors.white, borderColor: per == filterPeriod ? colors.white : colors.btnBackground }}
+                                text={per}
+                           />
                         ))
                         }
                     </View>
@@ -337,7 +335,7 @@ const HomeWeight = ({ userInfo }) => {
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
-                        borderRadius: 10,
+                        borderRadius: rWidth(10),
                         paddingHorizontal: rWidth(20),
                         paddingBottom: rHeight(30)
                     },
@@ -348,12 +346,12 @@ const HomeWeight = ({ userInfo }) => {
             >
                 <View style={{ flex: 1 }}>
                     <View style={styles.box}>
-                        <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
+                        <MaterialCommunityIcons name="calendar-blank" size={rHeight(33)} color={colors.black} />
                         <DateTimePickerSelect mode="date" value={selectDate} onChange={(event, selectedDate) => setSelectDate(selectedDate)} />
                     </View>
                     <View style={[styles.box, styles.flexRow]}>
                         <View style={{ justifyContent: 'center', height: rHeight(60) }}>
-                            <MaterialCommunityIcons name="scale-bathroom" size={33} color={colors.black} />
+                            <MaterialCommunityIcons name="scale-bathroom" size={rHeight(33)} color={colors.black} />
                         </View>
                         <BasicTextInput value={weight.toString()} onChangeText={setWeight} unit="kg" width={rWidth(153)} keyboardType="numeric" validType="몸무게" valid={weightRegex.test(weight)} />
                     </View>
@@ -392,8 +390,7 @@ const styles = StyleSheet.create({
 
     rangeView: {
         flexDirection: 'row',
-        alignItems: 'center',
-        justifyContent: 'space-evenly',
+       justifyContent: 'space-evenly',
         marginVertical: rHeight(8),
         //paddingHorizontal: scale(20)
     },
@@ -443,7 +440,7 @@ const styles = StyleSheet.create({
 
     btnStyle: {
         width: rWidth(170),
-        height: rHeight(50)
+        //height: rHeight(50)
     },
 
     timeView: {
@@ -471,9 +468,9 @@ const styles = StyleSheet.create({
     },
 
     label: {
-        width: rWidth(12),
+        width: rHeight(12),
         height: rHeight(12),
-        borderRadius: 30,
+        borderRadius: rHeight(30),
     },
 
     labelText: {

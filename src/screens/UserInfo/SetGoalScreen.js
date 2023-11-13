@@ -26,12 +26,12 @@ import { updateInfo, getInfo, savePredictWeight } from "~/apis/api/user";
 const GoalFunc = ({ label, onPress, goal }) => {
     return (
         <Pressable style={[styles.content, label == goal ? styles.selectedView : styles.noSelectedView]} onPress={onPress}>
-            <View style={{ flexDirection: 'row' }}>
-                <View style={{ width: rWidth(180), height: rHeight(70) }}>
+            <View style={{ flexDirection: 'row', alignItem:'center'}}>
+                <View style={{ width: rWidth(180)}}>
                     <Text style={[styles.contentTitle, { color: label == goal ? colors.white : colors.black }]}>{Goal_ko[label]}</Text>
-                    <Text style={[styles.labelTitle, { color: label == goal ? colors.white : colors.black }]}>{Goal_explain[label]}</Text>
+                    <Text style={[styles.contentLabel, { color: label == goal ? colors.white : colors.black }]}>{Goal_explain[label]}</Text>
                 </View>
-                <MaterialCommunityIcons name={Goal_icon[label]} size={45} color="black" style={styles.icon} />
+                <MaterialCommunityIcons name={Goal_icon[label]} size={rHeight(45)} color="black" style={styles.icon} />
             </View>
         </Pressable>
     )
@@ -93,11 +93,11 @@ const SetGoalScreen = ({ navigation, route }) => {
         }
 
         try {
-            const res = await savePredictWeight(userWeight)
+            //const res = await savePredictWeight(userWeight)
             const response = await updateInfo(user)
             const userData = await getUserInfo()
 
-            navigation.navigate('CalculateGoalScreen', { userInfo: userData, infoType });
+            navigation.push('CalculateGoalScreen', { userInfo: userData, infoType });
         } catch (err) {
             console.log(err)
         }
@@ -166,12 +166,12 @@ const styles = StyleSheet.create({
 
     content: {
         width: rWidth(320),
-        height: rHeight(90),
-        borderRadius: 10,
+        //height: rWidth(90),
+        borderRadius: rHeight(10),
 
         marginVertical: rHeight(5),
         paddingHorizontal: rWidth(20),
-        paddingVertical: rHeight(6),
+        paddingVertical: rHeight(10),
     },
 
     selectedView: {

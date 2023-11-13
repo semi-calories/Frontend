@@ -126,13 +126,13 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                                 {
                                     translateX: animation.interpolate({
                                         inputRange: [0, 1],
-                                        outputRange: [0, -60]
+                                        outputRange: [0, rHeight(-60)]
                                     })
                                 },
                                 {
                                     translateY: animation.interpolate({
                                         inputRange: [0, 1],
-                                        outputRange: [0, -70]
+                                        outputRange: [0, rHeight(-70)]
                                     })
                                 },
                             ]
@@ -149,13 +149,13 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                                 {
                                     translateX: animation.interpolate({
                                         inputRange: [0, 1],
-                                        outputRange: [0, 60]
+                                        outputRange: [0, rHeight(60)]
                                     })
                                 },
                                 {
                                     translateY: animation.interpolate({
                                         inputRange: [0, 1],
-                                        outputRange: [0, -70]
+                                        outputRange: [0, rHeight(-70)]
                                     })
                                 },
                             ]
@@ -190,9 +190,10 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 const styles = StyleSheet.create({
     primaryBtn: {
         width: rWidth(298),
-        height: rHeight(67),
-        borderRadius: 15,
+        //height: rHeight(67),
+        borderRadius: rWidth(15),
         backgroundColor: colors.primary,
+        paddingVertical:rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
@@ -200,9 +201,10 @@ const styles = StyleSheet.create({
 
     moveBtn: {
         width: rWidth(320),
-        height: rHeight(50),
-        borderRadius: 20,
+        //height: rHeight(50),
+        borderRadius: rWidth(20),
         backgroundColor: colors.black,
+        paddingVertical:rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
@@ -210,9 +212,10 @@ const styles = StyleSheet.create({
 
     moveBtnInactive: {
         width: rWidth(320),
-        height: rHeight(50),
-        borderRadius: 20,
+        //height: rHeight(50),
+        borderRadius: rWidth(20),
         backgroundColor: colors.textGrey,
+        paddingVertical:rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
@@ -235,7 +238,7 @@ const styles = StyleSheet.create({
 
     box: {
         position: 'relative',
-        width: rWidth(80),
+        width: rHeight(80),
         height: rHeight(80),
         marginTop: rHeight(-20)
     },
@@ -255,9 +258,9 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.primary,
-        width: rWidth(80),
+        width: rHeight(80),
         height: rHeight(80),
-        borderRadius: 50
+        borderRadius: rHeight(50)
     },
 
     addIcon: {
@@ -273,13 +276,13 @@ const styles = StyleSheet.create({
         alignItems: 'center',
         justifyContent: 'center',
         backgroundColor: colors.btnBackground,
-        width: rWidth(65),
+        width: rHeight(65),
         height: rHeight(65),
         borderRadius: 50,
     },
 
     itemIcon: {
-        width: rWidth(40),
+        width: rHeight(40),
         height: rHeight(40),
         tintColor: colors.white,
     }

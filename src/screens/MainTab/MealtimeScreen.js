@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useState, useRef, useEffect } from "react";
 
-import { Pressable, FlatList, StyleSheet, Text, View, Alert } from "react-native";
+import { Pressable, FlatList, StyleSheet, Text, View, Alert, ScrollView } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import moment from "moment";
@@ -91,7 +91,9 @@ const MealtimeScreen = ({ navigation, route }) => {
     };
 
     const handlePressDetail = food => {
+        console.log('##', food)
         setFoodDetail(food);
+        setServing(food.foodWeight)
 
         refRBSheet.current.open()
     }
@@ -122,7 +124,7 @@ const MealtimeScreen = ({ navigation, route }) => {
     const SatisfactionFunc = ({ label, onPress, satisfaction }) => {
         return (
             <Pressable onPress={onPress} style={{ alignItems: 'center' }}>
-                <MaterialCommunityIcons name={Satisfaction_icon[label]} size={rWidth(50)} color={label == satisfaction ? colors.primary : colors.textGrey} />
+                <MaterialCommunityIcons name={Satisfaction_icon[label]} size={rHeight(50)} color={label == satisfaction ? colors.primary : colors.textGrey} />
                 <Text style={[styles.smallLabelText, { color: label == satisfaction ? colors.primary : colors.textGrey }]}>{Satisfaction_ko[label]}</Text>
             </Pressable>
         )
@@ -255,11 +257,11 @@ const MealtimeScreen = ({ navigation, route }) => {
                 <Text style={styles.boldText}>식사일시</Text>
                 <View style={{ marginTop: rHeight(30) }}>
                     <View style={[styles.box, styles.border]}>
-                        <MaterialCommunityIcons name="calendar-blank" size={33} color={colors.black} />
+                        <MaterialCommunityIcons name="calendar-blank" size={rHeight(33)} color={colors.black} />
                         <DateTimePickerSelect mode="date" value={date} onChange={(event, selectedDate) => setDate(selectedDate)} />
                     </View>
                     <View style={styles.box}>
-                        <MaterialCommunityIcons name="clock-outline" size={33} color={colors.black} />
+                        <MaterialCommunityIcons name="clock-outline" size={rHeight(33)} color={colors.black} />
                         <DateTimePickerSelect mode="time" value={time} onChange={(event, selectedDate) => setTime(selectedDate)} />
                      </View>
                 </View>
@@ -293,13 +295,15 @@ const MealtimeScreen = ({ navigation, route }) => {
                 closeOnDragDown={true}
                 customStyles={{
                     container: {
-                        borderRadius: 10,
+                        borderRadius: rWidth(10),
+                        paddingBottom:rHeight(25)
                     },
                     draggableIcon: {
                         backgroundColor: colors.textGrey
                     }
                 }}
             >
+                <ScrollView style={{flex:1}}>
                 <View style={[styles.container, styles.borderThick]}>
                     <View style={[styles.border, { alignItems: 'center', paddingBottom: rHeight(15) }]}>
                         <Text style={styles.boldText}>{foodDetail?.foodName}</Text>
@@ -329,21 +333,22 @@ const MealtimeScreen = ({ navigation, route }) => {
                     </View>
                 </View>
                 <View style={styles.container}>
-                    <Text style={[styles.boldText, { fontSize: rWidth(20) }]}>만족도</Text>
+                    <Text style={[styles.boldText, { fontSize: rFont(20) }]}>만족도</Text>
                     <View style={styles.satisView}>
                         <SatisfactionFunc label={Satisfaction.dislike} onPress={() => handleSatisfaction(Satisfaction.dislike)} satisfaction={foodDetail?.satisfaction} />
                         <SatisfactionFunc label={Satisfaction.normal} onPress={() => handleSatisfaction(Satisfaction.normal)} satisfaction={foodDetail?.satisfaction} />
                         <SatisfactionFunc label={Satisfaction.like} onPress={() => handleSatisfaction(Satisfaction.like)} satisfaction={foodDetail?.satisfaction} />
                     </View>
                 </View>
-                {selectFoods.length > 1 ? (
+                </ScrollView>
+                {selectFoods.length > 1 ?  (
                     <View style={styles.btnView}>
                         <PrimaryButton text="삭제" btnStyle={[styles.btnStyle, { backgroundColor: colors.pink }]} onPress={handleDetailDelete} />
                         <PrimaryButton text="저장" btnStyle={styles.btnStyle} onPress={handleDetailSave} />
                     </View>
                 ) : (
                     <View style={{ alignSelf: 'center' }}>
-                        <PrimaryButton text="저장" btnStyle={{ width: rWidth(340), height: rHeight(50) }} onPress={handleDetailSave} />
+                        <PrimaryButton text="저장" btnStyle={{ width: rWidth(340) }} onPress={handleDetailSave} />
                     </View>
                 )}
             </RBSheet>
@@ -477,6 +482,6 @@ const styles = StyleSheet.create({
 
     btnStyle: {
         width: rWidth(170),
-        height: rHeight(50)
+        //height: rHeight(50)
     },
 })

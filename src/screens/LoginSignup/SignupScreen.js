@@ -17,6 +17,7 @@ import { rWidth, rHeight } from "~/constants/globalSizes";
 import { UserInfoType } from "~/constants/type";
 
 import { signup, emailDuplicateCheck } from "~/apis/api/loginSignup";
+import { getSignupInfo } from "~/apis/services/loginSignup";
 
 const SignupScreen = ({ navigation }) => {
     const [email, setEmail] = useState();
@@ -49,7 +50,8 @@ const SignupScreen = ({ navigation }) => {
             if (duplicateResult) {
                 Alert.alert('해당 이메일로 가입된 계정이 있습니다.')
             } else {
-                const { response: userCode } = await signup(signupInfo)
+                const rawResponse = await signup(signupInfo)
+                const userCode = getSignupInfo(rawResponse)
                 console.log(userCode)
 
                 const userInfo = { name, userCode, image: null, email }

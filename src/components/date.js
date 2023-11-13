@@ -113,7 +113,7 @@ export const DateTimePickerSelect = ({mode, value, onChange}) => {
                 <Text style={styles.pickerText}>{mode=='time' ? FormatTime(value) : FormatDate(value)}</Text>
             </Pressable>
             :
-            <DateTimePicker mode={mode} value={value} onChange={onChange} />
+            <DateTimePicker mode={mode} value={value} onChange={onChange}/>
     )
 }
 

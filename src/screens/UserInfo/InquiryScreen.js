@@ -208,16 +208,16 @@ const styles = StyleSheet.create({
 
     dropdown: {
         marginTop: rHeight(10),
-        height: rHeight(40),
+        height: rHeight(50),
         borderColor: colors.borderGrey,
-        borderWidth: 0.5,
-        borderRadius: 8,
+        borderWidth: rHeight(0.5),
+        borderRadius: rHeight(8),
         paddingHorizontal: rWidth(10),
     },
 
     placeholderStyle: {
         fontFamily: fonts.regular,
-        fontSize: rFont(14),
+        fontSize: rFont(11),
         color: colors.borderGrey,
 
         includeFontPadding: false,

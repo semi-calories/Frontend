@@ -29,9 +29,12 @@ const UserInfoMainScreen = ({ navigation }) => {
     }, [navigation]);
 
     useEffect(() => {
+        getUser()
         const focusSubscription = navigation.addListener('focus', () => {
+            console.log('UserInfoMainScreen focus')
             getUser()
         });
+       // getUser()
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return focusSubscription;
@@ -69,10 +72,6 @@ const UserInfoMainScreen = ({ navigation }) => {
         }
     }
 
-    const onPressInquiry = () => {
-
-    }
-
 
     return (
         <RootView viewStyle={styles.container}>
@@ -83,7 +82,7 @@ const UserInfoMainScreen = ({ navigation }) => {
             </View>
 
             {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: user, infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: {...user, image: {uri: user.image}}, infoType: UserInfoType.edit })}>
                 <Text style={styles.menuText}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
@@ -126,12 +125,12 @@ const styles = StyleSheet.create({
     },
 
     img: {
-        width: rWidth(120),
+        width: rHeight(120),
         height: rHeight(125),
         resizeMode: 'contain',
         marginBottom: rHeight(8),
 
-        borderRadius: 100,
+        borderRadius: rWidth(100),
     },
 
     boldText: {

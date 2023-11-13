@@ -27,7 +27,7 @@ const HomeScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            //     header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+                //  header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
             header: () => <MainHeader userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
@@ -79,7 +79,7 @@ export default HomeScreen;
 const styles = StyleSheet.create({
     tab: {
         width: dWidth,
-        height: rHeight(40),
+        //height: rHeight(40),
         flexDirection: 'row',
         alignItems: 'center',
 
