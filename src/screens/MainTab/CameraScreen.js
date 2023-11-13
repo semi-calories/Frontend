@@ -39,7 +39,7 @@ const CameraScreen = ({ navigation, route }) => {
 
     useEffect(() => {
         if (capturedImage) {
-            setUser({ ...userInfo, image: capturedImage.uri })
+            setUser({ ...userInfo, image: capturedImage})
         }
     }, [capturedImage])
 
@@ -132,7 +132,7 @@ const CameraScreen = ({ navigation, route }) => {
                 <View style={{ width: rWidth(35) }} />
                 <TouchableOpacity style={styles.btnView} activeOpacity={0.8} onPress={takePictureHandler} />
                 <TouchableOpacity activeOpacity={0.8} onPress={() => setType(type == CameraType.back ? CameraType.front : CameraType.back)}>
-                    <AntDesign name="sync" size={30} color="black" />
+                    <AntDesign name="sync" size={rHeight(30)} color="black" />
                 </TouchableOpacity>
             </View>
         </RootView>
@@ -156,11 +156,11 @@ const styles = StyleSheet.create({
     },
 
     btnView: {
-        width: rWidth(80),
+        width: rHeight(80),
         height: rHeight(80),
         backgroundColor: colors.white,
-        borderRadius: 40,
-        borderWidth: rWidth(4),
+        borderRadius: rWidth(40),
+        borderWidth: rHeight(4),
         borderColor: colors.primary,
 
         shadowColor: "#000",

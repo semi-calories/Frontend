@@ -33,7 +33,7 @@ const GenderFunc = ({ label, onPress, gender }) => {
     return (
         <View style={{ alignItems: 'center' }}>
             <Pressable style={styles.genderIconView} onPress={onPress}>
-                <MaterialCommunityIcons name={Gender_icon[label]} size={60} color={gender == label ? gender == Gender.female ? colors.pink : colors.blue : colors.textGrey} />
+                <MaterialCommunityIcons name={Gender_icon[label]} size={rHeight(60)} color={gender == label ? gender == Gender.female ? colors.pink : colors.blue : colors.textGrey} />
             </Pressable>
             <Text style={[styles.smallLabelText, { color: colors.borderGrey }]}>{Gender_ko[label]}</Text>
         </View>
@@ -142,7 +142,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             userCode: userInfo.userCode,
             email: userInfo.email,
             name,
-            image: image.base64,
+            image: image.base64 ? image.base64 : image.uri,
             gender,
             age,
             height,
@@ -153,10 +153,10 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             period: userInfo.period,
         };
 
-        const userWeight ={
+        const userWeight = {
             userCode: userInfo.userCode,
             goalWeight,
-            period:userInfo.period
+            period: userInfo.period
         }
 
         handleSetUserInfo(user, userWeight)
@@ -164,11 +164,11 @@ const UserInfoEditScreen = ({ navigation, route }) => {
 
     const handleSetUserInfo = async (user, userWeight) => {
         if (infoType == UserInfoType.init) {
-            navigation.navigate('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
+            navigation.push('SetGoalScreen', { userInfo: user, infoType: UserInfoType.init });
 
         } else if (infoType == UserInfoType.edit) {
             try {
-                const res = await savePredictWeight(userWeight)
+                //const res = await savePredictWeight(userWeight)
                 const response = await updateInfo(user)
                 const userData = await getInfo({ userCode: userInfo.userCode })
                 StoreUserData({ ...userData, userCode: userInfo.userCode })
@@ -192,7 +192,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={image ? { uri: image.uri } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
+                        <ImageBackground source={image?.uri ? { uri: image.uri } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
                             <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
                                 <Image source={EditIcon} style={styles.img} />
                             </Pressable>
@@ -249,7 +249,7 @@ const styles = StyleSheet.create({
         fontFamily: fonts.bold,
         fontSize: rFont(30),
         color: colors.black,
-        
+
         includeFontPadding: false,
         textAlignVertical: 'center'
     },
@@ -291,9 +291,9 @@ const styles = StyleSheet.create({
         height: rHeight(99),
         backgroundColor: colors.white,
 
-        borderWidth: 2,
+        borderWidth: rHeight(2),
         borderColor: colors.textGrey,
-        borderRadius: 10,
+        borderRadius: rHeight(10),
 
         alignItems: 'center',
         justifyContent: 'center',
@@ -315,7 +315,7 @@ const styles = StyleSheet.create({
     },
 
     imgBackground: {
-        width: rWidth(120),
+        width: rHeight(120),
         height: rHeight(125),
         resizeMode: 'contain',
         alignSelf: 'center',
