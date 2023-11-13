@@ -6,6 +6,7 @@ import LoginSignupScreen from "~/screens/LoginSignup/LoginSignupScreen";
 import LoginScreen from "~/screens/LoginSignup/LoginScreen";
 import SignupScreen from "~/screens/LoginSignup/SignupScreen";
 
+import AccessRightScreen from "~/screens/MainTab/AccessRightScreen";
 import MainTab from "~/screens/MainTab/MainTab";
 import CameraScreen from "~/screens/MainTab/CameraScreen";
 import AlbumScreen from "~/screens/MainTab/AlbumScreen";
@@ -32,6 +33,7 @@ const RootStack = () => {
             <Stack.Screen name="LoginScreen" component={LoginScreen}/>
             <Stack.Screen name="SignupScreen" component={SignupScreen} />
 
+            <Stack.Screen name="AccessRightScreen" component={AccessRightScreen} options={{ headerShown: false }} />
             <Stack.Screen name="MainTab" component={MainTab}options={{ headerShown: false }} />
             <Stack.Screen name="CameraScreen" component={CameraScreen} />
             <Stack.Screen name="AlbumScreen" component={AlbumScreen} />

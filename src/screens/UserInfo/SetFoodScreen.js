@@ -5,12 +5,12 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, ScrollView, Pressable, Alert } from "react-native";
-import { Chip } from 'react-native-paper';
 import { Feather } from '@expo/vector-icons';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
+import { CloseChip } from "~/components/chip";
 
 import { HeaderType } from "~/constants/type";
 import { SearchFoodType } from "~/constants/type";
@@ -26,7 +26,7 @@ import { getDislikeFood, getPreferFood } from "~/apis/services/user";
 const AddFunc = ({ onPress }) => {
     return (
         <Pressable onPress={onPress} style={styles.add}>
-            <Feather name="plus" size={24} color={colors.borderGrey} />
+            <Feather name="plus" size={rWidth(24)} color={colors.borderGrey} />
         </Pressable>
     )
 }
@@ -43,7 +43,7 @@ const SetFoodScreen = ({ navigation, route }) => {
     useLayoutEffect(() => {
         if (route.params?.infoType == UserInfoType.init) {
             navigation.setOptions({
-                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
+                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('AccessRightScreen')} />
             });
         } else if (route.params?.infoType == UserInfoType.edit) {
             navigation.setOptions({
@@ -104,7 +104,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         await saveDislikeFunc()
 
         if (route.params?.infoType == UserInfoType.init) {
-            navigation.navigate('MainTab')
+            navigation.navigate('AccessRightScreen')
         } else {
             Alert.alert('저장되었습니다!')
         }
@@ -145,13 +145,13 @@ const SetFoodScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView}>
                 <Text style={styles.titleText}>선호음식</Text>
                 <View style={styles.chipView}>
-                    {preferFood && [...preferFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setPreferFood([...preferFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
+                    {preferFood && [...preferFood].map((food, idx) => <CloseChip key={food + idx}  onClose={() => setPreferFood([...preferFood.filter(fd => fd !== food)])} text={food.foodName}/>)}
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.prefer, userInfo })} />
                 </View>
 
                 <Text style={styles.titleText}>비선호음식</Text>
                 <View style={styles.chipView}>
-                    {dislikeFood && [...dislikeFood].map((food, idx) => <Chip key={food + idx} mode="outlined" onClose={() => setDislikeFood([...dislikeFood.filter(fd => fd !== food)])} style={styles.chip}>{food.foodName}</Chip>)}
+                    {dislikeFood && [...dislikeFood].map((food, idx) => <CloseChip key={food + idx} onClose={() => setDislikeFood([...dislikeFood.filter(fd => fd !== food)])} text={food.foodName}/>)}
                     <AddFunc onPress={() => navigation.navigate('SearchFoodScreen', { type: SearchFoodType.dislike, userInfo })} />
                 </View>
             </ScrollView>
@@ -186,18 +186,15 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         flexWrap: 'wrap',
         marginVertical: rHeight(15),
-    },
-
-    chip: {
-        marginHorizontal: rWidth(3),
+        alignItems:'center',
     },
 
     add: {
         width: rWidth(35),
-        height: rHeight(35),
-        borderWidth: rWidth(1.5),
+        height: rWidth(35),
+        borderWidth: rHeight(1.5),
         borderColor: colors.borderGrey,
-        borderRadius: 10,
+        borderRadius: rWidth(10),
 
         alignItems: 'center',
         justifyContent: 'center',
