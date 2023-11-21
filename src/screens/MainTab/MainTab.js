@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 
 import { StyleSheet, View, TouchableOpacity } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
@@ -21,6 +21,7 @@ const MainTab = ({ navigation }) => {
 
     return (
         <Tab.Navigator
+            initialRouteName="HomeScreen"
             screenOptions={{
                 // tabBarLabelStyle: { fontSize: scale(14) },
                 tabBarShowLabel: false,

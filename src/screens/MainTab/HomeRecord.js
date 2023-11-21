@@ -244,7 +244,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
                         data={records}
                         renderItem={renderItem}
                         keyExtractor={(item, idx) => item + idx}
-                        showsVerticalScrollIndicator="false"
+                        //showsVerticalScrollIndicator="false"
                     />
                     :
                     <View style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}>

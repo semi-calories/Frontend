@@ -7,11 +7,9 @@ import { View, Text, StyleSheet } from 'react-native'
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
-import Constants from 'expo-constants';
 
 import { RootView } from '~/components/container';
 import { PrimaryButton } from '~/components/button';

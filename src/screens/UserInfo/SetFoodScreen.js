@@ -43,7 +43,7 @@ const SetFoodScreen = ({ navigation, route }) => {
     useLayoutEffect(() => {
         if (route.params?.infoType == UserInfoType.init) {
             navigation.setOptions({
-                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('AccessRightScreen')} />
+                header: () => <BackHeader back backPress={() => navigation.goBack()} rightType={HeaderType.skip} rightPress={() => navigation.navigate('MainTab')} />
             });
         } else if (route.params?.infoType == UserInfoType.edit) {
             navigation.setOptions({
@@ -104,7 +104,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         await saveDislikeFunc()
 
         if (route.params?.infoType == UserInfoType.init) {
-            navigation.navigate('AccessRightScreen')
+            navigation.navigate('MainTab')
         } else {
             Alert.alert('저장되었습니다!')
         }

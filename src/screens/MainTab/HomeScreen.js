@@ -5,6 +5,9 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Pressable } from "react-native";
+import * as SecureStore from 'expo-secure-store';
+import 'react-native-get-random-values';
+import { v4 as uuidv4 } from 'uuid';
 
 import HomeRecord from "~/screens/MainTab/HomeRecord";
 import HomeStatistic from "~/screens/MainTab/HomeStatistic";
@@ -16,6 +19,7 @@ import { GetUserData } from "~/components/asyncStorageData";
 
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
+import { AccessRightModal } from "~/components/modal";
 
 const tabs = ['기록', '통계', '몸무게'];
 
@@ -25,12 +29,18 @@ const HomeScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
     console.log('HomeScreen user', user)
 
+    const [isModalVisible, setModalVisible] = useState(false)
+
     useLayoutEffect(() => {
         navigation.setOptions({
-                //  header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+            //header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
             header: () => <MainHeader userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
+
+    useEffect(() => {
+        onMountScreen()
+    }, [])
 
     useEffect(() => {
         const focusSubscription = navigation.addListener('focus', () => {
@@ -49,29 +59,49 @@ const HomeScreen = ({ navigation }) => {
         setUser({ ...data })
     }
 
-    return (
-        <TabContainer>
-            <RootView>
-                {/* 상단 탭 */}
-                <View style={styles.tab}>
-                    {tabs.map(tab => (
-                        <Pressable key={tab} onPress={() => setTabLabel(tab)}>
-                            <Text key={tab} style={[styles.tabLabel, { color: tab === tabLabel ? colors.black : colors.textGrey }]}>{tab}</Text>
-                        </Pressable>
-                    ))}
-                </View>
+    const onMountScreen = async () => {
+       // await SecureStore.deleteItemAsync('secure_deviceId')
+        try {
+            const deviceId = await SecureStore.getItemAsync('secure_deviceId');
+            if (deviceId === null) {
+                // 처음 진입하는 사용자
+                setModalVisible(true)
+                let uuid = uuidv4();
+                await SecureStore.setItemAsync('secure_deviceId', JSON.stringify(uuid));
+            } else {
+                // 이미 진입한 사용자
+                console.log('이미 진입한 적이 있습니다.');
+            }
+        } catch (error) {
+            console.error('SecureStore 에러: ', error);
+        }
+    }
 
-                {/* 기록 화면 */}
-                {tabLabel == tabs[0] && <HomeRecord navigation={navigation} userInfo={user} />}
 
-                {/* 통계 화면 */}
-                {tabLabel == tabs[1] && <HomeStatistic userInfo={user} />}
+return (
+    <TabContainer>
+        <RootView>
+            {user?.userCode && <AccessRightModal isVisible={isModalVisible} toggleModal={()=>setModalVisible(false)} user={user}/> }
+            {/* 상단 탭 */}
+            <View style={styles.tab}>
+                {tabs.map(tab => (
+                    <Pressable key={tab} onPress={() => setTabLabel(tab)}>
+                        <Text key={tab} style={[styles.tabLabel, { color: tab === tabLabel ? colors.black : colors.textGrey }]}>{tab}</Text>
+                    </Pressable>
+                ))}
+            </View>
 
-                {/* 몸무게 화면 */}
-                {tabLabel == tabs[2] && <HomeWeight userInfo={user} />}
-            </RootView>
-        </TabContainer>
-    );
+            {/* 기록 화면 */}
+            {tabLabel == tabs[0] && <HomeRecord navigation={navigation} userInfo={user} />}
+
+            {/* 통계 화면 */}
+            {tabLabel == tabs[1] && <HomeStatistic userInfo={user} />}
+
+            {/* 몸무게 화면 */}
+            {tabLabel == tabs[2] && <HomeWeight userInfo={user} />}
+        </RootView>
+    </TabContainer>
+);
 }
 
 export default HomeScreen;

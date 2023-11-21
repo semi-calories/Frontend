@@ -2,12 +2,13 @@
 // 알림 보여주는 화면
 //
 
-import React, { useLayoutEffect } from "react";
+import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, FlatList } from "react-native";
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
+import { GetUserData } from "~/components/asyncStorageData";
 
 import { HeaderType } from "~/constants/type";
 import { NotiData } from "~/constants/test";
@@ -16,12 +17,24 @@ import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 
 const NotificationScreen = ({ navigation }) => {
+    const [user, setUser] = useState({})
+    console.log("NotificationScreen user",user)
 
     useLayoutEffect(() => {
         navigation.setOptions({
             header: () => <BackHeader back title="알림" backPress={() => navigation.goBack()} rightType={HeaderType.setting} rightPress={() => navigation.navigate('NotificationSettingScreen')} />
         });
     }, [navigation]);
+
+    useEffect(()=>{
+        getUser()
+    },[])
+
+    const getUser = async () => {
+        const data = await GetUserData();
+
+        setUser({ ...data })
+    }
 
     const renderItem = ({ item }) => {
         return (
