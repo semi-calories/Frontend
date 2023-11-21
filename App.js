@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 
 //import { SafeAreaView } from 'react-native-safe-area-context';
-import { SafeAreaView, StyleSheet, Platform } from 'react-native';
+import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
@@ -29,6 +29,8 @@ export default function App() {
       hideSplashScreen();
     }
   }, [fontsLoaded]); //fontsLoaded 상태 변경 마다 실행
+
+  LogBox.ignoreAllLogs();
 
 
   if (!fontsLoaded) {
