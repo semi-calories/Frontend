@@ -22,11 +22,16 @@ const UserInfoMainScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
     console.log('UserInfoMainScreen user', user)
 
+    const [image, setImage] = useState({})
+    console.log('UserInfoMainScreen image', image)
+
+
     useLayoutEffect(() => {
         navigation.setOptions({
             header: () => <BackHeader back backPress={() => navigation.goBack()} />
         });
     }, [navigation]);
+
 
     useEffect(() => {
         getUser()
@@ -34,19 +39,24 @@ const UserInfoMainScreen = ({ navigation }) => {
             console.log('UserInfoMainScreen focus')
             getUser()
         });
-       // getUser()
+        // getUser()
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return focusSubscription;
     }, [navigation]);
 
+
     const getUser = async () => {
         const data = await GetUserData();
 
         setUser({ ...data })
+        setImage({
+            imageSrc: data.image,
+            imageHash: Date.now()
+        })
     }
 
-    const onPressLogout = async() => {
+    const onPressLogout = async () => {
         try {
             const response = await userLogout()
             Alert.alert('로그아웃에 성공하였습니다.')
@@ -77,12 +87,12 @@ const UserInfoMainScreen = ({ navigation }) => {
         <RootView viewStyle={styles.container}>
             {/* 사용자 사진, 이름 나타내는 부분 */}
             <View style={styles.profile}>
-                <Image source={user.image ? { uri: user.image } : Null_img} style={styles.img} resizeMode="cover" />
+                <Image source={user.image ? { uri: `${image.imageSrc}?${image.imageHash}` } : Null_img} style={styles.img} resizeMode="cover" />
                 <Text style={styles.boldText}>{user?.name}</Text>
             </View>
 
             {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: {...user, image: {uri: user.image}}, infoType: UserInfoType.edit })}>
+            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: { ...user, image: { uri: `${image.imageSrc}?${image.imageHash}` } }, infoType: UserInfoType.edit })}>
                 <Text style={styles.menuText}>사용자 정보</Text>
                 <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
             </Pressable>
