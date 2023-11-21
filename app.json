@@ -16,10 +16,11 @@
     ],
     "ios": {
       "bundleIdentifier": "com.shimhyesu.SemiCalories",
-      "buildNumber": "1.0.2",
+      "buildNumber": "1.0.3",
       "supportsTablet": true,
       "infoPlist": {
-        "NSPhotoLibraryUsageDescription": "Allow Semi-Calories to access your photos.",
+        "NSCameraUsageDescription":"유저 사진 설정, 식단 기록을 위해 카메라 권한이 필요합니다.",
+        "NSPhotoLibraryUsageDescription":"유저 사진 설정, 식단 기록을 위해 앨범 권한이 필요합니다.",
         "NSPhotoLibraryAddUsageDescription": "Allow Semi-Calories to save photos."
       }
     },
@@ -45,14 +46,14 @@
       [
         "expo-camera",
         {
-          "cameraPermission": "Allow Semi-Calories to access your camera."
+          "cameraPermission": "유저 사진 설정, 식단 기록을 위해 카메라 권한이 필요합니다."
         }
       ],
       [
         "expo-media-library",
         {
-          "photosPermission": "Allow Semi-Calories to access your photos.",
-          "savePhotosPermission": "Allow Semi-Calories to save photos.",
+          "photosPermission": "유저 사진 설정, 식단 기록을 위해 앨범 권한이 필요합니다.",
+          "savePhotosPermission": "Allows Semi-Calories to save photos.",
           "isAccessMediaLocationEnabled": true
         }
       ]
