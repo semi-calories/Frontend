@@ -16,7 +16,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.shimhyesu.SemiCalories",
-      "buildNumber": "1.0.1",
+      "buildNumber": "1.0.2",
       "supportsTablet": true,
       "infoPlist": {
         "NSPhotoLibraryUsageDescription": "Allow Semi-Calories to access your photos.",
@@ -24,7 +24,7 @@
       }
     },
     "android": {
-      "versionCode": 1,
+      "versionCode": 3,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#ffffff"

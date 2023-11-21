@@ -45,6 +45,7 @@ const createAxiosInstance = async (url, options) => {
 export const fetchDataGet = async (endPoint, params) => {
     try {
         const axiosInstance = await createAxiosInstance(FRONTEND_BASE_URL);
+       //console.log('#####', axiosInstance, endPoint, params)
 
         const response = await axiosInstance.get(endPoint, params);
         return response;
