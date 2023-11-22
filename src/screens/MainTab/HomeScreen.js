@@ -60,7 +60,7 @@ const HomeScreen = ({ navigation }) => {
     }
 
     const onMountScreen = async () => {
-       // await SecureStore.deleteItemAsync('secure_deviceId')
+       //await SecureStore.deleteItemAsync('secure_deviceId')
         try {
             const deviceId = await SecureStore.getItemAsync('secure_deviceId');
             if (deviceId === null) {
