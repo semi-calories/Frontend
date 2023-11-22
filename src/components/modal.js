@@ -64,38 +64,36 @@ export const AccessRightModal = ({ isVisible, toggleModal, user }) => {
     return (
         <Modal isVisible={isVisible} style={styles.container}>
             <View style={styles.modal}>
-                <View style={{ flex: 1 }}>
-                    <View style={{ alignItems: 'center' }}>
-                        <Text style={styles.boldText}>앱 접근 권한 안내</Text>
-                        <Text style={[styles.text, { marginTop: rHeight(10), textAlign: 'center' }]}>Semi-Calories의 다양한 서비스 제공을 위해{'\n'} 다음과 같은 기능이 필요합니다.</Text>
-                    </View>
-
-                    <View style={styles.rightView}>
-                        <Text style={[styles.semiBoldText]}>선택적 접근 권한</Text>
-                        <View style={styles.flexRow}>
-                            <View style={styles.icon}>
-                                <Feather name="camera" size={rHeight(25)} color={colors.black} />
-                            </View>
-                            <View>
-                                <Text style={[styles.text, { color: colors.black }]}>카메라 및 앨범 (선택)</Text>
-                                <Text style={[styles.text, { fontSize: rFont(12) }]}>유저 사진 설정, 식단 기록 시 사용</Text>
-                            </View>
-                        </View>
-                        <View style={styles.flexRow}>
-                            <View style={styles.icon}>
-                                <MaterialIcons name="notifications-none" size={rHeight(25)} color={colors.black} />
-                            </View>
-                            <View>
-                                <Text style={[styles.text, { color: colors.black }]}>알림(선택)</Text>
-                                <Text style={[styles.text, { fontSize: rFont(12) }]}>식단 추천 푸시 알람 시 사용</Text>
-                            </View>
-                        </View>
-                        <Text style={[styles.noticeText, { marginTop: rHeight(15), color: 'black' }]}>* 필수적 접근 권한은 사용하지 않습니다.</Text>
-                        <Text style={[styles.noticeText, { marginTop: rHeight(20) }]}>* 선택적 접근 권한은 해당 기능을 사용할 때만 허용이 필요합니다.</Text>
-                        <Text style={[styles.noticeText]}>* 비허용시에도 해당 기능 외 서비스 이용이 가능합니다. 허용 상태는 휴대폰 설정 메뉴에서 언제든지 변경할 수 있습니다.</Text>
-                    </View>
+                <View style={{ alignItems: 'center' }}>
+                    <Text style={styles.boldText}>앱 접근 권한 안내</Text>
+                    <Text style={[styles.text, { marginTop: rHeight(10), textAlign: 'center' }]}>Semi-Calories의 다양한 서비스 제공을 위해{'\n'} 다음과 같은 기능이 필요합니다.</Text>
                 </View>
-                <View style={{ alignSelf: 'center', marginBottom: rHeight(10) }}>
+
+                <View style={styles.rightView}>
+                    <Text style={[styles.semiBoldText]}>선택적 접근 권한</Text>
+                    <View style={styles.flexRow}>
+                        <View style={styles.icon}>
+                            <Feather name="camera" size={rHeight(25)} color={colors.black} />
+                        </View>
+                        <View>
+                            <Text style={[styles.text, { color: colors.black }]}>카메라 및 앨범 (선택)</Text>
+                            <Text style={[styles.text, { fontSize: rFont(12) }]}>유저 사진 설정, 식단 기록 시 사용</Text>
+                        </View>
+                    </View>
+                    <View style={styles.flexRow}>
+                        <View style={styles.icon}>
+                            <MaterialIcons name="notifications-none" size={rHeight(25)} color={colors.black} />
+                        </View>
+                        <View>
+                            <Text style={[styles.text, { color: colors.black }]}>알림(선택)</Text>
+                            <Text style={[styles.text, { fontSize: rFont(12) }]}>식단 추천 푸시 알람 시 사용</Text>
+                        </View>
+                    </View>
+                    <Text style={[styles.noticeText, { marginTop: rHeight(15), color: 'black' }]}>* 필수적 접근 권한은 사용하지 않습니다.</Text>
+                    <Text style={[styles.noticeText, { marginTop: rHeight(20) }]}>* 선택적 접근 권한은 해당 기능을 사용할 때만 허용이 필요합니다.</Text>
+                    <Text style={[styles.noticeText]}>* 비허용시에도 해당 기능 외 서비스 이용이 가능합니다. 허용 상태는 휴대폰 설정 메뉴에서 언제든지 변경할 수 있습니다.</Text>
+                </View>
+                <View style={{ alignSelf: 'center', marginBottom: rHeight(10), marginTop: rHeight(25) }}>
                     <PrimaryButton text="확인" onPress={onPressComfirm} btnStyle={{ width: rWidth(260) }} />
                 </View>
             </View>
@@ -112,10 +110,10 @@ const styles = StyleSheet.create({
 
     modal: {
         width: rWidth(300),
-        height: rHeight(550),
+        //height: rHeight(550),
         backgroundColor: colors.white,
         paddingTop: rHeight(30),
-        borderRadius: rHeight(15)
+        borderRadius: rHeight(15),
     },
 
     boldText: {
@@ -157,7 +155,7 @@ const styles = StyleSheet.create({
     },
 
     rightView: {
-        marginTop: rHeight(40),
+        marginTop: rHeight(30),
         paddingHorizontal: rWidth(20)
     },
 
