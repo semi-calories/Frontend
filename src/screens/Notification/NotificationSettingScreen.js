@@ -9,6 +9,7 @@ import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
+import * as Linking from 'expo-linking';
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
@@ -57,7 +58,7 @@ async function registerForPushNotificationsAsync() {
 
 const NotificationSettingScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
-    console.log("NotificationSettingScreen user", user)
+    //console.log("NotificationSettingScreen user", user)
 
     const [isEnabled, setIsEnabled] = useState(false);
 
@@ -93,21 +94,21 @@ const NotificationSettingScreen = ({ navigation }) => {
     const getNotiSetting = async () => {
         try {
             const response = await getSetting({ userCode: user.userCode })
-            console.log(response)
+            //console.log(response)
 
             if (response) {
                 setIsEnabled(response.setting)
 
                 let bf = new Date(breakfast)
-                bf.setHours(response.breakfastHour) 
+                bf.setHours(response.breakfastHour)
                 bf.setMinutes(response.breakfastMinute)
                 setBreakfast(bf)
                 let lun = new Date(lunch)
-                lun.setHours(response.lunchHour) 
+                lun.setHours(response.lunchHour)
                 lun.setMinutes(response.lunchMinute)
                 setLunch(lun)
                 let din = new Date(dinner)
-                din.setHours(response.dinnerHour) 
+                din.setHours(response.dinnerHour)
                 din.setMinutes(response.dinnerMinute)
                 setDinner(din)
             }
@@ -117,16 +118,19 @@ const NotificationSettingScreen = ({ navigation }) => {
     }
 
     const handleSwitch = async () => {
-        setIsEnabled(!isEnabled)
+        if (!isEnabled) {
+            const { status } = await Notifications.getPermissionsAsync();
+            console.log(status)
 
-        // if(!isEnabled){
-        //     registerForPushNotificationsAsync()
-        //     .then(token => saveSetting({
-        //         userCode: user.userCode,
-        //         userToken: token,
-        //         setting: true,
-        //     }));
-        // }
+            if (status !== 'granted') {
+                Alert.alert('알림 권한', '식단 알림을 설정하는 것은\n알림 권한이 필요합니다.', [
+                    { text: '취소', onPress: () => { } },
+                    { text: '확인', onPress: () => Linking.openSettings() },
+                ]);
+            }
+        }
+
+        setIsEnabled(!isEnabled)
     }
 
     const handleComplete = async () => {

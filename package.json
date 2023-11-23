@@ -28,6 +28,7 @@
     "expo-image-manipulator": "~11.3.0",
     "expo-image-picker": "~14.3.2",
     "expo-linear-gradient": "~12.3.0",
+    "expo-linking": "^6.0.0",
     "expo-mail-composer": "~12.3.0",
     "expo-media-library": "~15.4.1",
     "expo-notifications": "~0.20.1",

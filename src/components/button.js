@@ -9,6 +9,7 @@ import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
+import * as Linking from 'expo-linking';
 
 import { GetUserData } from "~/components/asyncStorageData";
 
@@ -28,7 +29,7 @@ export function PrimaryButton({ text, onPress, btnStyle, textStyle }) {
     );
 }
 
-export function MoveButton({ text, onPress, btnStyle, inActive, textStyle}) {
+export function MoveButton({ text, onPress, btnStyle, inActive, textStyle }) {
     return (
         <TouchableOpacity style={[inActive ? styles.moveBtnInactive : styles.moveBtn, btnStyle]} onPress={onPress}>
             <Text style={[styles.text, textStyle]}>{text}</Text>
@@ -67,7 +68,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     }, [opened, animation])
 
     const onPressRecord = () => {
-        navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add, userInfo:user });
+        navigation.navigate('SearchFoodScreen', { type: SearchFoodType.add, userInfo: user });
         toggleOpened()
     }
 
@@ -85,7 +86,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     const onPressCameraMenu = async (index) => {
         switch (index) {
             case 0:  //사진선택
-                const { status: cameraStatus } = await Camera.requestCameraPermissionsAsync();
+                const { status: cameraStatus } = await Camera.getCameraPermissionsAsync();
                 // 권한을 획득하면 status가 granted 상태
                 if (cameraStatus === 'granted') {
                     navigation.navigate('CameraScreen', {
@@ -93,19 +94,27 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                         userInfo: user,
                     });
                 } else {
-                    Alert.alert('카메라 접근 허용은 필수입니다.');
+                    //await Camera.requestCameraPermissionsAsync();
+                    Alert.alert('카메라 권한', '사진으로 식사 기록하는 것은\n카메라 권한이 필요합니다.', [
+                        { text: '취소', onPress: () => {}},
+                        { text: '확인', onPress: () => Linking.openSettings() },
+                    ]);
                 }
                 return;
 
             case 1:  //앨범에서 선택
-                const { status: albumStatus } = await ImagePicker.requestMediaLibraryPermissionsAsync()
+                const { status: albumStatus } = await ImagePicker.getMediaLibraryPermissionsAsync()
                 if (albumStatus === 'granted') {
                     navigation.navigate('AlbumScreen_new', {
                         nextScreen: 'MealtimeScreen',
                         userInfo: user,
                     });
                 } else {
-                    Alert.alert('앨범 접근 허용은 필수입니다.');
+                    //await ImagePicker.requestMediaLibraryPermissionsAsync()
+                    Alert.alert('앨범 권한', '사진으로 식사 기록하는 것은\n앨범 권한이 필요합니다.', [
+                        { text: '취소', onPress: () => {}},
+                        { text: '확인', onPress: () => Linking.openSettings() },
+                    ]);
                 }
                 return;
 
@@ -193,7 +202,7 @@ const styles = StyleSheet.create({
         //height: rHeight(67),
         borderRadius: rWidth(15),
         backgroundColor: colors.primary,
-        paddingVertical:rHeight(10),
+        paddingVertical: rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
@@ -204,7 +213,7 @@ const styles = StyleSheet.create({
         //height: rHeight(50),
         borderRadius: rWidth(20),
         backgroundColor: colors.black,
-        paddingVertical:rHeight(10),
+        paddingVertical: rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
@@ -215,7 +224,7 @@ const styles = StyleSheet.create({
         //height: rHeight(50),
         borderRadius: rWidth(20),
         backgroundColor: colors.textGrey,
-        paddingVertical:rHeight(10),
+        paddingVertical: rHeight(10),
 
         alignItems: "center",
         justifyContent: 'center',
