@@ -22,39 +22,6 @@ import { colors, fonts } from "~/constants/globalStyles";
 
 import { getSetting, saveSetting, updateSetting } from "~/apis/api/pushNotification";
 
-async function registerForPushNotificationsAsync() {
-    let token;
-
-    if (Platform.OS === 'android') {
-        Notifications.setNotificationChannelAsync('default', {
-            name: 'default',
-            importance: Notifications.AndroidImportance.MAX,
-            vibrationPattern: [0, 250, 250, 250],
-            lightColor: '#FF231F7C',
-        });
-    }
-
-    if (Device.isDevice) {
-        const { status: existingStatus } = await Notifications.getPermissionsAsync();
-        let finalStatus = existingStatus;
-        if (existingStatus !== 'granted') {
-            const { status } = await Notifications.requestPermissionsAsync();
-            finalStatus = status;
-        }
-        if (finalStatus !== 'granted') {
-            alert('Failed to get push token for push notification!');
-            return;
-        }
-        token = await Notifications.getExpoPushTokenAsync({
-            projectId: Constants.expoConfig.extra.eas.projectId,
-        });
-        console.log(token);
-    } else {
-        alert('Must use physical device for Push Notifications');
-    }
-
-    return token.data;
-}
 
 const NotificationSettingScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
@@ -94,7 +61,7 @@ const NotificationSettingScreen = ({ navigation }) => {
     const getNotiSetting = async () => {
         try {
             const response = await getSetting({ userCode: user.userCode })
-            //console.log(response)
+            console.log(response)
 
             if (response) {
                 setIsEnabled(response.setting)
@@ -120,14 +87,33 @@ const NotificationSettingScreen = ({ navigation }) => {
     const handleSwitch = async () => {
         if (!isEnabled) {
             const { status } = await Notifications.getPermissionsAsync();
-            console.log(status)
+            //console.log(status)
 
             if (status !== 'granted') {
                 Alert.alert('알림 권한', '식단 알림을 설정하는 것은\n알림 권한이 필요합니다.', [
                     { text: '취소', onPress: () => { } },
                     { text: '확인', onPress: () => Linking.openSettings() },
                 ]);
+
+                return;
             }
+
+            const expoToken = await SecureStore.getItemAsync('ExpoToken');
+            //console.log('expoToken',expoToken)
+            if (expoToken === null) {
+                token = await Notifications.getExpoPushTokenAsync({
+                    projectId: Constants.expoConfig.extra.eas.projectId,
+                });
+                console.log(token);
+
+                await saveSetting({
+                    userCode: user.userCode,
+                    userToken: token.data,
+                    setting: true,
+                })
+
+                await SecureStore.setItemAsync('ExpoToken', JSON.stringify(token.data));
+            } 
         }
 
         setIsEnabled(!isEnabled)

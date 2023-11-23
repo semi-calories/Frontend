@@ -38,22 +38,20 @@ export const AccessRightModal = ({ isVisible, toggleModal, user }) => {
         if (Device.isDevice) {
             const { status } = await Notifications.requestPermissionsAsync();
 
-            if (status !== 'granted') {
-                return;
+            if (status === 'granted') {
+                token = await Notifications.getExpoPushTokenAsync({
+                    projectId: Constants.expoConfig.extra.eas.projectId,
+                });
+                console.log(token);
+    
+                await saveSetting({
+                    userCode: user.userCode,
+                    userToken: token.data,
+                    setting: true,
+                })
+    
+                await SecureStore.setItemAsync('ExpoToken', JSON.stringify(token.data));
             }
-
-            token = await Notifications.getExpoPushTokenAsync({
-                projectId: Constants.expoConfig.extra.eas.projectId,
-            });
-            console.log(token);
-
-            await saveSetting({
-                userCode: user.userCode,
-                userToken: token.data,
-                setting: true,
-            })
-
-            await SecureStore.setItemAsync('ExpoToken', JSON.stringify(token.data));
         } else {
             alert('Must use physical device for Push Notifications');
         }

@@ -16,7 +16,7 @@
     ],
     "ios": {
       "bundleIdentifier": "com.shimhyesu.SemiCalories",
-      "buildNumber": "1.0.6",
+      "buildNumber": "1.0.7",
       "supportsTablet": true,
       "infoPlist": {
         "NSCameraUsageDescription": "유저 사진 설정, 식단 기록을 위해 카메라 권한이 필요합니다.",
@@ -25,7 +25,7 @@
       }
     },
     "android": {
-      "versionCode": 5,
+      "versionCode": 6,
       "adaptiveIcon": {
         "foregroundImage": "./src/assets/Logo.png",
         "backgroundColor": "#ffffff"
