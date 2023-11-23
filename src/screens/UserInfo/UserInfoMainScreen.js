@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
-import { View, Text, StyleSheet, Image, Pressable, Alert } from "react-native";
+import { View, Text, StyleSheet, Image, Pressable, Alert, ScrollView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
 
 import { RootView } from "~/components/container";
@@ -84,37 +84,43 @@ const UserInfoMainScreen = ({ navigation }) => {
 
 
     return (
-        <RootView viewStyle={styles.container}>
-            {/* 사용자 사진, 이름 나타내는 부분 */}
-            <View style={styles.profile}>
-                <Image source={user.image ? { uri: `${image.imageSrc}?${image.imageHash}` } : Null_img} style={styles.img} resizeMode="cover" />
-                <Text style={styles.boldText}>{user?.name}</Text>
-            </View>
+        <RootView>
+            <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: rHeight(30)}}>
+                {/* 사용자 사진, 이름 나타내는 부분 */}
+                <View style={styles.profile}>
+                    <Image source={user.image ? { uri: `${image.imageSrc}?${image.imageHash}` } : Null_img} style={styles.img} resizeMode="cover" />
+                    <Text style={styles.boldText}>{user?.name}</Text>
+                </View>
 
-            {/* 화면이동 */}
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: { ...user, image: { uri: `${image.imageSrc}?${image.imageHash}` } }, infoType: UserInfoType.edit })}>
-                <Text style={styles.menuText}>사용자 정보</Text>
-                <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
-            </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('SetGoalScreen', { userInfo: user, infoType: UserInfoType.edit })}>
-                <Text style={styles.menuText}>목표 설정</Text>
-                <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
-            </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
-                <Text style={styles.menuText}>선호 / 비선호 음식 설정</Text>
-                <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
-            </Pressable>
-            <Pressable style={styles.flexRow} onPress={() => navigation.push('InquiryScreen')}>
-                <Text style={styles.menuText}>문의하기</Text>
-                <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
-            </Pressable>
-            <Pressable style={styles.flexRow} onPress={onPressLogout}>
-                <Text style={styles.menuText}>로그아웃</Text>
-                <MaterialIcons name="chevron-right" size={35} color={colors.white} />
-            </Pressable>
-            <Pressable onPress={onPressQuit}>
-                <Text style={styles.quitText}>회원탈퇴</Text>
-            </Pressable>
+                {/* 화면이동 */}
+                <Pressable style={styles.flexRow} onPress={() => navigation.push('UserInfoEditScreen', { userInfo: { ...user, image: { uri: `${image.imageSrc}?${image.imageHash}` } }, infoType: UserInfoType.edit })}>
+                    <Text style={styles.menuText}>사용자 정보</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+                </Pressable>
+                <Pressable style={styles.flexRow} onPress={() => navigation.push('SetGoalScreen', { userInfo: user, infoType: UserInfoType.edit })}>
+                    <Text style={styles.menuText}>목표 설정</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+                </Pressable>
+                <Pressable style={styles.flexRow} onPress={() => navigation.push('SetFoodScreen', { userInfo: user, infoType: UserInfoType.edit })}>
+                    <Text style={styles.menuText}>선호 / 비선호 음식 설정</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+                </Pressable>
+                <Pressable style={styles.flexRow} onPress={() => navigation.push('FAQScreen')}>
+                    <Text style={styles.menuText}>FAQ</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+                </Pressable>
+                <Pressable style={styles.flexRow} onPress={() => navigation.push('InquiryScreen')}>
+                    <Text style={styles.menuText}>문의하기</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.borderGrey} />
+                </Pressable>
+                <Pressable style={styles.flexRow} onPress={onPressLogout}>
+                    <Text style={styles.menuText}>로그아웃</Text>
+                    <MaterialIcons name="chevron-right" size={35} color={colors.white} />
+                </Pressable>
+                <Pressable onPress={onPressQuit}>
+                    <Text style={styles.quitText}>회원탈퇴</Text>
+                </Pressable>
+            </ScrollView>
         </RootView>
     );
 }
@@ -123,7 +129,7 @@ export default UserInfoMainScreen;
 
 const styles = StyleSheet.create({
     container: {
-        paddingVertical: rHeight(17),
+        paddingTop: rHeight(17),
         paddingHorizontal: rWidth(24),
     },
 
