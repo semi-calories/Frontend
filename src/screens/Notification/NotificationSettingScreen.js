@@ -4,7 +4,7 @@
 
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
-import { View, Text, StyleSheet, Switch, Alert} from "react-native";
+import { View, Text, StyleSheet, Switch, Alert } from "react-native";
 import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
@@ -23,41 +23,41 @@ import { getSetting, saveSetting, updateSetting } from "~/apis/api/pushNotificat
 
 async function registerForPushNotificationsAsync() {
     let token;
-  
+
     if (Platform.OS === 'android') {
-      Notifications.setNotificationChannelAsync('default', {
-        name: 'default',
-        importance: Notifications.AndroidImportance.MAX,
-        vibrationPattern: [0, 250, 250, 250],
-        lightColor: '#FF231F7C',
-      });
+        Notifications.setNotificationChannelAsync('default', {
+            name: 'default',
+            importance: Notifications.AndroidImportance.MAX,
+            vibrationPattern: [0, 250, 250, 250],
+            lightColor: '#FF231F7C',
+        });
     }
-  
+
     if (Device.isDevice) {
-      const { status: existingStatus } = await Notifications.getPermissionsAsync();
-      let finalStatus = existingStatus;
-      if (existingStatus !== 'granted') {
-        const { status } = await Notifications.requestPermissionsAsync();
-        finalStatus = status;
-      }
-      if (finalStatus !== 'granted') {
-        alert('Failed to get push token for push notification!');
-        return;
-      }
-      token = await Notifications.getExpoPushTokenAsync({
-        projectId: Constants.expoConfig.extra.eas.projectId,
-      });
-      console.log(token);
+        const { status: existingStatus } = await Notifications.getPermissionsAsync();
+        let finalStatus = existingStatus;
+        if (existingStatus !== 'granted') {
+            const { status } = await Notifications.requestPermissionsAsync();
+            finalStatus = status;
+        }
+        if (finalStatus !== 'granted') {
+            alert('Failed to get push token for push notification!');
+            return;
+        }
+        token = await Notifications.getExpoPushTokenAsync({
+            projectId: Constants.expoConfig.extra.eas.projectId,
+        });
+        console.log(token);
     } else {
-      alert('Must use physical device for Push Notifications');
+        alert('Must use physical device for Push Notifications');
     }
-  
+
     return token.data;
-  }
+}
 
 const NotificationSettingScreen = ({ navigation }) => {
     const [user, setUser] = useState({})
-    console.log("NotificationSettingScreen user",user)
+    console.log("NotificationSettingScreen user", user)
 
     const [isEnabled, setIsEnabled] = useState(false);
 
@@ -71,18 +71,18 @@ const NotificationSettingScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    useEffect(()=>{
+    useEffect(() => {
         getUser()
-    },[])
+    }, [])
 
-    useEffect(()=>{
-        if(user.constructor === Object
-            && Object.keys(user).length === 0)  {
-           return;
-         }
+    useEffect(() => {
+        if (user.constructor === Object
+            && Object.keys(user).length === 0) {
+            return;
+        }
 
         getNotiSetting();
-    },[user])
+    }, [user])
 
     const getUser = async () => {
         const data = await GetUserData();
@@ -90,16 +90,33 @@ const NotificationSettingScreen = ({ navigation }) => {
         setUser({ ...data })
     }
 
-    const getNotiSetting =async()=>{
+    const getNotiSetting = async () => {
         try {
-            const response = await getSetting({userCode: user.userCode})
+            const response = await getSetting({ userCode: user.userCode })
             console.log(response)
+
+            if (response) {
+                setIsEnabled(response.setting)
+
+                let bf = new Date(breakfast)
+                bf.setHours(response.breakfastHour) 
+                bf.setMinutes(response.breakfastMinute)
+                setBreakfast(bf)
+                let lun = new Date(lunch)
+                lun.setHours(response.lunchHour) 
+                lun.setMinutes(response.lunchMinute)
+                setLunch(lun)
+                let din = new Date(dinner)
+                din.setHours(response.dinnerHour) 
+                din.setMinutes(response.dinnerMinute)
+                setDinner(din)
+            }
         } catch (err) {
             console.log(err)
         }
-    }    
+    }
 
-    const handleSwitch =async()=>{
+    const handleSwitch = async () => {
         setIsEnabled(!isEnabled)
 
         // if(!isEnabled){
@@ -112,19 +129,19 @@ const NotificationSettingScreen = ({ navigation }) => {
         // }
     }
 
-    const handleComplete = async() => {
+    const handleComplete = async () => {
         const expoToken = await SecureStore.getItemAsync('ExpoToken');
 
-        const reqBody={
+        const reqBody = {
             userCode: user.userCode,
             setting: isEnabled,
-            userToken:expoToken,
-            breakfastHour:breakfast.getHours(),
-            breakfastMinute:breakfast.getMinutes(),
+            userToken: expoToken,
+            breakfastHour: breakfast.getHours(),
+            breakfastMinute: breakfast.getMinutes(),
             lunchHour: lunch.getHours(),
-            lunchMinute:lunch.getMinutes(),
+            lunchMinute: lunch.getMinutes(),
             dinnerHour: dinner.getHours(),
-            dinnerMinute:dinner.getMinutes(),
+            dinnerMinute: dinner.getMinutes(),
         }
         console.log(reqBody)
 
@@ -134,7 +151,7 @@ const NotificationSettingScreen = ({ navigation }) => {
             Alert.alert('식단 알림이 설정되었습니다.')
         } catch (err) {
             console.log(err)
-        } 
+        }
     }
 
     return (
@@ -159,7 +176,7 @@ const NotificationSettingScreen = ({ navigation }) => {
                         <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                             <Text style={styles.boldGreyText}>점심</Text>
                             <DateTimePickerSelect mode="time" value={lunch} onChange={(event, selectedDate) => setLunch(selectedDate)} />
-                      </View>
+                        </View>
                         <View style={[styles.flexRow, { marginVertical: rHeight(10) }]}>
                             <Text style={styles.boldGreyText}>저녁</Text>
                             <DateTimePickerSelect mode="time" value={dinner} onChange={(event, selectedDate) => setDinner(selectedDate)} />
