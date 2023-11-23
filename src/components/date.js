@@ -102,19 +102,39 @@ export const FormatDate = date => {
 }
 
 //날짜, 시간 선택하는 picker - android, ios 둘 다 사용
-export const DateTimePickerSelect = ({mode, value, onChange}) => {
+export const DateTimePickerSelect = ({ mode, value, onChange }) => {
     return (
         Platform.OS == "android" ?
             <Pressable style={styles.pickerView} onPress={() => DateTimePickerAndroid.open({
-                mode:mode,
-                value:value,
-                onChange:onChange,
+                mode: mode,
+                value: value,
+                onChange: onChange,
             })}>
-                <Text style={styles.pickerText}>{mode=='time' ? FormatTime(value) : FormatDate(value)}</Text>
+                <Text style={styles.pickerText}>{mode == 'time' ? FormatTime(value) : FormatDate(value)}</Text>
             </Pressable>
             :
-            <DateTimePicker mode={mode} value={value} onChange={onChange}/>
+            <DateTimePicker mode={mode} value={value} onChange={onChange} />
     )
+}
+
+export const getFoodTimes = type => {
+    let time=''
+
+    switch(type){
+        case 1:
+            time='아침'
+            break;
+        case 2:
+            time='점심'
+            break;
+        case 3:
+            time='저녁'
+            break;
+        default:
+            break;
+    }
+
+    return time
 }
 
 const styles = StyleSheet.create({
