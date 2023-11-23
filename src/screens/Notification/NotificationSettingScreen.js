@@ -91,10 +91,8 @@ const NotificationSettingScreen = ({ navigation }) => {
     }
 
     const getNotiSetting =async()=>{
-        console.log(typeof user.userCode, user.userCode)
-        
         try {
-            const { response } = await getSetting(user.userCode)
+            const response = await getSetting({userCode: user.userCode})
             console.log(response)
         } catch (err) {
             console.log(err)

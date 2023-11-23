@@ -9,9 +9,9 @@ export const saveSetting =async(reqBody) =>{
     }
 }
 
-export const getSetting =async(userCode) =>{
+export const getSetting =async(reqBody) =>{
     try {
-        const { data } = await fetchDataGet(`/alert/getAlertSet`, {params: userCode})
+        const { data } = await fetchDataPost(`/alert/getSetting`, reqBody)
         return data
     } catch (err) {
         console.error(err)
