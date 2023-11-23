@@ -11,7 +11,7 @@ export const saveSetting =async(reqBody) =>{
 
 export const getSetting =async(userCode) =>{
     try {
-        const { data } = await fetchDataGet(`/alert/getSetting`, {params: userCode})
+        const { data } = await fetchDataGet(`/alert/getAlertSet`, {params: userCode})
         return data
     } catch (err) {
         console.error(err)
