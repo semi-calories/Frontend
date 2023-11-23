@@ -49,7 +49,7 @@ export const AccessRightModal = ({ isVisible, toggleModal, user }) => {
 
             await saveSetting({
                 userCode: user.userCode,
-                userToken: token,
+                userToken: token.data,
                 setting: true,
             })
 
