@@ -47,9 +47,9 @@ export const deleteInfo = async (userCode) => {
 }
 
 //로그아웃
-export const userLogout = async() =>{
+export const userLogout = async(userCode) =>{
     try {
-        const { data } = await fetchDataGet(`/userLogout`)
+        const { data } = await fetchDataGet(`/userLogout`, {params: userCode})
         return data
     } catch (err) {
         console.error(err)

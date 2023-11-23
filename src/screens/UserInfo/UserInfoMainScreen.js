@@ -58,7 +58,7 @@ const UserInfoMainScreen = ({ navigation }) => {
 
     const onPressLogout = async () => {
         try {
-            const response = await userLogout()
+            const response = await userLogout(user.userCode)
             Alert.alert('로그아웃에 성공하였습니다.')
 
             navigation.navigate('LoginSignupScreen')
