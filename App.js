@@ -1,15 +1,24 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 //import { SafeAreaView } from 'react-native-safe-area-context';
 import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
 import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
+import * as Notifications from 'expo-notifications';
 
 import RootStack from "~/screens/RootStack";
 import { TabContextProvider } from '~/context/TabContext';
 
 import { rHeight } from "~/constants/globalSizes";
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default function App() {
   let [fontsLoaded] = useFonts({
@@ -20,6 +29,15 @@ export default function App() {
     'NotoSans_700Bold': require('~/assets/fonts/NotoSansKR-Bold.otf'),
     'NotoSans_900Black': require('~/assets/fonts/NotoSansKR-Black.otf'),
   });
+
+  const [notification, setNotification] = useState(false);
+  const notificationListener = useRef();
+
+  useEffect(()=>{
+    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
+      setNotification(notification);
+    });
+  },[])
 
   useEffect(() => {
     async function hideSplashScreen() {
