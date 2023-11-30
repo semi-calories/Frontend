@@ -25,6 +25,7 @@ const NotificationScreen = ({ navigation }) => {
     console.log("NotificationScreen user", user)
 
     const [alertRecord, setAlertRecord] = useState([])
+    console.log('NotificationScreen alertRecord',alertRecord)
 
     useLayoutEffect(() => {
         navigation.setOptions({

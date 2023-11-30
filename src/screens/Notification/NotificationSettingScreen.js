@@ -49,6 +49,7 @@ const NotificationSettingScreen = ({ navigation }) => {
             return;
         }
 
+
         getNotiSetting();
     }, [user])
 
@@ -59,6 +60,13 @@ const NotificationSettingScreen = ({ navigation }) => {
     }
 
     const getNotiSetting = async () => {
+        //await SecureStore.deleteItemAsync('ExpoToken')
+        const expoToken = await SecureStore.getItemAsync('ExpoToken');
+
+        if(!expoToken){
+            return;
+        }
+
         try {
             const response = await getSetting({ userCode: user.userCode })
             console.log(response)
@@ -121,11 +129,12 @@ const NotificationSettingScreen = ({ navigation }) => {
 
     const handleComplete = async () => {
         const expoToken = await SecureStore.getItemAsync('ExpoToken');
+        console.log(JSON.parse(expoToken))
 
         const reqBody = {
             userCode: user.userCode,
             setting: isEnabled,
-            userToken: expoToken,
+            userToken: JSON.parse(expoToken),
             breakfastHour: breakfast.getHours(),
             breakfastMinute: breakfast.getMinutes(),
             lunchHour: lunch.getHours(),
