@@ -33,8 +33,8 @@ const HomeScreen = ({ navigation }) => {
 
     useLayoutEffect(() => {
         navigation.setOptions({
-            //header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
-            header: () => <MainHeader userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+            header: () => <MainHeader notiPress={() => navigation.navigate('NotificationScreen')} userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
+            // header: () => <MainHeader userInfoPress={() => navigation.navigate('UserInfoMainScreen')} />
         });
     }, [navigation]);
 
