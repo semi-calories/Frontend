@@ -90,6 +90,11 @@ const HomeWeight = ({ userInfo }) => {
 
     //몸무게 저장
     const handleSave = async () => {
+        if(!weightRegex.test(weight)){
+            Alert.alert('올바른 형식인지 확인하세요')
+            return;
+        }
+
         const date = new Date(selectDate)
         date.setDate(date.getDate() + 1)
 
