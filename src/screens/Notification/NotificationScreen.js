@@ -5,7 +5,7 @@
 import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, FlatList } from "react-native";
-import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
+import { AntDesign } from '@expo/vector-icons';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";

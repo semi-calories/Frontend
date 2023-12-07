@@ -21,19 +21,19 @@ export const getStructedRangeWeight = rawData => {
             endIndex++;
         }
 
-        const year = v.timestamp.substring(2, 4);
+        const year = v.timestamp.substring(0, 4);
         const month = v.timestamp.substring(5, 7);
         const day = v.timestamp.substring(8, 10);
 
         return {
             value: v.weight,
             dataPointText: v.weight.toString(),
-            //label: `${year}.${month}.${day}`
-            label: `${month}.${day}`
+            label: `${month}.${day}`,
+            year
         }
     })
 
-    return [endIndex, { value: data[0].value }, ...data]
+    return [endIndex,{ value: data[0].value }, ...data]
 }
 
 export const getStructedPredictWeight = rawData => {

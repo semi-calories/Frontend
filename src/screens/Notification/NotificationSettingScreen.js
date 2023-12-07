@@ -145,7 +145,7 @@ const NotificationSettingScreen = ({ navigation }) => {
         console.log(reqBody)
 
         try {
-            const { response } = await updateSetting(reqBody)
+            await updateSetting(reqBody)
 
             Alert.alert('식단 알림이 설정되었습니다.')
         } catch (err) {

@@ -71,8 +71,9 @@ const HomeWeight = ({ userInfo }) => {
     const handlePressChart = item => {
         console.log('handlePressChart item', item)
 
-        //TODO: 올해로만 됨
-        const year = new Date().getFullYear()
+        if(!item.dataPointText) return;
+
+        const year = item?.year ? item.year : new Date().getFullYear()
         const month = item.label.substring(0, 2)
         const day = item.label.substring(3, 5)
         // console.log(year, month, day)
@@ -202,7 +203,7 @@ const HomeWeight = ({ userInfo }) => {
             const { weightList: rawWeightList } = await getMonthRangeWeight(weightInfo)
             const [i, ...weightList] = getStructedRangeWeight(rawWeightList)
             const [index, ...predictWeightList] = getStructedPredictWeight(rawWeightList)
-            //console.log('handleRangeWeight weightList', weightList)
+            console.log('handleRangeWeight weightList', weightList)
 
             setPredictStartIndex(index)
             setPredictEndIndex(i)

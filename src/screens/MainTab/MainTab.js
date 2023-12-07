@@ -1,8 +1,8 @@
 import React from "react";
 
-import { StyleSheet, View, TouchableOpacity } from "react-native";
+import { View } from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { Foundation, MaterialIcons, FontAwesome } from '@expo/vector-icons';
+import { Foundation, MaterialIcons } from '@expo/vector-icons';
 
 import HomeScreen from "~/screens/MainTab/HomeScreen";
 import DietRecordScreen from "~/screens/MainTab/DietRecordScreen";
@@ -84,27 +84,3 @@ const MainTab = ({ navigation }) => {
 }
 
 export default MainTab;
-
-const styles = StyleSheet.create({
-    btn: {
-        top: rHeight(-30),
-        width: rWidth(80),
-        height: rHeight(80),
-        borderRadius: 40,
-        backgroundColor: colors.primary,
-
-        justifyContent: 'center',
-        alignItem: 'center',
-    },
-
-    shadow: {
-        shadowColor: colors.textGrey,
-        shadowOffset: {
-            width: 0,
-            height: 10,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.5,
-        elevation: 5,
-    }
-});
