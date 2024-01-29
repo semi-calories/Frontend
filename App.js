@@ -6,6 +6,8 @@ import { NavigationContainer } from "@react-navigation/native";
 import * as SplashScreen from "expo-splash-screen";
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
+import { RecoilRoot } from 'recoil';
+
 
 import RootStack from "~/screens/RootStack";
 import { TabContextProvider } from '~/context/TabContext';
@@ -33,11 +35,11 @@ export default function App() {
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
 
-  useEffect(()=>{
+  useEffect(() => {
     notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
       setNotification(notification);
     });
-  },[])
+  }, [])
 
   useEffect(() => {
     async function hideSplashScreen() {
@@ -56,12 +58,14 @@ export default function App() {
   } else {
     return (
       <SafeAreaView style={styles.container}>
-        <TabContextProvider>
-          <NavigationContainer>
-            <RootStack />
-          </NavigationContainer>
-        </TabContextProvider>
-      </SafeAreaView>
+        <RecoilRoot>
+          <TabContextProvider>
+            <NavigationContainer>
+              <RootStack />
+            </NavigationContainer>
+          </TabContextProvider>
+        </RecoilRoot>
+      </SafeAreaView >
     );
   }
 }
