@@ -10,13 +10,15 @@ import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
 import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
+import { useSetRecoilState } from 'recoil';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
 import { LabelTextInput } from "~/components/textInput";
-import { StoreUserData, GetUserData } from "~/components/asyncStorageData";
 import { ageRegex, heightRegex, nameRegex, weightRegex } from "~/components/regex";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { HeaderType, UserInfoType } from "~/constants/type";
 import { Gender, Gender_ko, Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/userInfo";
@@ -61,6 +63,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     const [weight, setWeight] = useState();
     const [goalWeight, setGoalWeight] = useState();
     const [userActivity, setActivity] = useState();
+
+    const setUserState = useSetRecoilState(UserState);
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
@@ -171,7 +175,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 //const res = await savePredictWeight(userWeight)
                 const response = await updateInfo(user)
                 const userData = await getInfo({ userCode: userInfo.userCode })
-                StoreUserData({ ...userData, userCode: userInfo.userCode })
+                setUserState({ ...userData, userCode: userInfo.userCode })
 
                 Alert.alert('사용자 정보 수정 완료!')
             } catch (err) {

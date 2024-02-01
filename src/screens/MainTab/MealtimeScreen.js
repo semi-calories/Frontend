@@ -157,7 +157,7 @@ const MealtimeScreen = ({ navigation, route }) => {
         refRBSheet.current.close()
     }
 
-    const handleComplete = async () => {
+    const handleComplete = async() => {
         if (selectFoods.length == 0) {
             Alert.alert('식사를 하나 이상 기록해주세요.')
             return;

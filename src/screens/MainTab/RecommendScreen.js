@@ -5,13 +5,13 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
 import { View, Text, StyleSheet, FlatList, Image, Platform } from "react-native";
+import { useRecoilValue } from "recoil";
 
 import { TabContainer, RootView } from "~/components/container";
 import { MainHeader } from "~/components/header";
 
-import { GetUserData } from "~/components/asyncStorageData";
+import { UserState } from "~/atoms/UserAtom";
 
-import { RecommendFood } from "~/constants/test";
 import { Nutrition, Nutrition_ko } from "~/constants/food";
 
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
@@ -22,7 +22,7 @@ import { recommendRequest } from "~/apis/api/diet";
 const RecommendScreen = ({ navigation }) => {
     const [isRefreshing, setIsRefreshing] = useState(false);
 
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     console.log('RecommendScreen user', user)
     const [recommends, setRecommends] = useState([]);
     console.log('RecommendScreen recommends', recommends)
@@ -42,23 +42,6 @@ const RecommendScreen = ({ navigation }) => {
          
         recommendRequestDiet()
     }, [user])
-
-    useEffect(() => {
-        const focusSubscription = navigation.addListener('focus', () => {
-            console.log('HomeScreen focus')
-            getUser()
-        });
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return focusSubscription;
-    }, [navigation]);
-
-    const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
-    }
-
 
     const renderItem = ({ item }) => {
         return (

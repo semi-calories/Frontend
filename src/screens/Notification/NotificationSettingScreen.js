@@ -5,17 +5,18 @@
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
 import { View, Text, StyleSheet, Switch, Alert } from "react-native";
-import * as Device from 'expo-device';
 import * as Notifications from 'expo-notifications';
 import Constants from 'expo-constants';
 import * as SecureStore from 'expo-secure-store';
 import * as Linking from 'expo-linking';
+import { useRecoilValue } from "recoil";
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { MoveButton } from "~/components/button";
 import { DateTimePickerSelect } from "~/components/date";
-import { GetUserData } from "~/components/asyncStorageData";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -24,7 +25,7 @@ import { getSetting, saveSetting, updateSetting } from "~/apis/api/pushNotificat
 
 
 const NotificationSettingScreen = ({ navigation }) => {
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     //console.log("NotificationSettingScreen user", user)
 
     const [isEnabled, setIsEnabled] = useState(false);
@@ -39,9 +40,6 @@ const NotificationSettingScreen = ({ navigation }) => {
         });
     }, [navigation]);
 
-    useEffect(() => {
-        getUser()
-    }, [])
 
     useEffect(() => {
         if (user.constructor === Object
@@ -52,12 +50,6 @@ const NotificationSettingScreen = ({ navigation }) => {
 
         getNotiSetting();
     }, [user])
-
-    const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
-    }
 
     const getNotiSetting = async () => {
         //await SecureStore.deleteItemAsync('ExpoToken')

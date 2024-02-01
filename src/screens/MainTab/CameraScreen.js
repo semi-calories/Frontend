@@ -1,7 +1,7 @@
 //
 // 카메라 스크린 나타나는 화면
 //
-import React, { useRef, useState, useLayoutEffect, useEffect } from "react";
+import React, { useRef, useState, useLayoutEffect } from "react";
 
 import { StyleSheet, TouchableOpacity, View, Image, Text, Alert } from "react-native";
 import { Camera, CameraType, AutoFocus } from 'expo-camera';
@@ -21,9 +21,6 @@ import { recognizeUpload } from "~/apis/api/diet";
 const CameraScreen = ({ navigation, route }) => {
     const { nextScreen, userInfo } = route.params
 
-    const [user, setUser] = useState({})
-    console.log('CameraScreen user', user)
-
     const cameraRef = useRef(null);
     const [type, setType] = useState(CameraType.back);
 
@@ -36,12 +33,6 @@ const CameraScreen = ({ navigation, route }) => {
             header: () => <BackHeader back title="사진 찍기" backPress={() => navigation.goBack()} />
         });
     }, [navigation]);
-
-    useEffect(() => {
-        if (capturedImage) {
-            setUser({ ...userInfo, image: capturedImage})
-        }
-    }, [capturedImage])
 
     const takePictureHandler = async () => {
         // cameraRef가 없으면 해당 함수가 실행되지 않게 가드
@@ -74,7 +65,7 @@ const CameraScreen = ({ navigation, route }) => {
             const dietLists = await recognizeUploadDiet()
 
             if (dietLists.length) {
-                params = { foodParam: dietLists, userInfo, type: RecordType.init }
+                params = { foodParam: dietLists, userInfo:userInfo, type: RecordType.init }
 
                 navigation.navigate(nextScreen, params)
             } else {
@@ -82,8 +73,10 @@ const CameraScreen = ({ navigation, route }) => {
             }
 
         } else {
+            const userData = { ...userInfo, image: capturedImage}
+
             const params = {
-                userInfo: user,
+                userInfo: userData,
                 infoType: UserInfoType.edit
             }
 

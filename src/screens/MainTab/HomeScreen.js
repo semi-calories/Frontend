@@ -8,6 +8,7 @@ import { View, Text, StyleSheet, Pressable } from "react-native";
 import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { v4 as uuidv4 } from 'uuid';
+import { useRecoilValue } from "recoil";
 
 import HomeRecord from "~/screens/MainTab/HomeRecord";
 import HomeStatistic from "~/screens/MainTab/HomeStatistic";
@@ -15,18 +16,20 @@ import HomeWeight from "~/screens/MainTab/HomeWeight";
 
 import { RootView, TabContainer } from "~/components/container";
 import { MainHeader } from "~/components/header";
-import { GetUserData } from "~/components/asyncStorageData";
+import { AccessRightModal } from "~/components/modal";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
-import { AccessRightModal } from "~/components/modal";
+
 
 const tabs = ['기록', '통계', '몸무게'];
 
 const HomeScreen = ({ navigation }) => {
     const [tabLabel, setTabLabel] = useState(tabs[0])
 
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     console.log('HomeScreen user', user)
 
     const [isModalVisible, setModalVisible] = useState(false)
@@ -41,23 +44,6 @@ const HomeScreen = ({ navigation }) => {
     useEffect(() => {
         onMountScreen()
     }, [])
-
-    useEffect(() => {
-        const focusSubscription = navigation.addListener('focus', () => {
-            console.log('HomeScreen focus')
-            getUser()
-        });
-        getUser()
-
-        // Return the function to unsubscribe from the event so it gets removed on unmount
-        return focusSubscription;
-    }, [navigation, tabLabel]);
-
-    const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
-    }
 
     const onMountScreen = async () => {
        //await SecureStore.deleteItemAsync('secure_deviceId')

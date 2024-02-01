@@ -6,10 +6,12 @@ import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Image, Pressable, Alert, ScrollView } from "react-native";
 import { MaterialIcons } from '@expo/vector-icons';
+import { useRecoilValue } from "recoil";
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
-import { GetUserData } from "~/components/asyncStorageData";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -19,7 +21,7 @@ import { Null_img, UserName } from "~/constants/test";
 import { deleteInfo, userLogout } from "~/apis/api/loginSignup";
 
 const UserInfoMainScreen = ({ navigation }) => {
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     console.log('UserInfoMainScreen user', user)
 
     const [image, setImage] = useState({})
@@ -39,7 +41,6 @@ const UserInfoMainScreen = ({ navigation }) => {
             console.log('UserInfoMainScreen focus')
             getUser()
         });
-        // getUser()
 
         // Return the function to unsubscribe from the event so it gets removed on unmount
         return focusSubscription;
@@ -47,11 +48,8 @@ const UserInfoMainScreen = ({ navigation }) => {
 
 
     const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
         setImage({
-            imageSrc: data.image,
+            imageSrc: user.image,
             imageHash: Date.now()
         })
     }

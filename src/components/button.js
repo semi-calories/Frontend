@@ -2,16 +2,17 @@
 // 버튼 컴포넌트 모아놓은 파일
 //
 
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 
 import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
+
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
+import { useRecoilValue } from "recoil";
 
-import { GetUserData } from "~/components/asyncStorageData";
+import { UserState } from "~/atoms/UserAtom";
 
 import { colors, fonts } from "~/constants/globalStyles"
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
@@ -40,7 +41,7 @@ export function MoveButton({ text, onPress, btnStyle, inActive, textStyle }) {
 export function TabBarButton({ opened, toggleOpened, navigation }) {
     const animation = useRef(new Animated.Value(0)).current
 
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     //console.log('TabBarButton user', user)
 
     const AnimatedTouchable = Animated.createAnimatedComponent(TouchableOpacity);
@@ -53,10 +54,6 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
         })
     }
-
-    useEffect(() => {
-        getUser()
-    }, [])
 
     useEffect(() => {
         Animated.timing(animation, {
@@ -75,12 +72,6 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
     const onPressCameraIcon = () => {
         this.ActionSheet.show()
         toggleOpened()
-    }
-
-    const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
     }
 
     const onPressCameraMenu = async (index) => {
