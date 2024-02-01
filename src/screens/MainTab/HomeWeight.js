@@ -7,15 +7,17 @@ import { View, Text, StyleSheet, Alert } from "react-native";
 import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import RBSheet from "react-native-raw-bottom-sheet";
 import { LineChart } from "react-native-gifted-charts"
+import { useSetRecoilState } from "recoil";
 
 import { MoveButton, PrimaryButton } from "~/components/button";
 import { BasicTextInput } from "~/components/textInput";
-import { StoreUserData } from "~/components/asyncStorageData";
 import { weightRegex } from "~/components/regex";
 import { DateTimePickerSelect } from "~/components/date";
 import { BasicChip } from "~/components/chip";
 
 import { LineData } from "~/constants/test";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
@@ -56,6 +58,8 @@ const HomeWeight = ({ userInfo }) => {
 
     //chart에러 나는거 막기 위함
     const [isLoaded, setLoaded] = useState(false)
+
+    const setUserState = useSetRecoilState(UserState);
 
     useEffect(() => {
         if (userInfo.userCode) {
@@ -111,7 +115,7 @@ const HomeWeight = ({ userInfo }) => {
             await saveWeight(weightInfo)
 
             const userData = await getInfo({ userCode: userInfo.userCode })
-            StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
+            setUserState({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 저장되었습니다.')
             handleRangeWeight()
@@ -143,7 +147,7 @@ const HomeWeight = ({ userInfo }) => {
             await deleteWeight(weightInfo)
 
             const userData = await getInfo({ userCode: userInfo.userCode })
-            StoreUserData({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
+            setUserState({ ...userData, userCode: userInfo.userCode, weight: userData.weight })
 
             Alert.alert('몸무게가 삭제되었습니다.')
             handleRangeWeight()
