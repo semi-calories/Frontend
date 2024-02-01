@@ -6,11 +6,13 @@ import React, { useEffect, useLayoutEffect, useState } from "react";
 
 import { View, Text, StyleSheet, FlatList } from "react-native";
 import { AntDesign } from '@expo/vector-icons';
+import { useRecoilValue } from "recoil";
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
-import { GetUserData } from "~/components/asyncStorageData";
 import { getFoodTimes } from "~/components/date";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { HeaderType } from "~/constants/type";
 import { NotiData } from "~/constants/test";
@@ -21,7 +23,7 @@ import { colors, fonts } from "~/constants/globalStyles";
 import { getAlertRecord } from "~/apis/api/pushNotification";
 
 const NotificationScreen = ({ navigation }) => {
-    const [user, setUser] = useState({})
+    const user = useRecoilValue(UserState)
     console.log("NotificationScreen user", user)
 
     const [alertRecord, setAlertRecord] = useState([])
@@ -34,10 +36,6 @@ const NotificationScreen = ({ navigation }) => {
     }, [navigation]);
 
     useEffect(() => {
-        getUser()
-    }, [])
-
-    useEffect(() => {
         if (user.constructor === Object
             && Object.keys(user).length === 0) {
             return;
@@ -46,13 +44,7 @@ const NotificationScreen = ({ navigation }) => {
         getNotiRecord();
     }, [user])
 
-    const getUser = async () => {
-        const data = await GetUserData();
-
-        setUser({ ...data })
-    }
-
-    const getNotiRecord = async () => {
+    const getNotiRecord = async() => {
         const today = new Date();
         let lastWeek = new Date(today);
         lastWeek.setDate(today.getDate() - 7)

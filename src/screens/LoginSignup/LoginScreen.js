@@ -5,12 +5,14 @@
 import React, { useLayoutEffect, useState } from "react";
 
 import { StyleSheet, Alert } from "react-native";
+import { useSetRecoilState } from 'recoil';
 
 import { RootView } from "~/components/container";
 import { BackHeader } from "~/components/header";
 import { BasicTextInput } from "~/components/textInput";
 import { PrimaryButton } from "~/components/button";
-import { StoreUserData } from "~/components/asyncStorageData";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { rWidth, rHeight } from "~/constants/globalSizes";
 
@@ -21,6 +23,8 @@ import { getInfo } from "~/apis/api/user";
 const LoginScreen = ({ navigation }) => {
     const [email, onChangeEmail] = useState();
     const [password, onChangePassword] = useState();
+
+    const setUserState = useSetRecoilState(UserState);
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -45,7 +49,7 @@ const LoginScreen = ({ navigation }) => {
 
             if (user) {
                 const userData = await getInfo({ userCode: user.userCode })
-                StoreUserData({ ...userData, userCode: user.userCode })
+                setUserState({ ...userData, userCode: user.userCode })
 
                 navigation.navigate('MainTab')
             } else {

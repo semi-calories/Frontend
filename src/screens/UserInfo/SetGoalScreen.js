@@ -6,13 +6,15 @@ import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Pressable, Alert } from "react-native";
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { useSetRecoilState } from 'recoil';
 
 import { BackHeader } from "~/components/header";
 import { RootView } from "~/components/container";
 import { MoveButton } from "~/components/button";
-import { StoreUserData } from "~/components/asyncStorageData";
 import { periodRegex } from "~/components/regex";
 import { BasicTextInput } from "~/components/textInput";
+
+import { UserState } from "~/atoms/UserAtom";
 
 import { HeaderType } from "~/constants/type";
 import { Goal, Goal_explain, Goal_icon, Goal_ko } from "~/constants/userInfo";
@@ -43,6 +45,8 @@ const SetGoalScreen = ({ navigation, route }) => {
 
     const [userGoal, setGoal] = useState(Goal.health);
     const [period, setPeriod] = useState('')
+
+    const setUserState = useSetRecoilState(UserState);
 
     useLayoutEffect(() => {
         if (infoType == UserInfoType.init) {
@@ -96,6 +100,7 @@ const SetGoalScreen = ({ navigation, route }) => {
             //const res = await savePredictWeight(userWeight)
             const response = await updateInfo(user)
             const userData = await getUserInfo()
+            
 
             navigation.push('CalculateGoalScreen', { userInfo: userData, infoType });
         } catch (err) {
@@ -106,7 +111,7 @@ const SetGoalScreen = ({ navigation, route }) => {
     const getUserInfo = async () => {
         try {
             const user = await getInfo({ userCode: userInfo.userCode })
-            await StoreUserData({ ...user, userCode: userInfo.userCode })
+            setUserState({ ...user, userCode: userInfo.userCode })
 
             return { ...user, userCode: userInfo.userCode }
         } catch (err) {

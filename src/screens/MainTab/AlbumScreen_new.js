@@ -3,7 +3,7 @@
 //
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 
-import { Image, View, Platform, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
+import { Image, View, StyleSheet, TouchableOpacity, Text, Alert } from 'react-native';
 import * as ImagePicker from 'expo-image-picker';
 import { manipulateAsync } from 'expo-image-manipulator';
 
@@ -24,8 +24,6 @@ const AlbumScreen_new = ({ navigation, route }) => {
 
     const [image, setImage] = useState(null);
     //console.log('AlbumScreen2 image', image)
-    const [user, setUser] = useState({})
-    console.log('AlbumScreen_new user', user)
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -37,12 +35,6 @@ const AlbumScreen_new = ({ navigation, route }) => {
         pickImage()
     }, [])
 
-    useEffect(() => {
-        if (image) {
-            setUser({ ...userInfo, image })
-        }
-    }, [image])
-
     const pickImage = async () => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
@@ -50,7 +42,6 @@ const AlbumScreen_new = ({ navigation, route }) => {
             quality:0.5,
             //base64: true,
         });
-        //console.log('#####',result);
 
         await manipulateAsync(
             result.assets[0].uri,
@@ -79,8 +70,10 @@ const AlbumScreen_new = ({ navigation, route }) => {
             }
 
         } else {
+            const userData = { ...userInfo, image }
+
             const params = {
-                userInfo: user,
+                userInfo: userData,
                 infoType: UserInfoType.edit
             }
 

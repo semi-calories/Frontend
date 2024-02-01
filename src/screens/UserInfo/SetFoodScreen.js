@@ -77,7 +77,7 @@ const SetFoodScreen = ({ navigation, route }) => {
 
     }, [route.params?.type, route.params?.foodParam])
 
-    const getPreferFunc = async () => {
+    const getPreferFunc = async() => {
         try {
             const { response } = await getPrefer({ userCode: userInfo.userCode })
             const prefer = getPreferFood(response)
@@ -88,7 +88,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const getDislikeFunc = async () => {
+    const getDislikeFunc = async() => {
         try {
             const { response } = await getDislike({ userCode: userInfo.userCode })
             const dislike = getDislikeFood(response)
@@ -99,7 +99,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const handleComplete = async () => {
+    const handleComplete = async() => {
         await savePreferFunc()
         await saveDislikeFunc()
 
@@ -110,7 +110,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const savePreferFunc = async () => {
+    const savePreferFunc = async() => {
         const preferFoodCode = preferFood.map(food => food.foodCode)
 
         const preferInfo = {
@@ -125,7 +125,7 @@ const SetFoodScreen = ({ navigation, route }) => {
         }
     }
 
-    const saveDislikeFunc = async () => {
+    const saveDislikeFunc = async() => {
         const dislikeFoodCode = dislikeFood.map(food => food.foodCode)
 
         const dislikeInfo = {
