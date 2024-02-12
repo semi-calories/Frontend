@@ -5,9 +5,7 @@
 import axios from "axios";
 
 import { getToken } from "~/components/expoSecureStore";
-
-
-const FRONTEND_BASE_URL = 'http://34.236.139.24:8080';
+import { SPRING_SERVER } from "@env"
 
 
 const axiosAPI = (url, options) => {
@@ -18,10 +16,10 @@ const axiosAPI = (url, options) => {
     })
 }
 
-export const frontendInstance = axiosAPI(FRONTEND_BASE_URL);
+export const frontendInstance = axiosAPI(SPRING_SERVER);
 
 
-const createAxiosInstance = async (url, options) => {
+const createAxiosInstance = async(url, options) => {
     const token = await getToken('accessToken');
 
     if (token) {
@@ -34,6 +32,8 @@ const createAxiosInstance = async (url, options) => {
             ...options,
         });
 
+
+
         return instance;
     } else {
         console.error('Token not available.');
@@ -42,10 +42,10 @@ const createAxiosInstance = async (url, options) => {
 };
 
 // API 요청 함수
-export const fetchDataGet = async (endPoint, params) => {
+export const fetchDataGet = async(endPoint, params) => {
     try {
-        const axiosInstance = await createAxiosInstance(FRONTEND_BASE_URL);
-       //console.log('#####', axiosInstance, endPoint, params)
+        const axiosInstance = await createAxiosInstance(SPRING_SERVER);
+        //console.log('#####', axiosInstance, endPoint, params)
 
         const response = await axiosInstance.get(endPoint, params);
         return response;
@@ -57,7 +57,7 @@ export const fetchDataGet = async (endPoint, params) => {
 
 export const fetchDataPost = async (endPoint, data, params) => {
     try {
-        const axiosInstance = await createAxiosInstance(FRONTEND_BASE_URL);
+        const axiosInstance = await createAxiosInstance(SPRING_SERVER);
 
         const response = await axiosInstance.post(endPoint, data, params);
         return response;
