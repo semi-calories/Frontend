@@ -4,14 +4,15 @@
 
 import React from "react";
 
-import { Image, StyleSheet, View } from "react-native";
+import { StyleSheet, View } from "react-native";
+import { Image } from 'expo-image';
 
 import { RootView } from "~/components/container";
 import { PrimaryButton } from "~/components/button";
 
 import { rWidth, rHeight } from "~/constants/globalSizes"; 
 
-const LOGO = require('~/assets/Logo.png');
+const LOGO = require('~/assets/Logo.webp');
 
 const LoginSignupScreen = ({ navigation }) => {
     return (

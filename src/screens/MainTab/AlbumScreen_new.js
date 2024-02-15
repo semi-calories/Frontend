@@ -39,20 +39,20 @@ const AlbumScreen_new = ({ navigation, route }) => {
         // No permissions request is necessary for launching the image library
         let result = await ImagePicker.launchImageLibraryAsync({
             mediaTypes: ImagePicker.MediaTypeOptions.Images,
-            quality:0.5,
+            quality: 0.5,
             //base64: true,
         });
 
         await manipulateAsync(
             result.assets[0].uri,
             [{ resize: { width: result.assets[0].width / 4, height: result.assets[0].height / 4 } }],
-            { base64:true, format: 'jpeg', compress: 0.5 } // 원하는 형식 및 압축률 설정
-          ).then((data)=>{
-                console.log('####', data)
+            { base64: true, format: 'jpeg', compress: 0.5 } // 원하는 형식 및 압축률 설정
+        ).then((data) => {
+            console.log('####', data)
             if (!result.canceled) {
                 setImage(data);
             }
-          })
+        })
 
     };
 

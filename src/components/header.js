@@ -4,8 +4,9 @@
 
 import React, { useRef, useEffect } from "react";
 
-import { StyleSheet, Text, TouchableOpacity, View, TextInput, Pressable, Image, Animated } from "react-native";
+import { StyleSheet, Text, TouchableOpacity, View, TextInput, Pressable, Animated } from "react-native";
 import { MaterialIcons, Ionicons, MaterialCommunityIcons } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 
 import { useTabMenu } from "~/context/TabContext";
 
@@ -13,7 +14,7 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { dWidth, rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { HeaderType } from "~/constants/type";
 
-const LogoTitle = require('~/assets/LogoTitle.png');
+const LogoTitle = require('~/assets/LogoTitle.webp');
 
 const RightTypefunc = ({ type, rightPress }) => {
     switch (type) {

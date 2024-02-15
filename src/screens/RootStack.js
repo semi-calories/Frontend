@@ -9,7 +9,6 @@ import SignupScreen from "~/screens/LoginSignup/SignupScreen";
 import AccessRightScreen from "~/screens/MainTab/AccessRightScreen";
 import MainTab from "~/screens/MainTab/MainTab";
 import CameraScreen from "~/screens/MainTab/CameraScreen";
-import AlbumScreen from "~/screens/MainTab/AlbumScreen";
 import AlbumScreen_new from "~/screens/MainTab/AlbumScreen_new";
 import MealtimeScreen from "~/screens/MainTab/MealtimeScreen";
 
@@ -37,7 +36,6 @@ const RootStack = () => {
             <Stack.Screen name="AccessRightScreen" component={AccessRightScreen} options={{ headerShown: false }} />
             <Stack.Screen name="MainTab" component={MainTab}options={{ headerShown: false }} />
             <Stack.Screen name="CameraScreen" component={CameraScreen} />
-            <Stack.Screen name="AlbumScreen" component={AlbumScreen} />
             <Stack.Screen name="AlbumScreen_new" component={AlbumScreen_new} />
             <Stack.Screen name="MealtimeScreen" component={MealtimeScreen} />
 
