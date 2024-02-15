@@ -5,7 +5,7 @@
 import React, { useLayoutEffect, useEffect, useState } from "react";
 
 import { View, Text, StyleSheet, Image, Pressable, Alert, ScrollView } from "react-native";
-import { MaterialIcons } from '@expo/vector-icons';
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRecoilValue } from "recoil";
 
 import { RootView } from "~/components/container";
@@ -16,7 +16,6 @@ import { UserState } from "~/atoms/UserAtom";
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { colors, fonts } from "~/constants/globalStyles";
 import { UserInfoType } from "~/constants/type";
-import { Null_img, UserName } from "~/constants/test";
 
 import { deleteInfo, userLogout } from "~/apis/api/loginSignup";
 
@@ -83,10 +82,15 @@ const UserInfoMainScreen = ({ navigation }) => {
 
     return (
         <RootView>
-            <ScrollView style={styles.container} contentContainerStyle={{paddingBottom: rHeight(30)}}>
+            <ScrollView style={styles.container} contentContainerStyle={{ paddingBottom: rHeight(30) }}>
                 {/* 사용자 사진, 이름 나타내는 부분 */}
                 <View style={styles.profile}>
-                    <Image source={user.image ? { uri: `${image.imageSrc}?${image.imageHash}` } : Null_img} style={styles.img} resizeMode="cover" />
+                    {user.image ?
+                        <Image source={{ uri: `${image.imageSrc}?${image.imageHash}` }} style={styles.img} resizeMode="cover" />
+                        : <View style={styles.nullImg}>
+                            <FontAwesome5 name="user" size={rHeight(80)} color={colors.borderGrey} />
+                        </View>
+                    }
                     <Text style={styles.boldText}>{user?.name}</Text>
                 </View>
 
@@ -138,9 +142,20 @@ const styles = StyleSheet.create({
         marginBottom: rHeight(15)
     },
 
+    nullImg: {
+        backgroundColor: colors.placeHolderGrey,
+        width: rWidth(120),
+        height: rHeight(120),
+        alignItems: 'center',
+        justifyContent: 'center',
+        marginBottom: rHeight(8),
+
+        borderRadius: rWidth(100),
+    },
+
     img: {
         width: rHeight(120),
-        height: rHeight(125),
+        height: rHeight(120),
         resizeMode: 'contain',
         marginBottom: rHeight(8),
 

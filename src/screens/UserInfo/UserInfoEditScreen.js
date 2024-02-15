@@ -4,11 +4,10 @@
 
 import React, { useLayoutEffect, useState, useEffect } from "react";
 
-import { Text, StyleSheet, ScrollView, View, Pressable, ImageBackground, Image, Alert } from "react-native";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { Text, StyleSheet, ScrollView, View, Pressable, ImageBackground, Alert } from "react-native";
+import { MaterialCommunityIcons, Entypo, FontAwesome5 } from '@expo/vector-icons';
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
-import * as MediaLibrary from 'expo-media-library';
 import * as ImagePicker from 'expo-image-picker';
 import { useSetRecoilState } from 'recoil';
 
@@ -22,14 +21,21 @@ import { UserState } from "~/atoms/UserAtom";
 
 import { HeaderType, UserInfoType } from "~/constants/type";
 import { Gender, Gender_ko, Gender_icon, UserInfo, UserInfo_ko, Activity, Activity_ko, Activity_icon } from "~/constants/userInfo";
-import { Null_img } from "~/constants/test";
 
 import { fonts, colors } from "~/constants/globalStyles";
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 
 import { getInfo, savePredictWeight, updateInfo } from "~/apis/api/user";
 
-const EditIcon = require('~/assets/EditIcon.png')
+const CameraIcon = () => {
+    return (
+        <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
+            <View style={styles.img}>
+                <Entypo name="camera" size={rHeight(28)} color={colors.borderGrey} />
+            </View>
+        </Pressable>
+    )
+}
 
 const GenderFunc = ({ label, onPress, gender }) => {
     return (
@@ -89,16 +95,6 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         setActivity(userInfo.userActivity ? userInfo.userActivity : '')
     }, [route.params?.userInfo])
 
-    const getPhotos = async () => {
-        const { assets } = await MediaLibrary.getAssetsAsync();
-
-        navigation.navigate('AlbumScreen', {
-            nextScreen: 'UserInfoEditScreen',
-            userInfo,
-            photosParam: assets,
-            firstPhotoId: assets[0].id
-        });
-    };
 
     const onPressCameraMenu = async (index) => {
         switch (index) {
@@ -196,11 +192,15 @@ const UserInfoEditScreen = ({ navigation, route }) => {
             <ScrollView style={styles.scrollView} showsVerticalScrollIndicator={false}>
                 {infoType == UserInfoType.edit &&
                     <View>
-                        <ImageBackground source={image?.uri ? { uri: image.uri } : Null_img} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
-                            <Pressable onPress={() => this.ActionSheet.show()} style={styles.imgView} >
-                                <Image source={EditIcon} style={styles.img} />
-                            </Pressable>
-                        </ImageBackground>
+                        {image?.uri ?
+                            <ImageBackground source={{ uri: image.uri }} style={styles.imgBackground} imageStyle={{ borderRadius: 100 }} resizeMode="cover">
+                                <CameraIcon />
+                            </ImageBackground>
+                            : <View style={[styles.imgBackground, { backgroundColor: colors.placeHolderGrey, borderRadius: 100, alignItems: 'center', justifyContent: 'center' }]}>
+                                <FontAwesome5 name="user" size={rHeight(80)} color={colors.borderGrey} />
+                                <CameraIcon />
+                            </View>
+                        }
                         <LabelTextInput label={UserInfo_ko[UserInfo.name]} value={name} onChangeText={setName} width={rWidth(320)} defaultValue={name} valid={nameRegex.test(name)} />
                     </View>
                 }
@@ -320,7 +320,7 @@ const styles = StyleSheet.create({
 
     imgBackground: {
         width: rHeight(120),
-        height: rHeight(125),
+        height: rHeight(120),
         resizeMode: 'contain',
         alignSelf: 'center',
         marginBottom: rHeight(25),
@@ -330,12 +330,24 @@ const styles = StyleSheet.create({
         position: 'absolute',
         bottom: rWidth(-5),
         right: rWidth(-5),
+
+        backgroundColor: colors.white,
+        borderRadius: 50,
+        width: rWidth(50),
+        height: rHeight(50),
+        borderWidth: 1,
+        borderColor: colors.placeHolderGrey,
+        alignItems: 'center',
+        justifyContent: 'center',
     },
 
     img: {
-        width: rWidth(55),
-        height: rHeight(50),
-        resizeMode: 'contain',
+        width: rWidth(40),
+        height: rHeight(40),
+        backgroundColor: colors.placeHolderGrey,
+        borderRadius: 50,
+        alignItems: 'center',
+        paddingTop: rHeight(5),
     },
 
     flexRow: {

@@ -4,9 +4,10 @@
 
 import React, { useRef, useEffect } from "react";
 
-import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Image, Animated, Alert } from "react-native";
+import { TouchableOpacity, Text, StyleSheet, View, TouchableWithoutFeedback, Animated, Alert } from "react-native";
 import ActionSheet from 'react-native-actionsheet'
 import { Camera } from 'expo-camera';
+import { FontAwesome5, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 import * as ImagePicker from 'expo-image-picker';
 import * as Linking from 'expo-linking';
@@ -18,9 +19,6 @@ import { colors, fonts } from "~/constants/globalStyles"
 import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
 import { SearchFoodType } from "~/constants/type";
 
-const addIcon = require("~/assets/Add.png");
-const pencilIcon = require('~/assets/Pencil.png');
-const cameraIcon = require('~/assets/Camera.png')
 
 export function PrimaryButton({ text, onPress, btnStyle, textStyle }) {
     return (
@@ -87,7 +85,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 } else {
                     //await Camera.requestCameraPermissionsAsync();
                     Alert.alert('카메라 권한', '사진으로 식사 기록하는 것은\n카메라 권한이 필요합니다.', [
-                        { text: '취소', onPress: () => {}},
+                        { text: '취소', onPress: () => { } },
                         { text: '확인', onPress: () => Linking.openSettings() },
                     ]);
                 }
@@ -95,6 +93,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
 
             case 1:  //앨범에서 선택
                 const { status: albumStatus } = await ImagePicker.getMediaLibraryPermissionsAsync()
+                console.log('adad', albumStatus)
                 if (albumStatus === 'granted') {
                     navigation.navigate('AlbumScreen_new', {
                         nextScreen: 'MealtimeScreen',
@@ -103,7 +102,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                 } else {
                     //await ImagePicker.requestMediaLibraryPermissionsAsync()
                     Alert.alert('앨범 권한', '사진으로 식사 기록하는 것은\n앨범 권한이 필요합니다.', [
-                        { text: '취소', onPress: () => {}},
+                        { text: '취소', onPress: () => { } },
                         { text: '확인', onPress: () => Linking.openSettings() },
                     ]);
                 }
@@ -137,7 +136,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                                 },
                             ]
                         }]}>
-                        <Image source={pencilIcon} resizeMode="contain" style={styles.itemIcon} />
+                        <MaterialCommunityIcons name="pencil" size={rHeight(40)} color={colors.white} />
                     </AnimatedTouchable>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback>
@@ -160,7 +159,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                                 },
                             ]
                         }]}>
-                        <Image source={cameraIcon} resizeMode="contain" style={styles.itemIcon} />
+                        <MaterialIcons name="photo-camera" size={rHeight(40)} color={colors.white} />
                     </AnimatedTouchable>
                 </TouchableWithoutFeedback>
                 <TouchableWithoutFeedback onPress={toggleOpened} style={styles.shadow}>
@@ -172,7 +171,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
                             })
                         }]
                     }]}>
-                        <Image source={addIcon} resizeMode='contain' style={styles.addIcon} />
+                        <FontAwesome5 name="plus" size={rHeight(38)} color={colors.white} />
                     </Animated.View>
                 </TouchableWithoutFeedback>
             </View>
@@ -261,12 +260,6 @@ const styles = StyleSheet.create({
         width: rHeight(80),
         height: rHeight(80),
         borderRadius: rHeight(50)
-    },
-
-    addIcon: {
-        width: rWidth(45),
-        height: rHeight(45),
-        tintColor: colors.white,
     },
 
     item: {
