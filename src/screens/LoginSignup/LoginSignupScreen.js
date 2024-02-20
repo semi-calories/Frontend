@@ -12,7 +12,7 @@ import { PrimaryButton } from "~/components/button";
 
 import { rWidth, rHeight } from "~/constants/globalSizes"; 
 
-const LOGO = require('~/assets/Logo.webp');
+const LOGO = require('~/assets/Logo.png');
 
 const LoginSignupScreen = ({ navigation }) => {
     return (
