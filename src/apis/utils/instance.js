@@ -1,5 +1,5 @@
 //
-//axios 인스턴스 
+//axios 인스턴스 및 공통 API 함수
 //
 
 import axios from "axios";
@@ -12,44 +12,60 @@ import { UserState } from "~/atoms/UserAtom";
 import { SPRING_SERVER } from "@env"
 
 
-//토큰 불필요한 경우
+//토큰 불필요한 경우 instance
 export const publicApi = axios.create({
     baseURL: SPRING_SERVER,
     //timeout: 2000,
 });
 
 
-//토큰을 함께 보내는 instance
+//Access토큰을 필요한 instance
 const privateApi = async () => {
     const token = await getToken('accessToken');
+    const refreshToken = await getToken('refreshToken');
 
     if (token) {
+
         // Axios 인스턴스 생성
         const instance = axios.create({
             baseURL: SPRING_SERVER,
             headers: {
-                'Authorization': `Bearer ${token}`,
-            },
+                'Authorization': 'Bearer ' + token,
+            }
         });
+
+        //로그아웃인 경우 'Refresh' 헤더에 refreshToken을 추가
+        instance.interceptors.request.use(
+            async (config) => {
+                // 로그아웃 엔드포인트에 대한 요청만 처리
+                if (config.url.endsWith('/userLogout')) {
+                    config.headers.Refresh = refreshToken;
+                }
+                return config;
+            },
+            (error) => {
+                return Promise.reject(error);
+            }
+        );
+
 
         //Refresh Token 구현
         instance.interceptors.response.use(
             (response) => {
                 return response;
             },
-            async (error) => {
-                const originalRequest = error.config;
+            async (err) => {
+                const originalRequest = err.config;
 
                 // 만료된 토큰일 경우에만 Refresh Token 호출
-                if (error.response.status === 401 && !originalRequest._retry) {
+                if (err.response.status === 403 && !originalRequest._retry) {
                     originalRequest._retry = true;
 
                     try {
                         // 새로운 Access Token 요청
-                        const tokenResponse = await refreshToken();
-                        console.log('@@@@tokenResponse', tokenResponse)
+                        const tokenResponse = await reissueToken();
 
-                        if (tokenResponse.status == 201) {
+                        if (tokenResponse.status == 200) {
                             const newAccessToken = tokenResponse.data.accessToken;
 
                             saveAccessToken(newAccessToken)
@@ -59,8 +75,6 @@ const privateApi = async () => {
                             return axios(originalRequest);
                         }
                     } catch (error) {
-                        console.error(error)
-
                         //refreshToken 만료시 재로그인 화면으로 이동
                         const resetNavigation = () => useNavigation.reset({
                             index: 0,
@@ -71,7 +85,7 @@ const privateApi = async () => {
                     }
                 }
 
-                return Promise.reject(error);
+                return Promise.reject(err);
             });
 
 
@@ -81,6 +95,21 @@ const privateApi = async () => {
         return null;
     }
 };
+
+const reissueToken = async () => {
+    const user = useRecoilValue(UserState)
+    const refreshToken = await getToken('refreshToken');
+
+    const response = await publicApi.post(`/auth/reissueToken`, null, {
+        params: user.userCode,
+        headers: {
+            'Refresh': refreshToken,
+        },
+    })
+
+    return response
+}
+
 
 // API 요청 함수
 export const fetchDataGet = async (endPoint, params) => {
@@ -106,20 +135,3 @@ export const fetchDataPost = async (endPoint, data, params) => {
         throw error;
     }
 };
-
-const refreshToken = async () => {
-    const user = useRecoilValue(UserState)
-    const refreshToken = await getToken('refreshToken');
-
-    const response = await publicApi.post(`/auth/reissueToken`, null, {
-        params: user.userCode,
-        headers: {
-            'Refresh': refreshToken,
-        },
-    })
-
-    return response
-}
-
-
-
