@@ -1,7 +1,7 @@
 //
 //user 관련 api 요청 및 응답
 //
-import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
+import { publicApi, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 //유저 정보 조회
 export const getInfo = async (userCode) => {

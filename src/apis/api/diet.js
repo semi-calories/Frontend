@@ -1,7 +1,7 @@
 //
 //diet 관련 api 요청 및 응답
 //
-import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
+import { publicApi, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 //날짜별 식단 기록 조회
 export const getRecord = async (recordInfo) => {

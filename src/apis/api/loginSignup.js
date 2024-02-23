@@ -1,11 +1,11 @@
 //
 //로그인, 회원가입 관련 Api 요청 및 응답
 //
-import { frontendInstance, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
+import { publicApi, fetchDataGet, fetchDataPost } from "~/apis/utils/instance"
 
 export const login = async (loginInfo) => {
     try {
-        const { data } = await frontendInstance.post(`/passwordMatch`, loginInfo)
+        const { data } = await publicApi.post(`/passwordMatch`, loginInfo)
         console.log('login api data', data)
 
         return data
@@ -16,7 +16,7 @@ export const login = async (loginInfo) => {
 
 export const signup = async (signupInfo) => {
     try {
-        const { data } = await frontendInstance.post(`/sign-up`, signupInfo)
+        const { data } = await publicApi.post(`/sign-up`, signupInfo)
         console.log('signup api data', data)
 
         return data
@@ -27,7 +27,7 @@ export const signup = async (signupInfo) => {
 
 export const emailDuplicateCheck = async (email) => {
     try {
-        const { data } = await frontendInstance.get(`/emailDuplicateCheck`, { params: email })
+        const { data } = await publicApi.get(`/emailDuplicateCheck`, { params: email })
         return data
     } catch (err) {
         console.error(err)
