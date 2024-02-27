@@ -34,28 +34,20 @@ const privateApi = async () => {
             }
         });
 
-        //로그아웃인 경우 'Refresh' 헤더에 refreshToken을 추가
+        // 로그아웃인 경우 'Refresh' 헤더에 refreshToken을 추가
+        // 푸시 알림 기능인 경우 baseURL 변경
         instance.interceptors.request.use(
             async (config) => {
                 // 로그아웃 엔드포인트에 대한 요청만 처리
                 if (config.url.endsWith('/userLogout')) {
                     config.headers.Refresh = refreshToken;
                 }
-                return config;
-            },
-            (error) => {
-                return Promise.reject(error);
-            }
-        );
 
-        //푸시 알림 기능인 경우 baseURL 변경
-        instance.interceptors.request.use(
-            async (config) => {
-                console.log('config', config)
-                // 로그아웃 엔드포인트에 대한 요청만 처리
-                if (config.url.endsWith('/userLogout')) {
-                    config.headers.Refresh = refreshToken;
+                // /alert/로 시작하는 엔드포인트에 대한 요청 처리
+                if (config.url.startsWith('/alert/')) {
+                    config.baseURL = SPRING_ALERT_SERVER;
                 }
+
                 return config;
             },
             (error) => {
