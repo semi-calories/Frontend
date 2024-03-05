@@ -3,35 +3,35 @@
 //
 
 export const colors = {
-    primary: '#90CD52',
+  primary: '#90CD52',
 
-    black: '#000000',
-    white: '#FFFFFF',
+  black: '#000000',
+  white: '#FFFFFF',
 
-    borderGrey: '#A6A6A6',
-    textGrey: '#CDCDCD',
-    placeHolderGrey:'#F5F5F5',
+  borderGrey: '#A6A6A6',
+  textGrey: '#CDCDCD',
+  placeHolderGrey: '#F5F5F5',
 
-    pink: '#FFA3A3',
-    blue:'#7DD7E3',
+  pink: '#FFA3A3',
+  blue: '#7DD7E3',
 
-    carbo:'#4BC769',
-    protein:'#F37F33',
-    fat:'#D8D8D8',
-    label:'#595959',
+  carbo: '#4BC769',
+  protein: '#F37F33',
+  fat: '#D8D8D8',
+  label: '#595959',
 
-    switch:'#76EE59',
+  switch: '#76EE59',
 
-    btnBackground:"#D9D9D9",
-    
-    linePoint:'#5E8A31'
+  btnBackground: '#D9D9D9',
+
+  linePoint: '#5E8A31',
 };
 
 export const fonts = {
-    thin: 'NotoSans_100Thin',
-    light: 'NotoSans_300Light',
-    regular: 'NotoSans_400Regular',
-    medium: 'NotoSans_500Medium',
-    bold: 'NotoSans_700Bold',
-    black: 'NotoSans_900Black',
+  thin: 'NotoSans_100Thin',
+  light: 'NotoSans_300Light',
+  regular: 'NotoSans_400Regular',
+  medium: 'NotoSans_500Medium',
+  bold: 'NotoSans_700Bold',
+  black: 'NotoSans_900Black',
 };

@@ -1,27 +1,34 @@
+// eslint-disable-next-line no-undef
 module.exports = function (api) {
   api.cache(true);
   return {
-    presets: ['babel-preset-expo'],
+    presets: ['babel-preset-expo', '@babel/preset-react', '@babel/preset-flow'],
     plugins: [
-      ['module-resolver', {
-        root: ['.'],
-        extensions: [".ios.js", ".android.js", ".js", ".ts", ".tsx", ".json"],
-        alias: {
-          '~': './src',
+      [
+        'module-resolver',
+        {
+          root: ['.'],
+          extensions: ['.ios.js', '.android.js', '.js', '.ts', '.tsx', '.json'],
+          alias: {
+            '~': './src',
+          },
         },
-      }],
-      ["module:react-native-dotenv", {
-        "envName": "APP_ENV",
-        "moduleName": "@env",
-        "path": ".env",
-        "blocklist": null,
-        "allowlist": null,
-        "blacklist": null, // DEPRECATED
-        "whitelist": null, // DEPRECATED
-        "safe": false,
-        "allowUndefined": true,
-        "verbose": false
-      }]
-    ]
+      ],
+      [
+        'module:react-native-dotenv',
+        {
+          envName: 'APP_ENV',
+          moduleName: '@env',
+          path: '.env',
+          blocklist: null,
+          allowlist: null,
+          blacklist: null, // DEPRECATED
+          whitelist: null, // DEPRECATED
+          safe: false,
+          allowUndefined: true,
+          verbose: false,
+        },
+      ],
+    ],
   };
 };
