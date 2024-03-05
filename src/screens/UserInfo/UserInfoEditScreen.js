@@ -1,7 +1,6 @@
 //
 //유저 성별, 나이, 키, 몸무게 등 설정할 수 있는 화면
 //
-
 import {
   MaterialCommunityIcons,
   Entypo,
@@ -47,17 +46,6 @@ import {
   Activity_ko,
   Activity_icon,
 } from '~/constants/userInfo';
-
-const CameraIcon = (ref) => {
-  console.log('EE', ref)
-  return (
-    <Pressable onPress={() => ref.current.show()} style={styles.imgView}>
-      <View style={styles.img}>
-        <Entypo name="camera" size={rHeight(28)} color={colors.borderGrey} />
-      </View>
-    </Pressable>
-  );
-};
 
 const GenderFunc = ({ label, onPress, gender }) => {
   return (
@@ -147,6 +135,19 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     setGoalWeight(userInfo.goalWeight ? userInfo.goalWeight.toString() : '');
     setActivity(userInfo.userActivity ? userInfo.userActivity : '');
   }, [route.params?.userInfo]);
+
+  const CameraIcon = () => {
+    return (
+      <Pressable
+        onPress={() => actionSheetRef.current.show()}
+        style={styles.imgView}
+      >
+        <View style={styles.img}>
+          <Entypo name="camera" size={rHeight(28)} color={colors.borderGrey} />
+        </View>
+      </Pressable>
+    );
+  };
 
   const onPressCameraMenu = async (index) => {
     switch (index) {
