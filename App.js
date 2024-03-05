@@ -1,18 +1,15 @@
-import React, { useEffect, useState, useRef } from 'react';
-
 //import { SafeAreaView } from 'react-native-safe-area-context';
-import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
-import { NavigationContainer } from "@react-navigation/native";
-import * as SplashScreen from "expo-splash-screen";
+import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
+import * as SplashScreen from 'expo-splash-screen';
+import React, { useEffect, useState, useRef } from 'react';
+import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
 import { RecoilRoot } from 'recoil';
 
-
-import RootStack from "~/screens/RootStack";
+import { rHeight } from '~/constants/globalSizes';
 import { TabContextProvider } from '~/context/TabContext';
-
-import { rHeight } from "~/constants/globalSizes";
+import RootStack from '~/screens/RootStack';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -23,35 +20,36 @@ Notifications.setNotificationHandler({
 });
 
 export default function App() {
-  let [fontsLoaded] = useFonts({
-    'NotoSans_100Thin': require('~/assets/fonts/NotoSansKR-Thin.otf'),
-    'NotoSans_300Light': require('~/assets/fonts/NotoSansKR-Light.otf'),
-    'NotoSans_400Regular': require('~/assets/fonts/NotoSansKR-Regular.otf'),
-    'NotoSans_500Medium': require('~/assets/fonts/NotoSansKR-Medium.otf'),
-    'NotoSans_700Bold': require('~/assets/fonts/NotoSansKR-Bold.otf'),
-    'NotoSans_900Black': require('~/assets/fonts/NotoSansKR-Black.otf'),
+  const [fontsLoaded] = useFonts({
+    NotoSans_100Thin: require('~/assets/fonts/NotoSansKR-Thin.otf'),
+    NotoSans_300Light: require('~/assets/fonts/NotoSansKR-Light.otf'),
+    NotoSans_400Regular: require('~/assets/fonts/NotoSansKR-Regular.otf'),
+    NotoSans_500Medium: require('~/assets/fonts/NotoSansKR-Medium.otf'),
+    NotoSans_700Bold: require('~/assets/fonts/NotoSansKR-Bold.otf'),
+    NotoSans_900Black: require('~/assets/fonts/NotoSansKR-Black.otf'),
   });
 
   const [notification, setNotification] = useState(false);
   const notificationListener = useRef();
 
   useEffect(() => {
-    notificationListener.current = Notifications.addNotificationReceivedListener(notification => {
-      setNotification(notification);
-    });
-  }, [])
+    notificationListener.current =
+      Notifications.addNotificationReceivedListener((notification) => {
+        setNotification(notification);
+      });
+  }, []);
 
   useEffect(() => {
     async function hideSplashScreen() {
       await SplashScreen.hideAsync(); //splash screen 닫기
     }
-    if (fontsLoaded) { //font 로드완료
+    if (fontsLoaded) {
+      //font 로드완료
       hideSplashScreen();
     }
   }, [fontsLoaded]); //fontsLoaded 상태 변경 마다 실행
 
   LogBox.ignoreAllLogs();
-
 
   if (!fontsLoaded) {
     return null;
@@ -65,7 +63,7 @@ export default function App() {
             </NavigationContainer>
           </TabContextProvider>
         </RecoilRoot>
-      </SafeAreaView >
+      </SafeAreaView>
     );
   }
 }
@@ -73,7 +71,7 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS == "android" ? rHeight(45) : 0,
-    paddingBottom: Platform.OS == "android" ? rHeight(15) : 0
-  }
-})
+    paddingTop: Platform.OS === 'android' ? rHeight(45) : 0,
+    paddingBottom: Platform.OS === 'android' ? rHeight(15) : 0,
+  },
+});

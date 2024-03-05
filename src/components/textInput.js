@@ -2,57 +2,98 @@
 // textInput 컴포넌트 모아놓은 파일
 //
 
-import React, { useState } from "react";
-
-import { TextInput, StyleSheet, Text, View } from "react-native";
 import { Ionicons } from '@expo/vector-icons';
+import React, { useState } from 'react';
+import { TextInput, StyleSheet, Text, View } from 'react-native';
 
-import { ValidFormat } from "~/constants/validFormat";
-
-import { colors, fonts } from "~/constants/globalStyles"
-import { rWidth, rHeight, rFont } from "~/constants/globalSizes";
+import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
+import { colors, fonts } from '~/constants/globalStyles';
+import { ValidFormat } from '~/constants/validFormat';
 
 export function BasicTextInput(props) {
-  const { value, width, inputStyle, password, unit, dark, validType, valid, ...restProps } = props
+  const {
+    value,
+    width,
+    inputStyle,
+    password,
+    unit,
+    dark,
+    validType,
+    valid,
+    ...restProps
+  } = props;
 
-  const [secureMode, setSecureMode] = useState(true)
+  const [secureMode, setSecureMode] = useState(true);
 
   return (
     <View>
-      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
+      <View
+        style={[
+          styles.input,
+          dark ? styles.dark : styles.light,
+          { width, flexDirection: 'row' },
+          value && !valid && { borderColor: 'red' },
+        ]}
+      >
         <TextInput
           style={[{ flex: 1 }, inputStyle, styles.textStyle]}
           value={value}
-          secureTextEntry={password && secureMode ? true : false}
-          editable={dark ? false : true}
+          secureTextEntry={!!(password && secureMode)}
+          editable={!dark}
           {...restProps}
         />
-        {password &&
-            <Ionicons name={secureMode ? "eye-off" : "eye"} size={rHeight(22)} color={colors.borderGrey} onPress={() => setSecureMode(!secureMode)} />
-        }
-         {unit && <Text style={styles.unitText}>{unit}</Text>}
+        {password && (
+          <Ionicons
+            name={secureMode ? 'eye-off' : 'eye'}
+            size={rHeight(22)}
+            color={colors.borderGrey}
+            onPress={() => setSecureMode(!secureMode)}
+          />
+        )}
+        {unit && <Text style={styles.unitText}>{unit}</Text>}
       </View>
-      {value && !valid && <Text style={styles.validateText}>{ValidFormat(validType)}</Text>}
+      {value && !valid && (
+        <Text style={styles.validateText}>{ValidFormat(validType)}</Text>
+      )}
     </View>
   );
 }
 
 export function LabelTextInput(props) {
-  const {value, label, width, inputViewStyle, inputStyle, unit, dark, valid,  ...restProps } = props
+  const {
+    value,
+    label,
+    width,
+    inputViewStyle,
+    inputStyle,
+    unit,
+    dark,
+    valid,
+    ...restProps
+  } = props;
 
   return (
     <View style={inputViewStyle}>
       <Text style={styles.labelText}>{label}</Text>
-      <View style={[styles.input, dark ? styles.dark : styles.light, { width: width, flexDirection: 'row' }, value && !valid && { borderColor: 'red' }]}>
+      <View
+        style={[
+          styles.input,
+          dark ? styles.dark : styles.light,
+          { width, flexDirection: 'row' },
+          value && !valid && { borderColor: 'red' },
+        ]}
+      >
         <TextInput
           style={[{ flex: 1 }, inputStyle, styles.textStyle]}
           value={value}
-          editable={dark ? false : true}
+          editable={!dark}
           {...restProps}
         />
         {unit && <Text style={styles.unitText}>{unit}</Text>}
       </View>
-      {value && !valid && <Text style={styles.validateText}>{ValidFormat(label)}</Text>}
+      {value && !valid && (
+        <Text style={styles.validateText}>{ValidFormat(label)}</Text>
+      )}
     </View>
   );
 }
@@ -60,8 +101,8 @@ export function LabelTextInput(props) {
 const styles = StyleSheet.create({
   input: {
     height: rHeight(50),
-    alignItems:'center',
-    paddingHorizontal:rHeight(15),
+    alignItems: 'center',
+    paddingHorizontal: rHeight(15),
 
     borderRadius: rHeight(10),
     marginVertical: rHeight(6),
@@ -83,7 +124,7 @@ const styles = StyleSheet.create({
     color: colors.borderGrey,
 
     includeFontPadding: false,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
 
   unitText: {
@@ -92,12 +133,12 @@ const styles = StyleSheet.create({
     color: colors.textGrey,
 
     includeFontPadding: false,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
 
   flexRow: {
     flexDirection: 'row',
-    alignItems: 'center'
+    alignItems: 'center',
   },
 
   validateText: {
@@ -105,18 +146,18 @@ const styles = StyleSheet.create({
     fontSize: rFont(10),
     color: 'red',
 
-    paddingLeft:rWidth(3),
+    paddingLeft: rWidth(3),
 
     includeFontPadding: false,
-    textAlignVertical: 'center'
+    textAlignVertical: 'center',
   },
 
-  textStyle:{
+  textStyle: {
     fontFamily: fonts.regular,
     fontSize: rFont(14),
     color: colors.black,
 
     includeFontPadding: false,
-    textAlignVertical: 'center'
-  }
+    textAlignVertical: 'center',
+  },
 });
