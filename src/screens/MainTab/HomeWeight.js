@@ -65,10 +65,12 @@ const HomeWeight = ({ userInfo }) => {
   const setUserState = useSetRecoilState(UserState);
 
   useEffect(() => {
-    if (userInfo.userCode) {
-      handleRangeWeight();
-      setLoaded(true);
-    }
+    (async function () {
+      if (userInfo.userCode) {
+        await handleRangeWeight();
+        setLoaded(true);
+      }
+    })();
   }, [modal]);
 
   useEffect(() => {
@@ -269,7 +271,7 @@ const HomeWeight = ({ userInfo }) => {
       </View>
 
       <View style={styles.chartView}>
-        {isLoaded && (
+        {isLoaded ? (
           <LineChart
             data2={predictLine}
             data={lineData}
@@ -299,6 +301,8 @@ const HomeWeight = ({ userInfo }) => {
             roundToDigits={0.1}
             //isAnimated
           />
+        ) : (
+          <View style={{ height: rHeight(346) }} />
         )}
       </View>
 
@@ -336,7 +340,7 @@ const HomeWeight = ({ userInfo }) => {
           <View style={[styles.rangeView, { marginTop: rHeight(20) }]}>
             {FILTERPERIOD.map((per, idx) => (
               <BasicChip
-                id={idx}
+                key={idx}
                 onPress={() => handlePeriod(per)}
                 chipStyle={{
                   backgroundColor:
