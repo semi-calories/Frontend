@@ -14,10 +14,10 @@ import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { periodRegex } from '~/components/regex';
 import { BasicTextInput } from '~/components/textInput';
+import { Goal, Goal_explain, Goal_icon, Goal_ko } from '~/constants/UserInfo';
 import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
 import { fonts, colors } from '~/constants/globalStyles';
 import { UserInfoType } from '~/constants/type';
-import { Goal, Goal_explain, Goal_icon, Goal_ko } from '~/constants/userInfo';
 
 const GoalFunc = ({ label, onPress, goal }) => {
   return (
