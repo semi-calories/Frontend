@@ -33,9 +33,6 @@ import {
   weightRegex,
 } from '~/components/regex';
 import { LabelTextInput } from '~/components/textInput';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
-import { UserInfoType } from '~/constants/type';
 import {
   Gender,
   Gender_ko,
@@ -45,7 +42,10 @@ import {
   Activity,
   Activity_ko,
   Activity_icon,
-} from '~/constants/userInfo';
+} from '~/constants/UserInfo';
+import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
+import { fonts, colors } from '~/constants/globalStyles';
+import { UserInfoType } from '~/constants/type';
 
 const GenderFunc = ({ label, onPress, gender }) => {
   return (
