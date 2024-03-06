@@ -14,6 +14,7 @@ app.json
 eas.json
 .env
 *.log
+.vscode/
 
 # macOS
 .DS_Store
