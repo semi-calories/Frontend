@@ -245,7 +245,7 @@ const MealtimeScreen = ({ navigation, route }) => {
       eatDate: dateTime,
       foodWeight: selectFoods[0].foodWeight,
       foodCode: selectFoods[0].foodCode,
-      foodName: selectFoods[0].oodName,
+      foodName: selectFoods[0].foodName,
       foodKcal: selectFoods[0].foodKcal,
       foodCarbo: selectFoods[0].foodCarbo,
       foodProtein: selectFoods[0].foodProtein,
