@@ -3,7 +3,7 @@ import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
 import { RecoilRoot } from 'recoil';
 
@@ -19,8 +19,10 @@ Notifications.setNotificationHandler({
   }),
 });
 
+SplashScreen.preventAutoHideAsync();
+
 export default function App() {
-  const [fontsLoaded] = useFonts({
+  const [fontsLoaded, fontError] = useFonts({
     NotoSans_100Thin: require('~/assets/fonts/NotoSansKR-Thin.otf'),
     NotoSans_300Light: require('~/assets/fonts/NotoSansKR-Light.otf'),
     NotoSans_400Regular: require('~/assets/fonts/NotoSansKR-Regular.otf'),
@@ -39,39 +41,35 @@ export default function App() {
       });
   }, []);
 
-  useEffect(() => {
-    async function hideSplashScreen() {
-      await SplashScreen.hideAsync(); //splash screen 닫기
+  const onLayoutRootView = useCallback(async () => {
+    if (fontsLoaded || fontError) {
+      await SplashScreen.hideAsync();
     }
-    if (fontsLoaded) {
-      //font 로드완료
-      hideSplashScreen();
-    }
-  }, [fontsLoaded]); //fontsLoaded 상태 변경 마다 실행
+  }, [fontsLoaded, fontError]);
+
+  if (!fontsLoaded && !fontError) {
+    return null;
+  }
 
   LogBox.ignoreAllLogs();
 
-  if (!fontsLoaded) {
-    return null;
-  } else {
-    return (
-      <SafeAreaView style={styles.container}>
-        <RecoilRoot>
-          <TabContextProvider>
-            <NavigationContainer>
-              <RootStack />
-            </NavigationContainer>
-          </TabContextProvider>
-        </RecoilRoot>
-      </SafeAreaView>
-    );
-  }
+  return (
+    <SafeAreaView style={styles.container} onLayout={onLayoutRootView}>
+      <RecoilRoot>
+        <TabContextProvider>
+          <NavigationContainer>
+            <RootStack />
+          </NavigationContainer>
+        </TabContextProvider>
+      </RecoilRoot>
+    </SafeAreaView>
+  );
 }
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    paddingTop: Platform.OS === 'android' ? rHeight(45) : 0,
-    paddingBottom: Platform.OS === 'android' ? rHeight(15) : 0,
+    // paddingTop: Platform.OS === 'android' ? rHeight(45) : 0,
+    // paddingBottom: Platform.OS === 'android' ? rHeight(15) : 0,
   },
 });
