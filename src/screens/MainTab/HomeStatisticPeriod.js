@@ -174,7 +174,7 @@ const HomeStatisticPeriod = ({ type, userInfo }) => {
         >
           <Text style={styles.text}>{formatDate}</Text>
           <Ionicons
-            name="md-caret-down-outline"
+            name="caret-down-outline"
             size={rWidth(16)}
             color="black"
             style={{ marginLeft: rWidth(5) }}
