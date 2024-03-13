@@ -201,7 +201,7 @@ const HomeRecord = ({ navigation, userInfo }) => {
             {moment(selectDate).format(`MM월 DD일 (${day})`)}
           </Text>
           <Ionicons
-            name="md-caret-down-outline"
+            name="caret-down-outline"
             size={rWidth(16)}
             color="black"
             style={{ marginLeft: rWidth(5) }}
