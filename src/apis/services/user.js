@@ -2,7 +2,7 @@
 //api 요청시 받아오는 데이터 정제
 //
 
-import { rHeight } from '~/constants/globalSizes';
+import { rHeight } from '~/styles/globalSizes';
 
 export const getPreferFood = (rawData) => {
   return rawData.map((food) => food.preferFoodCode);

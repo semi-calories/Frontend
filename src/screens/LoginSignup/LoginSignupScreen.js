@@ -2,13 +2,15 @@
 // 로그인/회원가입 화면
 //
 
-import { Image } from 'expo-image';
 import React from 'react';
 import { StyleSheet, View } from 'react-native';
 
+import { Image } from 'expo-image';
+
 import { PrimaryButton } from '~/components/button';
 import { RootView } from '~/components/container';
-import { rWidth, rHeight } from '~/constants/globalSizes';
+
+import { rWidth, rHeight } from '~/styles/globalSizes';
 
 const LOGO = require('~/assets/Logo.png');
 

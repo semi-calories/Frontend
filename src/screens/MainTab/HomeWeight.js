@@ -1,12 +1,24 @@
 //
 // 홈화면 - 몸무게 상태 보는 화면
 //
-import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import { View, Text, StyleSheet, Alert } from 'react-native';
+
+import { MaterialCommunityIcons, FontAwesome } from '@expo/vector-icons';
 import { LineChart } from 'react-native-gifted-charts';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import { useSetRecoilState } from 'recoil';
+
+import { MoveButton, PrimaryButton } from '~/components/button';
+import { BasicChip } from '~/components/chip';
+import { DateTimePickerSelect } from '~/components/date';
+import { weightRegex } from '~/components/regex';
+import { BasicTextInput } from '~/components/textInput';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
 
 import {
   getInfo,
@@ -19,14 +31,6 @@ import {
   getStructedRangeWeight,
   getStructedPredictWeight,
 } from '~/apis/services/user';
-import { UserState } from '~/atoms/UserAtom';
-import { MoveButton, PrimaryButton } from '~/components/button';
-import { BasicChip } from '~/components/chip';
-import { DateTimePickerSelect } from '~/components/date';
-import { weightRegex } from '~/components/regex';
-import { BasicTextInput } from '~/components/textInput';
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 
 const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 

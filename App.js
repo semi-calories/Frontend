@@ -1,15 +1,18 @@
 //import { SafeAreaView } from 'react-native-safe-area-context';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
+import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
+
 import { NavigationContainer } from '@react-navigation/native';
 import { useFonts } from 'expo-font';
 import * as Notifications from 'expo-notifications';
 import * as SplashScreen from 'expo-splash-screen';
-import React, { useEffect, useState, useRef, useCallback } from 'react';
-import { SafeAreaView, StyleSheet, Platform, LogBox } from 'react-native';
 import { RecoilRoot } from 'recoil';
 
-import { rHeight } from '~/constants/globalSizes';
-import { TabContextProvider } from '~/context/TabContext';
 import RootStack from '~/screens/RootStack';
+
+import { rHeight } from '~/styles/globalSizes';
+
+import { TabContextProvider } from '~/context/TabContext';
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({

@@ -2,7 +2,6 @@
 // 선호, 비선호 음식 선택할 수 있는 Screen
 //
 
-import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   View,
@@ -14,14 +13,19 @@ import {
   Alert,
 } from 'react-native';
 
-import { foodSearch } from '~/apis/api/diet';
+import { AntDesign } from '@expo/vector-icons';
+
 import { PrimaryButton } from '~/components/button';
 import { CloseChip } from '~/components/chip';
 import { RootView } from '~/components/container';
 import { SearchHeader } from '~/components/header';
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
 import { RecordType, SearchFoodType } from '~/constants/type';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { foodSearch } from '~/apis/api/diet';
 
 const SearchFoodScreen = ({ navigation, route }) => {
   const { type, userInfo } = route.params;

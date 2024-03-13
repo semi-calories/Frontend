@@ -2,8 +2,6 @@
 // 홈화면 - 기록 상태 보는 화면
 //
 
-import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
-import moment from 'moment';
 import React, { useState, useRef, useMemo, useEffect } from 'react';
 import {
   View,
@@ -14,16 +12,22 @@ import {
   FlatList,
   PixelRatio,
 } from 'react-native';
+
+import { Entypo, Ionicons, AntDesign } from '@expo/vector-icons';
+import moment from 'moment';
 import { Calendar } from 'react-native-calendars';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { getRecord } from '~/apis/api/diet';
 import { DonutChart } from '~/components/chart';
 import { CalculateRecordDate } from '~/components/date';
+
 import { Nutrition, Nutrition_ko } from '~/constants/food';
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 import { RecordType } from '~/constants/type';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { getRecord } from '~/apis/api/diet';
 
 const DAYS = ['일', '월', '화', '수', '목', '금', '토'];
 const radius = PixelRatio.roundToNearestPixel(rHeight(110));

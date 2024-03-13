@@ -5,15 +5,18 @@
 import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Alert } from 'react-native';
 
-import { signup, emailDuplicateCheck } from '~/apis/api/loginSignup';
-import { getSignupInfo } from '~/apis/services/loginSignup';
 import { PrimaryButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { emailRegex, passwordRegex, nameRegex } from '~/components/regex';
 import { BasicTextInput } from '~/components/textInput';
-import { rWidth, rHeight } from '~/constants/globalSizes';
+
 import { UserInfoType } from '~/constants/type';
+
+import { rWidth, rHeight } from '~/styles/globalSizes';
+
+import { signup, emailDuplicateCheck } from '~/apis/api/loginSignup';
+import { getSignupInfo } from '~/apis/services/loginSignup';
 
 const SignupScreen = ({ navigation }) => {
   const [email, setEmail] = useState();

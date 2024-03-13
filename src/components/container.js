@@ -3,7 +3,8 @@
 import React, { useRef, useEffect } from 'react';
 import { View, StyleSheet, Animated } from 'react-native';
 
-import { colors } from '~/constants/globalStyles';
+import { colors } from '~/styles/globalStyles';
+
 import { useTabMenu } from '~/context/TabContext';
 
 export function RootView({ children, viewStyle }) {

@@ -2,18 +2,20 @@
 //앱 접근 권한 설명
 //
 
+import React from 'react';
+import { View, Text, StyleSheet } from 'react-native';
+
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
 import * as Device from 'expo-device';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
-import React from 'react';
-import { View, Text, StyleSheet } from 'react-native';
 
 import { PrimaryButton } from '~/components/button';
 import { RootView } from '~/components/container';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
 
 const AccessRightScreen = ({ navigation }) => {
   const onPressComfirm = async () => {

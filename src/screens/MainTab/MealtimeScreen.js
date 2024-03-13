@@ -2,8 +2,6 @@
 //식사일시 입력하는 화면
 //
 
-import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
-import moment from 'moment';
 import React, { useLayoutEffect, useState, useRef, useEffect } from 'react';
 import {
   Pressable,
@@ -14,15 +12,18 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+
+import { MaterialCommunityIcons, MaterialIcons } from '@expo/vector-icons';
+import moment from 'moment';
 import RBSheet from 'react-native-raw-bottom-sheet';
 
-import { registerRecord, updateRecord, deleteRecord } from '~/apis/api/diet';
 import { MoveButton, PrimaryButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { DateTimePickerSelect } from '~/components/date';
 import { BackHeader } from '~/components/header';
 import { servingRegex } from '~/components/regex';
 import { BasicTextInput } from '~/components/textInput';
+
 import {
   Nutrition,
   Nutrition_ko,
@@ -30,9 +31,12 @@ import {
   Satisfaction_icon,
   Satisfaction_ko,
 } from '~/constants/food';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
 import { RecordType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
+
+import { registerRecord, updateRecord, deleteRecord } from '~/apis/api/diet';
 
 const MealtimeScreen = ({ navigation, route }) => {
   const { userInfo, type } = route.params;

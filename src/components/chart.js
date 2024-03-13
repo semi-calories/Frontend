@@ -4,10 +4,11 @@
 
 import React, { useRef, useEffect } from 'react';
 import { StyleSheet, View, Text, Animated, Easing } from 'react-native';
+
 import Svg, { G, Circle } from 'react-native-svg';
 
-import { rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+import { rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
 
 const AnimatedCircle = Animated.createAnimatedComponent(Circle);
 

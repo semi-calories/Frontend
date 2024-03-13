@@ -1,13 +1,6 @@
 //
 //유저 성별, 나이, 키, 몸무게 등 설정할 수 있는 화면
 //
-import {
-  MaterialCommunityIcons,
-  Entypo,
-  FontAwesome5,
-} from '@expo/vector-icons';
-import { Camera } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
 import React, { useLayoutEffect, useState, useEffect, useRef } from 'react';
 import {
   Text,
@@ -18,11 +11,17 @@ import {
   ImageBackground,
   Alert,
 } from 'react-native';
+
+import {
+  MaterialCommunityIcons,
+  Entypo,
+  FontAwesome5,
+} from '@expo/vector-icons';
+import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
 import ActionSheet from 'react-native-actionsheet';
 import { useSetRecoilState } from 'recoil';
 
-import { getInfo, updateInfo } from '~/apis/api/user';
-import { UserState } from '~/atoms/UserAtom';
 import { MoveButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
@@ -33,6 +32,8 @@ import {
   weightRegex,
 } from '~/components/regex';
 import { LabelTextInput } from '~/components/textInput';
+
+import { UserInfoType } from '~/constants/type';
 import {
   Gender,
   Gender_ko,
@@ -43,9 +44,13 @@ import {
   Activity_ko,
   Activity_icon,
 } from '~/constants/UserInfo';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
-import { UserInfoType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { getInfo, updateInfo } from '~/apis/api/user';
 
 const GenderFunc = ({ label, onPress, gender }) => {
   return (

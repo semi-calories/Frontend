@@ -1,16 +1,17 @@
 //
 //date 관련
 //
+import React from 'react';
+import { Platform, StyleSheet, Pressable, Text } from 'react-native';
+
 import DateTimePicker, {
   DateTimePickerAndroid,
 } from '@react-native-community/datetimepicker';
 import Moment from 'moment';
 import { extendMoment } from 'moment-range';
-import React from 'react';
-import { Platform, StyleSheet, Pressable, Text } from 'react-native';
 
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
 
 const moment = extendMoment(Moment);
 

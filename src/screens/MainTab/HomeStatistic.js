@@ -5,9 +5,10 @@
 import React, { useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 import HomeStatisticPeriod from '~/screens/MainTab/HomeStatisticPeriod';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
 
 const tabs = ['주간', '월간'];
 

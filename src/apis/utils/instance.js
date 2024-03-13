@@ -7,8 +7,9 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 
-import { UserState } from '~/atoms/UserAtom';
 import { saveAccessToken, getToken } from '~/components/expoSecureStore';
+
+import { UserState } from '~/atoms/UserAtom';
 
 // 토큰 불필요한 경우 instance
 export const publicApi = axios.create({

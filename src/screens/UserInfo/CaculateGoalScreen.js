@@ -9,10 +9,12 @@ import { MoveButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { LabelTextInput } from '~/components/textInput';
+
 import { Nutrition, Nutrition_ko } from '~/constants/food';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
 import { UserInfoType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
 
 const CalculateGoalScreen = ({ navigation, route }) => {
   const { infoType, userInfo } = route.params;

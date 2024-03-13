@@ -2,7 +2,6 @@
 //사용자 정보 메인 화면 - 사용자 정보 편집, 목표 설정, 선호/비선호 음식 설정 화면으로 이동 가능
 //
 
-import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import React, { useLayoutEffect, useEffect, useState } from 'react';
 import {
   View,
@@ -13,15 +12,21 @@ import {
   Alert,
   ScrollView,
 } from 'react-native';
+
+import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { useRecoilValue } from 'recoil';
 
-import { deleteInfo, userLogout } from '~/apis/api/loginSignup';
-import { UserState } from '~/atoms/UserAtom';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
 import { UserInfoType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { deleteInfo, userLogout } from '~/apis/api/loginSignup';
 
 const UserInfoMainScreen = ({ navigation }) => {
   const user = useRecoilValue(UserState);

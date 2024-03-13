@@ -2,19 +2,24 @@
 // 알림 보여주는 화면
 //
 
-import { AntDesign } from '@expo/vector-icons';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import { View, Text, StyleSheet, FlatList } from 'react-native';
+
+import { AntDesign } from '@expo/vector-icons';
 import { useRecoilValue } from 'recoil';
 
-import { getAlertRecord } from '~/apis/api/pushNotification';
-import { UserState } from '~/atoms/UserAtom';
 import { RootView } from '~/components/container';
 import { getFoodTimes } from '~/components/date';
 import { BackHeader } from '~/components/header';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
 import { HeaderType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { getAlertRecord } from '~/apis/api/pushNotification';
 
 const NotificationScreen = ({ navigation }) => {
   const user = useRecoilValue(UserState);

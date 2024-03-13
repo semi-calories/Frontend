@@ -2,12 +2,6 @@
 // header 컴포넌트 모아놓은 파일
 //
 
-import {
-  MaterialIcons,
-  Ionicons,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
-import { Image } from 'expo-image';
 import React, { useRef, useEffect } from 'react';
 import {
   StyleSheet,
@@ -19,9 +13,18 @@ import {
   Animated,
 } from 'react-native';
 
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+import {
+  MaterialIcons,
+  Ionicons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+import { Image } from 'expo-image';
+
 import { HeaderType } from '~/constants/type';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
 import { useTabMenu } from '~/context/TabContext';
 
 const LogoTitle = require('~/assets/LogoTitle.webp');
