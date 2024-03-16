@@ -2,26 +2,30 @@
 // 알림 설정 화면
 //
 
+import React, { useLayoutEffect, useState, useEffect } from 'react';
+import { View, Text, StyleSheet, Switch, Alert } from 'react-native';
+
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
-import React, { useLayoutEffect, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Switch, Alert } from 'react-native';
 import { useRecoilValue } from 'recoil';
+
+import { MoveButton } from '~/components/button';
+import { RootView } from '~/components/container';
+import { DateTimePickerSelect } from '~/components/date';
+import { BackHeader } from '~/components/header';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
 
 import {
   getSetting,
   saveSetting,
   updateSetting,
 } from '~/apis/api/pushNotification';
-import { UserState } from '~/atoms/UserAtom';
-import { MoveButton } from '~/components/button';
-import { RootView } from '~/components/container';
-import { DateTimePickerSelect } from '~/components/date';
-import { BackHeader } from '~/components/header';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 
 const NotificationSettingScreen = ({ navigation }) => {
   const user = useRecoilValue(UserState);

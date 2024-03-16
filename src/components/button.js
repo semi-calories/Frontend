@@ -2,14 +2,6 @@
 // 버튼 컴포넌트 모아놓은 파일
 //
 
-import {
-  FontAwesome5,
-  MaterialIcons,
-  MaterialCommunityIcons,
-} from '@expo/vector-icons';
-import { Camera } from 'expo-camera';
-import * as ImagePicker from 'expo-image-picker';
-import * as Linking from 'expo-linking';
 import React, { useRef, useEffect } from 'react';
 import {
   TouchableOpacity,
@@ -20,13 +12,24 @@ import {
   Animated,
   Alert,
 } from 'react-native';
+
+import {
+  FontAwesome5,
+  MaterialIcons,
+  MaterialCommunityIcons,
+} from '@expo/vector-icons';
+import { Camera } from 'expo-camera';
+import * as ImagePicker from 'expo-image-picker';
+import * as Linking from 'expo-linking';
 import ActionSheet from 'react-native-actionsheet';
 import { useRecoilValue } from 'recoil';
 
-import { UserState } from '~/atoms/UserAtom';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 import { SearchFoodType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
 
 export function PrimaryButton({ text, onPress, btnStyle, textStyle }) {
   return (

@@ -4,17 +4,21 @@
 
 import React, { useLayoutEffect, useState } from 'react';
 import { StyleSheet, Alert } from 'react-native';
+
 import { useSetRecoilState } from 'recoil';
 
-import { login } from '~/apis/api/loginSignup';
-import { getInfo } from '~/apis/api/user';
-import { getLoginInfo } from '~/apis/services/loginSignup';
-import { UserState } from '~/atoms/UserAtom';
 import { PrimaryButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { BasicTextInput } from '~/components/textInput';
-import { rWidth, rHeight } from '~/constants/globalSizes';
+
+import { rWidth, rHeight } from '~/styles/globalSizes';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { login } from '~/apis/api/loginSignup';
+import { getInfo } from '~/apis/api/user';
+import { getLoginInfo } from '~/apis/services/loginSignup';
 
 const LoginScreen = ({ navigation }) => {
   const [email, onChangeEmail] = useState();
@@ -52,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert(error);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 

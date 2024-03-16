@@ -2,22 +2,27 @@
 //목표 설정하는 Screen
 //
 
-import { MaterialCommunityIcons } from '@expo/vector-icons';
 import React, { useLayoutEffect, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable, Alert } from 'react-native';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { useSetRecoilState } from 'recoil';
 
-import { updateInfo, getInfo } from '~/apis/api/user';
-import { UserState } from '~/atoms/UserAtom';
 import { MoveButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { periodRegex } from '~/components/regex';
 import { BasicTextInput } from '~/components/textInput';
-import { Goal, Goal_explain, Goal_icon, Goal_ko } from '~/constants/UserInfo';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
+
 import { UserInfoType } from '~/constants/type';
+import { Goal, Goal_explain, Goal_icon, Goal_ko } from '~/constants/UserInfo';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { updateInfo, getInfo } from '~/apis/api/user';
 
 const GoalFunc = ({ label, onPress, goal }) => {
   return (

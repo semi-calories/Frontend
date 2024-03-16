@@ -1,8 +1,6 @@
 //
 // 앨범 가져오는 스크린 - expo-imagePicker
 //
-import { manipulateAsync } from 'expo-image-manipulator';
-import * as ImagePicker from 'expo-image-picker';
 import React, { useState, useEffect, useLayoutEffect } from 'react';
 import {
   Image,
@@ -13,12 +11,18 @@ import {
   Alert,
 } from 'react-native';
 
-import { recognizeUpload } from '~/apis/api/diet';
+import { manipulateAsync } from 'expo-image-manipulator';
+import * as ImagePicker from 'expo-image-picker';
+
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
-import { dWidth, rFont, rHeight, rWidth } from '~/constants/globalSizes';
-import { fonts } from '~/constants/globalStyles';
+
 import { RecordType, UserInfoType } from '~/constants/type';
+
+import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
+import { fonts } from '~/styles/globalStyles';
+
+import { recognizeUpload } from '~/apis/api/diet';
 
 const AlbumScreen_new = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;

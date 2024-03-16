@@ -1,15 +1,19 @@
-import { Foundation, MaterialIcons } from '@expo/vector-icons';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import React from 'react';
 import { View } from 'react-native';
 
-import { TabBarButton } from '~/components/button';
-import { rWidth, rHeight } from '~/constants/globalSizes';
-import { colors } from '~/constants/globalStyles';
-import { useTabMenu } from '~/context/TabContext';
+import { Foundation, MaterialIcons } from '@expo/vector-icons';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
 import DietRecordScreen from '~/screens/MainTab/DietRecordScreen';
 import HomeScreen from '~/screens/MainTab/HomeScreen';
 import RecommendScreen from '~/screens/MainTab/RecommendScreen';
+
+import { TabBarButton } from '~/components/button';
+
+import { rWidth, rHeight } from '~/styles/globalSizes';
+import { colors } from '~/styles/globalStyles';
+
+import { useTabMenu } from '~/context/TabContext';
 
 const Tab = createBottomTabNavigator();
 

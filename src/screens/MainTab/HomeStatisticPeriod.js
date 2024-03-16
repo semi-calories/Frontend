@@ -2,23 +2,27 @@
 //홈화면 - 통계 - 기간별 보는 화면
 //
 
-import { Entypo, Ionicons } from '@expo/vector-icons';
-import moment from 'moment';
 import React, { useState, useMemo, useRef, useEffect } from 'react';
 import { StyleSheet, Text, View, Pressable, ScrollView } from 'react-native';
+
+import { Entypo, Ionicons } from '@expo/vector-icons';
+import moment from 'moment';
 import { StackedBarChart } from 'react-native-chart-kit';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import WheelPickerExpo from 'react-native-wheel-picker-expo';
 
-import { getMonthStats, getWeekStats } from '~/apis/api/diet';
 import {
   CalculateStatisticDate,
   CalculateWeek,
   FormatWeekData,
 } from '~/components/date';
+
 import { Nutrition, Nutrition_ko } from '~/constants/food';
-import { dWidth, rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
+import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { getMonthStats, getWeekStats } from '~/apis/api/diet';
 
 const HomeStatisticPeriod = ({ type, userInfo }) => {
   const refRBSheet = useRef();

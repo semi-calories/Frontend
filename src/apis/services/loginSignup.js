@@ -7,6 +7,10 @@ import {
 } from '~/components/expoSecureStore';
 
 export const getLoginInfo = (rawInfo) => {
+  if (!rawInfo) {
+    throw new Error('Invalid argument: rawInfo is undefined');
+  }
+
   const { userExists, user, matchResult, accessToken, refreshToken } = rawInfo;
 
   if (userExists && matchResult) {

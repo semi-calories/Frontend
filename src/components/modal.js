@@ -1,3 +1,6 @@
+import React from 'react';
+import { View, Text, StyleSheet, Platform } from 'react-native';
+
 import { Feather, MaterialIcons } from '@expo/vector-icons';
 import { Camera } from 'expo-camera';
 import Constants from 'expo-constants';
@@ -5,14 +8,14 @@ import * as Device from 'expo-device';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
 import * as SecureStore from 'expo-secure-store';
-import React from 'react';
-import { View, Text, StyleSheet, Platform } from 'react-native';
 import Modal from 'react-native-modal';
 
-import { saveSetting } from '~/apis/api/pushNotification';
 import { PrimaryButton } from '~/components/button';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
+
+import { saveSetting } from '~/apis/api/pushNotification';
 
 export const AccessRightModal = ({ isVisible, toggleModal, user }) => {
   console.log('AccessRightModal user', user);

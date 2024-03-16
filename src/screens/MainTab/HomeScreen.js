@@ -2,22 +2,26 @@
 //메인 홈화면
 //
 
-import * as SecureStore from 'expo-secure-store';
 import React, { useLayoutEffect, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
+
+import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
 
-import { UserState } from '~/atoms/UserAtom';
-import { RootView, TabContainer } from '~/components/container';
-import { MainHeader } from '~/components/header';
-import { AccessRightModal } from '~/components/modal';
-import { dWidth, rWidth, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
 import HomeRecord from '~/screens/MainTab/HomeRecord';
 import HomeStatistic from '~/screens/MainTab/HomeStatistic';
 import HomeWeight from '~/screens/MainTab/HomeWeight';
+
+import { RootView, TabContainer } from '~/components/container';
+import { MainHeader } from '~/components/header';
+import { AccessRightModal } from '~/components/modal';
+
+import { dWidth, rWidth, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
 
 const tabs = ['기록', '통계', '몸무게'];
 

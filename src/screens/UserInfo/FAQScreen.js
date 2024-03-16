@@ -3,11 +3,13 @@
 //
 import React, { useLayoutEffect } from 'react';
 import { StyleSheet, ActivityIndicator } from 'react-native';
+
 import { WebView } from 'react-native-webview';
 
 import { BackHeader } from '~/components/header';
-import { rWidth, rHeight, dWidth, dHeight } from '~/constants/globalSizes';
-import { colors } from '~/constants/globalStyles';
+
+import { rWidth, rHeight, dWidth, dHeight } from '~/styles/globalSizes';
+import { colors } from '~/styles/globalStyles';
 
 const FAQScreen = ({ navigation }) => {
   useLayoutEffect(() => {

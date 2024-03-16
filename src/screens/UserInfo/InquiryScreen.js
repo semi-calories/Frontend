@@ -1,7 +1,6 @@
 //
 //문의하기 화면
 //
-import * as MailComposer from 'expo-mail-composer';
 import React, { useLayoutEffect, useState } from 'react';
 import {
   View,
@@ -11,15 +10,19 @@ import {
   StyleSheet,
   Alert,
 } from 'react-native';
+
+import * as MailComposer from 'expo-mail-composer';
 import { Dropdown } from 'react-native-element-dropdown';
 
 import { MoveButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 import { emailRegex } from '~/components/regex';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
+
 import { ValidFormat } from '~/constants/validFormat';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
 
 const InquiryScreen = ({ navigation }) => {
   const [email, setEmail] = useState('');

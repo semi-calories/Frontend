@@ -11,15 +11,20 @@ import {
   Image,
   Platform,
 } from 'react-native';
+
 import { useRecoilValue } from 'recoil';
 
-import { recommendRequest } from '~/apis/api/diet';
-import { UserState } from '~/atoms/UserAtom';
 import { TabContainer, RootView } from '~/components/container';
 import { MainHeader } from '~/components/header';
+
 import { Nutrition, Nutrition_ko } from '~/constants/food';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { UserState } from '~/atoms/UserAtom';
+
+import { recommendRequest } from '~/apis/api/diet';
 
 const RecommendScreen = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);

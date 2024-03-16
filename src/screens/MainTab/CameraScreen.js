@@ -1,9 +1,6 @@
 //
 // 카메라 스크린 나타나는 화면
 //
-import { AntDesign } from '@expo/vector-icons';
-import { Camera, CameraType, AutoFocus } from 'expo-camera';
-import { manipulateAsync } from 'expo-image-manipulator';
 import React, { useRef, useState, useLayoutEffect } from 'react';
 import {
   StyleSheet,
@@ -14,12 +11,19 @@ import {
   Alert,
 } from 'react-native';
 
-import { recognizeUpload } from '~/apis/api/diet';
+import { AntDesign } from '@expo/vector-icons';
+import { Camera, CameraType, AutoFocus } from 'expo-camera';
+import { manipulateAsync } from 'expo-image-manipulator';
+
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
-import { dWidth, rFont, rHeight, rWidth } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+
 import { UserInfoType, RecordType } from '~/constants/type';
+
+import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
+
+import { recognizeUpload } from '~/apis/api/diet';
 
 const CameraScreen = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;

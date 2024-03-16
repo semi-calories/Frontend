@@ -2,13 +2,15 @@
 // textInput 컴포넌트 모아놓은 파일
 //
 
-import { Ionicons } from '@expo/vector-icons';
 import React, { useState } from 'react';
 import { TextInput, StyleSheet, Text, View } from 'react-native';
 
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+import { Ionicons } from '@expo/vector-icons';
+
 import { ValidFormat } from '~/constants/validFormat';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
 
 export function BasicTextInput(props) {
   const {

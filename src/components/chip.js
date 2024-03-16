@@ -1,9 +1,10 @@
-import { AntDesign } from '@expo/vector-icons';
 import React from 'react';
 import { View, Text, Pressable, StyleSheet } from 'react-native';
 
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { colors, fonts } from '~/constants/globalStyles';
+import { AntDesign } from '@expo/vector-icons';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { colors, fonts } from '~/styles/globalStyles';
 
 export const BasicChip = ({ chipStyle, textStyle, text, onPress }) => {
   return (

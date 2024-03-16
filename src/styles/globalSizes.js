@@ -3,6 +3,7 @@
 //
 
 import { Dimensions } from 'react-native';
+
 import {
   responsiveScreenWidth,
   responsiveScreenHeight,

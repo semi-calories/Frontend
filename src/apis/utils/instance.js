@@ -2,17 +2,17 @@
 //axios 인스턴스 및 공통 API 함수
 //
 
-import { SPRING_MAIN_SERVER, SPRING_ALERT_SERVER } from '@env';
 import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 
-import { UserState } from '~/atoms/UserAtom';
 import { saveAccessToken, getToken } from '~/components/expoSecureStore';
+
+import { UserState } from '~/atoms/UserAtom';
 
 // 토큰 불필요한 경우 instance
 export const publicApi = axios.create({
-  baseURL: SPRING_MAIN_SERVER,
+  baseURL: process.env.EXPO_PUBLIC_SPRING_MAIN_SERVER,
   //timeout: 2000,
 });
 
@@ -24,7 +24,7 @@ const privateApi = async () => {
   if (token) {
     // Axios 인스턴스 생성
     const instance = axios.create({
-      baseURL: SPRING_MAIN_SERVER,
+      baseURL: process.env.EXPO_PUBLIC_SPRING_MAIN_SERVER,
       headers: {
         Authorization: 'Bearer ' + token,
       },
@@ -41,7 +41,7 @@ const privateApi = async () => {
 
         // /alert/로 시작하는 엔드포인트에 대한 요청 처리
         if (config.url.startsWith('/alert/')) {
-          config.baseURL = SPRING_ALERT_SERVER;
+          config.baseURL = process.env.EXPO_PUBLIC_SPRING_ALERT_SERVER;
         }
 
         return config;

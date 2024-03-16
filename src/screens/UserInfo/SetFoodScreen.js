@@ -2,7 +2,6 @@
 // 선호/비선호 음식 선택 Screen
 //
 
-import { Feather } from '@expo/vector-icons';
 import React, { useEffect, useLayoutEffect, useState } from 'react';
 import {
   View,
@@ -13,6 +12,18 @@ import {
   Alert,
 } from 'react-native';
 
+import { Feather } from '@expo/vector-icons';
+
+import { MoveButton } from '~/components/button';
+import { CloseChip } from '~/components/chip';
+import { RootView } from '~/components/container';
+import { BackHeader } from '~/components/header';
+
+import { HeaderType, SearchFoodType, UserInfoType } from '~/constants/type';
+
+import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
+import { fonts, colors } from '~/styles/globalStyles';
+
 import {
   getPrefer,
   getDislike,
@@ -20,13 +31,6 @@ import {
   saveDislike,
 } from '~/apis/api/user';
 import { getDislikeFood, getPreferFood } from '~/apis/services/user';
-import { MoveButton } from '~/components/button';
-import { CloseChip } from '~/components/chip';
-import { RootView } from '~/components/container';
-import { BackHeader } from '~/components/header';
-import { rWidth, rHeight, rFont } from '~/constants/globalSizes';
-import { fonts, colors } from '~/constants/globalStyles';
-import { HeaderType, SearchFoodType, UserInfoType } from '~/constants/type';
 
 const AddFunc = ({ onPress }) => {
   return (

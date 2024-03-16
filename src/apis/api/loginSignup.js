@@ -1,6 +1,8 @@
 //
 //로그인, 회원가입 관련 Api 요청 및 응답
 //
+import * as Sentry from '@sentry/react-native';
+
 import { publicApi, fetchDataGet, fetchDataPost } from '~/apis/utils/instance';
 
 export const login = async (loginInfo) => {
@@ -11,6 +13,7 @@ export const login = async (loginInfo) => {
     return data;
   } catch (err) {
     console.error(err);
+    Sentry.captureException(err);
   }
 };
 
