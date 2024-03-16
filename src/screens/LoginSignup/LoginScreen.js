@@ -56,7 +56,7 @@ const LoginScreen = ({ navigation }) => {
         Alert.alert(error);
       }
     } catch (err) {
-      console.log(err);
+      console.error(err);
     }
   };
 
