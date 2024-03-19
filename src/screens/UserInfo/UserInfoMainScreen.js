@@ -118,7 +118,11 @@ const UserInfoMainScreen = ({ navigation }) => {
             navigation.push('UserInfoEditScreen', {
               userInfo: {
                 ...user,
-                image: { uri: `${image.imageSrc}?${image.imageHash}` },
+                image: {
+                  uri: user.image
+                    ? `${image.imageSrc}?${image.imageHash}`
+                    : null,
+                },
               },
               infoType: UserInfoType.edit,
             })
