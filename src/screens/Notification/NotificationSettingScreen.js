@@ -3,7 +3,7 @@
 //
 
 import React, { useLayoutEffect, useState, useEffect } from 'react';
-import { View, Text, StyleSheet, Switch, Alert } from 'react-native';
+import { View, Text, StyleSheet, Switch, Alert, Platform } from 'react-native';
 
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
@@ -91,6 +91,15 @@ const NotificationSettingScreen = ({ navigation }) => {
   };
 
   const handleSwitch = async () => {
+    if (Platform.OS === 'android') {
+      Notifications.setNotificationChannelAsync('default', {
+        name: 'default',
+        importance: Notifications.AndroidImportance.MAX,
+        vibrationPattern: [0, 250, 250, 250],
+        lightColor: '#FF231F7C',
+      });
+    }
+
     if (!isEnabled) {
       const { status } = await Notifications.getPermissionsAsync();
       //console.log(status)
