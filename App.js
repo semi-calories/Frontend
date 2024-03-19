@@ -48,6 +48,12 @@ function App() {
       Notifications.addNotificationReceivedListener((notification) => {
         setNotification(notification);
       });
+
+    return () => {
+      Notifications.removeNotificationSubscription(
+        notificationListener.current,
+      );
+    };
   }, []);
 
   const onLayoutRootView = useCallback(async () => {
