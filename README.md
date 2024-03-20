@@ -1,21 +1,42 @@
-# Semi-Calories
+# Semi-Calories Front-End
 
 ![Group 65 (1)](https://github.com/semi-calories/Frontend/assets/58768930/52f4f1e2-2f7d-4bac-b217-18388ccf5249)
 <br>
-### 💻  프로젝트 설명
-개인 맞춤형 식단을 추천해주는 식단 관리 어플리케이션
+```
+$ npx expo start
+```
+### 🎨  Figma
+[Figma](https://www.figma.com/file/tdbRDEx8ncLTtrX5URJhd6/Semi-Calories?type=design&node-id=0-1&mode=design&t=tmfjIUFmhN0y3FiC-0)
+<br><br>
 
-* 사진과 텍스트로 식사 기록 및 조회
-* 사용자의 선호와 이전 기록을 통한 개인 맞춤형 식단을 추천
-* 영양소 비율에 맞춰 식사하고 있는지 통계 제공
-* 몸무게 추적 및 예상 그래프 제공
+
+### Front-End Tech Stack
+**Stack**|**Version**|
+:-------:|:---------:|
+React|`18.2.0`|
+React-Native|`0.73.5`|
+Expo|`50.0.13`|
+Recoil|`0.7.7`|
+Axios|`1.4.0`|
+
 
 <br>
 
-
-### 📍 앱 다운로드
-* [Android](https://play.google.com/store/apps/details?id=com.shimhyesu.SemiCalories)
-* [iOS](https://apps.apple.com/kr/app/semi-calories/id6471895779)
+### Commit Convention
+Feat | 새로운 기능을 추가
+-- | --
+Fix | 버그 수정
+Design | CSS 등 사용자 UI 디자인 변경
+!BREAKING CHANGE | 커다란 API 변경의 경우
+!HOTFIX | 급하게 치명적인 버그를 고쳐야하는 경우
+Style | 코드 포맷 변경, 세미 콜론 누락, 코드 수정이 없는 경우
+Refactor | 프로덕션 코드 리팩토링
+Comment | 필요한 주석 추가 및 변경
+Docs | 문서 수정
+Test | 테스트 코드, 리펙토링 테스트 코드 추가, Production Code(실제로 사용하는 코드) 변경 없음
+Chore | 빌드 업무 수정, 패키지 매니저 수정, 패키지 관리자 구성 등 업데이트, Production Code 변경 없음
+Rename | 파일 혹은 폴더명을 수정하거나 옮기는 작업만인 경우
+Remove | 파일을 삭제하는 작업만 수행한 경우
 
 
 
