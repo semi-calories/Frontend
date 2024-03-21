@@ -71,7 +71,7 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
       toValue: opened ? 1 : 0,
       duration: 300,
       friction: 2,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, [opened, animation]);
 
