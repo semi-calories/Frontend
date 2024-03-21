@@ -117,7 +117,7 @@ export function SearchHeader({ backPress, text, onChangeText, clearText }) {
 }
 
 export function MainHeader({ notiPress, userInfoPress }) {
-  const { opened } = useTabMenu();
+  const { opened, toggleOpened } = useTabMenu();
 
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -126,12 +126,15 @@ export function MainHeader({ notiPress, userInfoPress }) {
       toValue: opened ? 1 : 0,
       duration: 300,
       friction: 2,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, [opened, animation]);
 
   return (
-    <View style={[styles.container, styles.paddingLogo]}>
+    <Pressable
+      style={[styles.container, styles.paddingLogo]}
+      onPress={toggleOpened}
+    >
       {opened && (
         <Animated.View
           style={[
@@ -145,7 +148,7 @@ export function MainHeader({ notiPress, userInfoPress }) {
           ]}
         />
       )}
-      <Image source={LogoTitle} style={styles.logoTitle} />
+      <Image source={LogoTitle} style={styles.logoTitle} contentFit="contain" />
 
       <View style={styles.logoRight}>
         {notiPress && (
@@ -165,7 +168,7 @@ export function MainHeader({ notiPress, userInfoPress }) {
           />
         </Pressable>
       </View>
-    </View>
+    </Pressable>
   );
 }
 
@@ -239,7 +242,6 @@ const styles = StyleSheet.create({
   logoTitle: {
     width: rHeight(218),
     height: rHeight(43),
-    resizeMode: 'contain',
   },
 
   logoRight: {

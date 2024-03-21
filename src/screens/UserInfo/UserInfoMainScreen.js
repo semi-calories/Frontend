@@ -230,7 +230,6 @@ const styles = StyleSheet.create({
   img: {
     width: rHeight(120),
     height: rHeight(120),
-    resizeMode: 'contain',
     marginBottom: rHeight(8),
 
     borderRadius: rWidth(100),

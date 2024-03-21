@@ -1,7 +1,13 @@
 // 공통적으로 쓰이는 Container
 
 import React, { useRef, useEffect } from 'react';
-import { View, StyleSheet, Animated } from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  KeyboardAvoidingView,
+  Platform,
+  Pressable,
+} from 'react-native';
 
 import { colors } from '~/styles/globalStyles';
 
@@ -12,7 +18,7 @@ export function RootView({ children, viewStyle }) {
 }
 
 export function TabContainer({ children }) {
-  const { opened } = useTabMenu();
+  const { opened, toggleOpened } = useTabMenu();
 
   const animation = useRef(new Animated.Value(0)).current;
 
@@ -21,12 +27,12 @@ export function TabContainer({ children }) {
       toValue: opened ? 1 : 0,
       duration: 300,
       friction: 2,
-      useNativeDriver: false,
+      useNativeDriver: true,
     }).start();
   }, [opened, animation]);
 
   return (
-    <View style={styles.tab}>
+    <Pressable style={styles.tab} onPress={toggleOpened}>
       {children}
       {opened && (
         <Animated.View
@@ -41,7 +47,7 @@ export function TabContainer({ children }) {
           ]}
         />
       )}
-    </View>
+    </Pressable>
   );
 }
 
