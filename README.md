@@ -23,8 +23,9 @@ Axios|`1.4.0`|
 <br>
 
 ### Commit Convention
-Feat | 새로운 기능을 추가
+Type | 키워드	사용 시점
 -- | --
+Feat | 새로운 기능을 추가
 Fix | 버그 수정
 Design | CSS 등 사용자 UI 디자인 변경
 !BREAKING CHANGE | 커다란 API 변경의 경우
