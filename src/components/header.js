@@ -145,7 +145,7 @@ export function MainHeader({ notiPress, userInfoPress }) {
           ]}
         />
       )}
-      <Image source={LogoTitle} style={styles.logoTitle} />
+      <Image source={LogoTitle} style={styles.logoTitle} contentFit="contain" />
 
       <View style={styles.logoRight}>
         {notiPress && (
@@ -239,7 +239,6 @@ const styles = StyleSheet.create({
   logoTitle: {
     width: rHeight(218),
     height: rHeight(43),
-    resizeMode: 'contain',
   },
 
   logoRight: {

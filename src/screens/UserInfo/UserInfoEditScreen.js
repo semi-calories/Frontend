@@ -497,7 +497,6 @@ const styles = StyleSheet.create({
   imgBackground: {
     width: rHeight(120),
     height: rHeight(120),
-    resizeMode: 'contain',
     alignSelf: 'center',
     marginBottom: rHeight(25),
   },
