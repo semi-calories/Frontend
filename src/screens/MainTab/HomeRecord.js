@@ -47,6 +47,12 @@ const HomeRecord = ({ navigation, userInfo }) => {
   const [isLoaded, setLoaded] = useState(false);
 
   useEffect(() => {
+    const subscribe = navigation.addListener('focus', getDietRecord);
+
+    return subscribe;
+  }, [navigation]);
+
+  useEffect(() => {
     if (userInfo.userCode) {
       getDietRecord();
       setLoaded(true);
