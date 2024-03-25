@@ -7,13 +7,13 @@ import {
   View,
   Text,
   StyleSheet,
-  Image,
   Pressable,
   Alert,
   ScrollView,
 } from 'react-native';
 
 import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
+import { Image } from 'expo-image';
 import { useRecoilValue } from 'recoil';
 
 import { RootView } from '~/components/container';
@@ -32,32 +32,11 @@ const UserInfoMainScreen = ({ navigation }) => {
   const user = useRecoilValue(UserState);
   console.log('UserInfoMainScreen user', user);
 
-  const [image, setImage] = useState({});
-  console.log('UserInfoMainScreen image', image);
-
   useLayoutEffect(() => {
     navigation.setOptions({
       header: () => <BackHeader back backPress={() => navigation.goBack()} />,
     });
   }, [navigation]);
-
-  useEffect(() => {
-    getUser();
-    const focusSubscription = navigation.addListener('focus', () => {
-      console.log('UserInfoMainScreen focus');
-      getUser();
-    });
-
-    // Return the function to unsubscribe from the event so it gets removed on unmount
-    return focusSubscription;
-  }, [navigation]);
-
-  const getUser = async () => {
-    setImage({
-      imageSrc: user.image,
-      imageHash: Date.now(),
-    });
-  };
 
   const onPressLogout = async () => {
     try {
@@ -95,9 +74,12 @@ const UserInfoMainScreen = ({ navigation }) => {
         <View style={styles.profile}>
           {user.image ? (
             <Image
-              source={{ uri: `${image.imageSrc}?${image.imageHash}` }}
+              source={{ uri: `${user.image}?${Date.now()}` }}
               style={styles.img}
-              resizeMode="cover"
+              contentFit="cover"
+              placeholder="http://via.placeholder.com/640x480"
+              cachePolicy="memory-disk"
+              priority="high"
             />
           ) : (
             <View style={styles.nullImg}>
@@ -119,9 +101,7 @@ const UserInfoMainScreen = ({ navigation }) => {
               userInfo: {
                 ...user,
                 image: {
-                  uri: user.image
-                    ? `${image.imageSrc}?${image.imageHash}`
-                    : null,
+                  uri: user.image ? `${user.image}?${Date.now()}` : null,
                 },
               },
               infoType: UserInfoType.edit,
