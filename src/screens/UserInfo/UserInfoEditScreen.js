@@ -279,7 +279,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                 imageStyle={{ borderRadius: 100 }}
                 resizeMode="cover"
               >
-                <CameraIcon ref={actionSheetRef} />
+                <CameraIcon />
               </ImageBackground>
             ) : (
               <View
@@ -298,7 +298,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
                   size={rHeight(80)}
                   color={colors.borderGrey}
                 />
-                <CameraIcon ref={actionSheetRef} />
+                <CameraIcon />
               </View>
             )}
             <LabelTextInput
