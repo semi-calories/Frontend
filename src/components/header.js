@@ -131,22 +131,20 @@ export function MainHeader({ notiPress, userInfoPress }) {
   }, [opened, animation]);
 
   return (
-    <Pressable
-      style={[styles.container, styles.paddingLogo]}
-      onPress={toggleOpened}
-    >
+    <View style={[styles.container, styles.paddingLogo]}>
       {opened && (
-        <Animated.View
-          style={[
-            styles.overlay,
-            {
-              backgroundColor: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['transparent', colors.black],
-              }),
-            },
-          ]}
-        />
+        <Pressable style={styles.overlay} onPress={toggleOpened}>
+          <Animated.View
+            style={[
+              {
+                backgroundColor: animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['transparent', colors.black],
+                }),
+              },
+            ]}
+          />
+        </Pressable>
       )}
       <Image source={LogoTitle} style={styles.logoTitle} contentFit="contain" />
 
@@ -168,7 +166,7 @@ export function MainHeader({ notiPress, userInfoPress }) {
           />
         </Pressable>
       </View>
-    </Pressable>
+    </View>
   );
 }
 
@@ -249,6 +247,7 @@ const styles = StyleSheet.create({
   },
 
   overlay: {
+    backgroundColor: colors.black,
     position: 'absolute',
     top: 0,
     left: 0,
