@@ -1,16 +1,16 @@
 # Semi-Calories Front-End
 
 ![Group 65 (1)](https://github.com/semi-calories/Frontend/assets/58768930/52f4f1e2-2f7d-4bac-b217-18388ccf5249)
+
 <br>
-```
-$ npx expo start
-```
-### 🎨  Figma
+
+## 🎨  Figma
 [Figma](https://www.figma.com/file/tdbRDEx8ncLTtrX5URJhd6/Semi-Calories?type=design&node-id=0-1&mode=design&t=tmfjIUFmhN0y3FiC-0)
-<br><br>
+
+<br>
 
 
-### Front-End Tech Stack
+## Front-End Tech Stack
 **Stack**|**Version**|
 :-------:|:---------:|
 React|`18.2.0`|
@@ -22,7 +22,7 @@ Axios|`1.4.0`|
 
 <br>
 
-### Commit Convention
+## Commit Convention
 Type | 키워드	사용 시점
 -- | --
 Feat | 새로운 기능을 추가
