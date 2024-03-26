@@ -7,10 +7,12 @@ import Constants from 'expo-constants';
 import * as Device from 'expo-device';
 import * as ImagePicker from 'expo-image-picker';
 import * as Notifications from 'expo-notifications';
-import * as SecureStore from 'expo-secure-store';
 import Modal from 'react-native-modal';
 
 import { PrimaryButton } from '~/components/button';
+import { storeSecureData } from '~/components/secureStore';
+
+import { EXPO_TOKEN } from '~/constants/secureStoreKey';
 
 import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
 import { fonts, colors } from '~/styles/globalStyles';
@@ -50,7 +52,7 @@ export const AccessRightModal = ({ isVisible, toggleModal, user }) => {
           setting: true,
         });
 
-        await SecureStore.setItemAsync('ExpoToken', JSON.stringify(token.data));
+        storeSecureData(EXPO_TOKEN, token.data);
       }
     } else {
       alert('Must use physical device for Push Notifications');

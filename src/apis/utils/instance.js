@@ -6,7 +6,9 @@ import { useNavigation } from '@react-navigation/native';
 import axios from 'axios';
 import { useRecoilValue } from 'recoil';
 
-import { saveAccessToken, getToken } from '~/components/expoSecureStore';
+import { storeSecureData, getSecureData } from '~/components/secureStore';
+
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants/secureStoreKey';
 
 import { UserState } from '~/atoms/UserAtom';
 
@@ -18,8 +20,8 @@ export const publicApi = axios.create({
 
 // Access토큰을 필요한 instance
 const privateApi = async () => {
-  const token = await getToken('accessToken');
-  const refreshToken = await getToken('refreshToken');
+  const token = await getSecureData(ACCESS_TOKEN);
+  const refreshToken = await getSecureData(REFRESH_TOKEN);
 
   if (token) {
     // Axios 인스턴스 생성
@@ -70,7 +72,7 @@ const privateApi = async () => {
             if (tokenResponse.status === 200) {
               const newAccessToken = tokenResponse.data.accessToken;
 
-              saveAccessToken(newAccessToken);
+              storeSecureData(ACCESS_TOKEN, newAccessToken);
 
               // 새로 발급받은 토큰으로 기존 요청 재시도
               originalRequest.headers['Authorization'] =
@@ -103,7 +105,7 @@ const privateApi = async () => {
 //custom hook
 const useReissueToken = async () => {
   const user = useRecoilValue(UserState);
-  const refreshToken = await getToken('refreshToken');
+  const refreshToken = await getSecureData(REFRESH_TOKEN);
 
   const response = await publicApi.post(`/auth/reissueToken`, null, {
     params: user.userCode,

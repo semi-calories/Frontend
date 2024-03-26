@@ -1,10 +1,9 @@
 //
 //login 및 회원가입 관련 데이터 정제
 //
-import {
-  saveAccessToken,
-  saveRefreshToken,
-} from '~/components/expoSecureStore';
+import { storeSecureData } from '~/components/secureStore';
+
+import { ACCESS_TOKEN, REFRESH_TOKEN } from '~/constants/secureStoreKey';
 
 export const getLoginInfo = (rawInfo) => {
   if (!rawInfo) {
@@ -14,8 +13,9 @@ export const getLoginInfo = (rawInfo) => {
   const { userExists, user, matchResult, accessToken, refreshToken } = rawInfo;
 
   if (userExists && matchResult) {
-    saveAccessToken(accessToken);
-    saveRefreshToken(refreshToken);
+    storeSecureData(ACCESS_TOKEN, accessToken);
+    storeSecureData(REFRESH_TOKEN, refreshToken);
+
     return { user, error: '' };
   } else if (userExists) {
     return { user, error: '아이디나 비밀번호를 확인해주세요.' };
@@ -28,7 +28,8 @@ export const getSignupInfo = (rawInfo) => {
   console.log('###', rawInfo);
   const { userCode, accessToken, refreshToken } = rawInfo;
 
-  saveAccessToken(accessToken);
-  saveRefreshToken(refreshToken);
+  storeSecureData(ACCESS_TOKEN, accessToken);
+  storeSecureData(REFRESH_TOKEN, refreshToken);
+
   return userCode;
 };
