@@ -5,7 +5,6 @@
 import React, { useLayoutEffect, useEffect, useState } from 'react';
 import { View, Text, StyleSheet, Pressable } from 'react-native';
 
-import * as SecureStore from 'expo-secure-store';
 import 'react-native-get-random-values';
 import { useRecoilValue } from 'recoil';
 import { v4 as uuidv4 } from 'uuid';
@@ -14,9 +13,12 @@ import HomeRecord from '~/screens/MainTab/HomeRecord';
 import HomeStatistic from '~/screens/MainTab/HomeStatistic';
 import HomeWeight from '~/screens/MainTab/HomeWeight';
 
+import { getData, storeData } from '~/components/ayncStorage';
 import { RootView, TabContainer } from '~/components/container';
 import { MainHeader } from '~/components/header';
 import { AccessRightModal } from '~/components/modal';
+
+import { DEVICE_ID } from '~/constants/asyncStoragekey';
 
 import { dWidth, rWidth, rFont } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
@@ -50,20 +52,17 @@ const HomeScreen = ({ navigation }) => {
   }, []);
 
   const onMountScreen = async () => {
-    //await SecureStore.deleteItemAsync('secure_deviceId')
-    try {
-      const deviceId = await SecureStore.getItemAsync('secure_deviceId');
-      if (deviceId === null) {
-        // 처음 진입하는 사용자
-        setModalVisible(true);
-        const uuid = uuidv4();
-        await SecureStore.setItemAsync('secure_deviceId', JSON.stringify(uuid));
-      } else {
-        // 이미 진입한 사용자
-        console.log('이미 진입한 적이 있습니다.');
-      }
-    } catch (error) {
-      console.error('SecureStore 에러: ', error);
+    const deviceId = await getData(DEVICE_ID);
+
+    if (deviceId === null) {
+      // 처음 진입하는 사용자
+      setModalVisible(true);
+
+      const uuid = uuidv4();
+      storeData(DEVICE_ID, uuid);
+    } else {
+      // 이미 진입한 사용자
+      console.log('이미 진입한 적이 있습니다.');
     }
   };
 

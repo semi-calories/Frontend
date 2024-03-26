@@ -1,5 +1,4 @@
-//
-//react-native-asyncStorage에 사용되는 key값 모아놓은 파일
-//
+export const IS_USER_ID_SAVED = 'isUserIdSaved';
+export const USER_ID = 'userId';
 
-export const USER_INFO = 'userInfo';
+export const DEVICE_ID = 'deviceId';

@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   Pressable,
+  View,
 } from 'react-native';
 
 import { colors } from '~/styles/globalStyles';
@@ -32,12 +33,12 @@ export function TabContainer({ children }) {
   }, [opened, animation]);
 
   return (
-    <Pressable style={styles.tab} onPress={toggleOpened}>
+    <View style={styles.tab}>
       {children}
       {opened && (
+        <Pressable style={styles.overlay} onPress={toggleOpened}>
         <Animated.View
           style={[
-            styles.overlay,
             {
               backgroundColor: animation.interpolate({
                 inputRange: [0, 1],
@@ -46,8 +47,9 @@ export function TabContainer({ children }) {
             },
           ]}
         />
+        </Pressable>
       )}
-    </Pressable>
+    </View>
   );
 }
 
@@ -62,11 +64,12 @@ const styles = StyleSheet.create({
   },
 
   overlay: {
+    backgroundColor: colors.black,
     position: 'absolute',
     top: 0,
     left: 0,
     right: 0,
-    bottom: 0,
+    bottom: 2, //overlay가 덮는 부분이 있어서 2px만큼 띄워줌
     zIndex: 1,
     opacity: 0.3,
   },

@@ -8,13 +8,15 @@ import { View, Text, StyleSheet, Switch, Alert, Platform } from 'react-native';
 import Constants from 'expo-constants';
 import * as Linking from 'expo-linking';
 import * as Notifications from 'expo-notifications';
-import * as SecureStore from 'expo-secure-store';
 import { useRecoilValue } from 'recoil';
 
 import { MoveButton } from '~/components/button';
 import { RootView } from '~/components/container';
 import { DateTimePickerSelect } from '~/components/date';
 import { BackHeader } from '~/components/header';
+import { getSecureData, storeSecureData } from '~/components/secureStore';
+
+import { EXPO_TOKEN } from '~/constants/secureStoreKey';
 
 import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
@@ -59,7 +61,7 @@ const NotificationSettingScreen = ({ navigation }) => {
 
   const getNotiSetting = async () => {
     //await SecureStore.deleteItemAsync('ExpoToken')
-    const expoToken = await SecureStore.getItemAsync('ExpoToken');
+    const expoToken = await getSecureData(EXPO_TOKEN);
 
     if (!expoToken) {
       return;
@@ -117,8 +119,8 @@ const NotificationSettingScreen = ({ navigation }) => {
         return;
       }
 
-      const expoToken = await SecureStore.getItemAsync('ExpoToken');
-      //console.log('expoToken',expoToken)
+      const expoToken = await getSecureData(EXPO_TOKEN);
+
       if (expoToken === null) {
         const token = await Notifications.getExpoPushTokenAsync({
           projectId: Constants.expoConfig.extra.eas.projectId,
@@ -131,7 +133,7 @@ const NotificationSettingScreen = ({ navigation }) => {
           setting: true,
         });
 
-        await SecureStore.setItemAsync('ExpoToken', JSON.stringify(token.data));
+        storeSecureData(EXPO_TOKEN, token.data);
       }
     }
 
@@ -139,13 +141,12 @@ const NotificationSettingScreen = ({ navigation }) => {
   };
 
   const handleComplete = async () => {
-    const expoToken = await SecureStore.getItemAsync('ExpoToken');
-    console.log(JSON.parse(expoToken));
+    const expoToken = await getSecureData(EXPO_TOKEN);
 
     const reqBody = {
       userCode: user.userCode,
       setting: isEnabled,
-      userToken: JSON.parse(expoToken),
+      userToken: expoToken,
       breakfastHour: breakfast.getHours(),
       breakfastMinute: breakfast.getMinutes(),
       lunchHour: lunch.getHours(),
