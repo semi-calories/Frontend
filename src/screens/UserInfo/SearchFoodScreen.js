@@ -15,11 +15,13 @@ import {
 
 import { AntDesign } from '@expo/vector-icons';
 
+import { getData, removeData, storeData } from '~/components/ayncStorage';
 import { PrimaryButton } from '~/components/button';
 import { CloseChip } from '~/components/chip';
 import { RootView } from '~/components/container';
 import { SearchHeader } from '~/components/header';
 
+import { SEARCH_KEYWORD } from '~/constants/asyncStoragekey';
 import { RecordType, SearchFoodType } from '~/constants/type';
 
 import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
@@ -34,9 +36,11 @@ const SearchFoodScreen = ({ navigation, route }) => {
   const [text, setText] = useState('');
 
   const [foodList, setFoodList] = useState([]);
-  //console.log('SearchFoodScreen foodList', foodList)
+  // console.log('SearchFoodScreen foodList', foodList);
   const [selectFood, setSelectFood] = useState([]);
-  console.log('SearchFoodScreen selectFood', selectFood);
+  // console.log('SearchFoodScreen selectFood', selectFood);
+
+  const [recentSearch, setRecentSearch] = useState([]);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -52,18 +56,26 @@ const SearchFoodScreen = ({ navigation, route }) => {
   }, [navigation, text]);
 
   useEffect(() => {
-    foodSearchFunc();
+    (async function () {
+      const keywords = await getData(SEARCH_KEYWORD);
+
+      if (keywords) {
+        setRecentSearch([...JSON.parse(keywords)]);
+      }
+    })();
+  }, []);
+
+  useEffect(() => {
+    if (text) {
+      foodSearchFunc();
+    }
   }, [text]);
 
   const foodSearchFunc = async () => {
-    try {
-      const { foodList } = await foodSearch({ foodName: text });
-      //console.log('foodSearchFunc foodList', foodList)
+    const { foodList } = await foodSearch({ foodName: text });
+    // console.log('foodSearchFunc foodList', foodList);
 
-      setFoodList([...foodList]);
-    } catch (err) {
-      console.log(err);
-    }
+    setFoodList([...foodList]);
   };
 
   const renderItem = ({ item }) => {
@@ -85,7 +97,28 @@ const SearchFoodScreen = ({ navigation, route }) => {
       setSelectFood([...rest]);
     } else {
       setSelectFood((prev) => [...prev, item]);
+      onSearch(item);
     }
+  };
+
+  const onSearch = async (item) => {
+    let items = recentSearch;
+
+    if (items.length) {
+      if (items.find((i) => i.foodName === item.foodName)) {
+        items = items.filter((i) => i.foodName !== item.foodName);
+      } else {
+        if (items.length > 9) {
+          items.pop();
+        }
+      }
+      items.unshift(item);
+    } else {
+      items = [item];
+    }
+
+    setRecentSearch([...items]);
+    storeData(SEARCH_KEYWORD, JSON.stringify(items));
   };
 
   const handleComplete = () => {
@@ -109,10 +142,42 @@ const SearchFoodScreen = ({ navigation, route }) => {
     }
   };
 
+  const onPressDelete = () => {
+    setRecentSearch([]);
+    removeData(SEARCH_KEYWORD);
+  };
+
   return (
     <RootView>
       <View style={{ flex: 1 }}>
-        {text && !foodList.length ? (
+        {!text ? (
+          // 최근 검색어
+          <>
+            <View style={styles.recentSearch}>
+              <Text style={[styles.text, { fontFamily: fonts.bold }]}>
+                최근 검색어
+              </Text>
+              <Pressable onPress={onPressDelete}>
+                <Text style={styles.greyText}>전체 삭제</Text>
+              </Pressable>
+            </View>
+            <FlatList
+              data={recentSearch}
+              renderItem={renderItem}
+              keyExtractor={(item, idx) => item + idx}
+              showsVerticalScrollIndicator={false}
+              style={{ paddingHorizontal: rWidth(30) }}
+            />
+          </>
+        ) : foodList.length ? (
+          <FlatList
+            data={foodList}
+            renderItem={renderItem}
+            keyExtractor={(item, idx) => item + idx}
+            showsVerticalScrollIndicator={false}
+            style={{ paddingHorizontal: rWidth(30) }}
+          />
+        ) : (
           <View
             style={{ flex: 1, alignItems: 'center', justifyContent: 'center' }}
           >
@@ -125,14 +190,6 @@ const SearchFoodScreen = ({ navigation, route }) => {
               검색 결과가 없습니다.
             </Text>
           </View>
-        ) : (
-          <FlatList
-            data={foodList}
-            renderItem={renderItem}
-            keyExtractor={(item, idx) => item + idx}
-            showsVerticalScrollIndicator={false}
-            style={{ paddingHorizontal: rWidth(30) }}
-          />
         )}
       </View>
       <View style={styles.selectBtnView}>
@@ -200,5 +257,22 @@ const styles = StyleSheet.create({
 
   chipView: {
     marginVertical: rHeight(10),
+  },
+
+  recentSearch: {
+    paddingHorizontal: rWidth(20),
+    marginTop: rHeight(5),
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+
+  greyText: {
+    fontFamily: fonts.medium,
+    fontSize: rFont(14),
+    color: colors.borderGrey,
+
+    includeFontPadding: false,
+    textAlignVertical: 'center',
   },
 });
