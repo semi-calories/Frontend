@@ -2,7 +2,7 @@
 //사용자 정보 메인 화면 - 사용자 정보 편집, 목표 설정, 선호/비선호 음식 설정 화면으로 이동 가능
 //
 
-import React, { useLayoutEffect, useEffect, useState } from 'react';
+import React, { useLayoutEffect } from 'react';
 import {
   View,
   Text,
@@ -16,9 +16,11 @@ import { MaterialIcons, FontAwesome5 } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRecoilValue } from 'recoil';
 
+import { removeData } from '~/components/ayncStorage';
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
 
+import { IS_USER_ID_SAVED, USER_ID } from '~/constants/asyncStoragekey';
 import { UserInfoType } from '~/constants/type';
 
 import { rWidth, rHeight, rFont } from '~/styles/globalSizes';
@@ -64,6 +66,10 @@ const UserInfoMainScreen = ({ navigation }) => {
 
   const handleQuit = async () => {
     await deleteInfo({ userCode: user.userCode });
+
+    removeData(IS_USER_ID_SAVED);
+    removeData(USER_ID);
+
     Alert.alert('회원탈퇴에 성공하였습니다.');
 
     navigation.navigate('LoginSignupScreen');
