@@ -52,16 +52,21 @@ const UserInfoMainScreen = ({ navigation }) => {
   };
 
   const onPressQuit = async () => {
-    try {
-      await deleteInfo({ userCode: user.userCode });
-      Alert.alert('회원탈퇴에 성공하였습니다.');
+    Alert.alert(
+      '회원 탈퇴',
+      '탈퇴하면 삭제된 정보는 복구할 수 없습니다.\n 정말 탈퇴하시겠어요?',
+      [
+        { text: '취소', onPress: () => {} },
+        { text: '탈퇴', onPress: handleQuit, style: 'destructive' },
+      ],
+    );
+  };
 
-      navigation.navigate('LoginSignupScreen');
-    } catch (err) {
-      console.log(err);
+  const handleQuit = async () => {
+    await deleteInfo({ userCode: user.userCode });
+    Alert.alert('회원탈퇴에 성공하였습니다.');
 
-      Alert.alert('회원탈퇴에 실패하였습니다.');
-    }
+    navigation.navigate('LoginSignupScreen');
   };
 
   return (
@@ -77,7 +82,7 @@ const UserInfoMainScreen = ({ navigation }) => {
               source={{ uri: `${user.image}?${Date.now()}` }}
               style={styles.img}
               contentFit="cover"
-              placeholder="http://via.placeholder.com/640x480"
+              placeholder="http://via.placeholder.com/120x120"
               cachePolicy="memory-disk"
               priority="high"
             />
