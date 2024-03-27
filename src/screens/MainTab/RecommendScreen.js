@@ -3,15 +3,9 @@
 //
 
 import React, { useLayoutEffect, useState, useEffect } from 'react';
-import {
-  View,
-  Text,
-  StyleSheet,
-  FlatList,
-  Image,
-  Platform,
-} from 'react-native';
+import { View, Text, StyleSheet, FlatList, Platform } from 'react-native';
 
+import { Image } from 'expo-image';
 import { useRecoilValue } from 'recoil';
 
 import { TabContainer, RootView } from '~/components/container';
@@ -58,7 +52,12 @@ const RecommendScreen = ({ navigation }) => {
     return (
       <View style={styles.container}>
         {item.foodImgUrl ? (
-          <Image source={{ uri: item.foodImgUrl }} style={styles.image} />
+          <Image
+            source={{ uri: item.foodImgUrl }}
+            style={styles.image}
+            contentFit="contain"
+            priority="high"
+          />
         ) : (
           <View
             style={[
@@ -163,10 +162,10 @@ const styles = StyleSheet.create({
     width: rWidth(90),
     height: rHeight(75),
     borderRadius: 10,
-    resizeMode: 'contain',
   },
 
   text: {
+    width: rWidth(150),
     fontFamily: fonts.medium,
     fontSize: rFont(18),
     color: colors.black,
