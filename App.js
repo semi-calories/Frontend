@@ -15,10 +15,13 @@ import { rHeight } from '~/styles/globalSizes';
 
 import { TabContextProvider } from '~/context/TabContext';
 
-Sentry.init({
-  dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
-  //debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
-});
+if (!__DEV__) {
+  Sentry.init({
+    dsn: process.env.EXPO_PUBLIC_SENTRY_DSN,
+    //debug: true, // If `true`, Sentry will try to print out useful debugging information if something goes wrong with sending the event. Set it to `false` in production
+    tracesSampleRate: 1.0,
+  });
+}
 
 Notifications.setNotificationHandler({
   handleNotification: async () => ({
@@ -81,7 +84,9 @@ function App() {
   );
 }
 
-export default Sentry.wrap(App);
+const AppWrapper = __DEV__ ? App : Sentry.wrap(App);
+
+export default AppWrapper;
 
 const styles = StyleSheet.create({
   container: {
