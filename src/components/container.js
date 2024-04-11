@@ -15,7 +15,14 @@ import { colors } from '~/styles/globalStyles';
 import { useTabMenu } from '~/context/TabContext';
 
 export function RootView({ children, viewStyle }) {
-  return <View style={[styles.rootView, viewStyle]}>{children}</View>;
+  return (
+    <KeyboardAvoidingView
+      style={[styles.rootView, viewStyle]}
+      behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+    >
+      {children}
+    </KeyboardAvoidingView>
+  );
 }
 
 export function TabContainer({ children }) {
@@ -37,16 +44,16 @@ export function TabContainer({ children }) {
       {children}
       {opened && (
         <Pressable style={styles.overlay} onPress={toggleOpened}>
-        <Animated.View
-          style={[
-            {
-              backgroundColor: animation.interpolate({
-                inputRange: [0, 1],
-                outputRange: ['transparent', colors.black],
-              }),
-            },
-          ]}
-        />
+          <Animated.View
+            style={[
+              {
+                backgroundColor: animation.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: ['transparent', colors.black],
+                }),
+              },
+            ]}
+          />
         </Pressable>
       )}
     </View>
