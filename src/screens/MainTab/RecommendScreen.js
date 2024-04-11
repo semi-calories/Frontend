@@ -18,7 +18,7 @@ import { colors, fonts } from '~/styles/globalStyles';
 
 import { UserState } from '~/atoms/UserAtom';
 
-import { recommendRequest } from '~/apis/api/diet';
+import { recommendRequest } from '~/apis/api/recommend';
 
 const RecommendScreen = ({ navigation }) => {
   const [isRefreshing, setIsRefreshing] = useState(false);

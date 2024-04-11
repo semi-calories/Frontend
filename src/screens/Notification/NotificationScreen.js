@@ -126,6 +126,7 @@ const NotificationScreen = ({ navigation }) => {
           renderItem={renderItem}
           keyExtractor={(item, idx) => item + idx}
           //showsVerticalScrollIndicator="false"
+          inverted
         />
       ) : (
         <View

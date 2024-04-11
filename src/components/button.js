@@ -119,7 +119,6 @@ export function TabBarButton({ opened, toggleOpened, navigation }) {
         //앨범에서 선택
         const { status: albumStatus } =
           await ImagePicker.getMediaLibraryPermissionsAsync();
-        console.log('adad', albumStatus);
         if (albumStatus === 'granted') {
           navigation.navigate('AlbumScreen_new', {
             nextScreen: 'MealtimeScreen',

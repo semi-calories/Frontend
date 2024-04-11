@@ -23,7 +23,7 @@ import { UserInfoType, RecordType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
 
-import { recognizeUpload } from '~/apis/api/diet';
+import { recognizeUpload } from '~/apis/api/recognizer';
 
 const CameraScreen = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
