@@ -25,7 +25,6 @@ export const getLoginInfo = (rawInfo) => {
 };
 
 export const getSignupInfo = (rawInfo) => {
-  console.log('###', rawInfo);
   const { userCode, accessToken, refreshToken } = rawInfo;
 
   storeSecureData(ACCESS_TOKEN, accessToken);

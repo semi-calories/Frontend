@@ -9,7 +9,6 @@ export const recognizeUpload = async (uploadInfo) => {
       '/recognizer/recognizerFood',
       uploadInfo,
     );
-    //console.log('recognizeUpload data', data)
 
     return data;
   } catch (err) {

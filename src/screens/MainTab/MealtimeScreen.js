@@ -113,7 +113,6 @@ const MealtimeScreen = ({ navigation, route }) => {
   };
 
   const handlePressDetail = (food) => {
-    console.log('##', food);
     setFoodDetail(food);
     setServing(food.foodWeight);
 

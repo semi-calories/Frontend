@@ -29,7 +29,7 @@ const AlbumScreen_new = ({ navigation, route }) => {
   console.log('AlbumScreen2 route.params', route.params);
 
   const [image, setImage] = useState(null);
-  //console.log('AlbumScreen2 image', image)
+  // console.log('AlbumScreen2 image', image);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -48,7 +48,6 @@ const AlbumScreen_new = ({ navigation, route }) => {
   }, []);
 
   const pickImage = async () => {
-    // No permissions request is necessary for launching the image library
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       quality: 0.5,
@@ -77,7 +76,6 @@ const AlbumScreen_new = ({ navigation, route }) => {
   const uploadPictureHandler = async () => {
     if (nextScreen === 'MealtimeScreen') {
       const dietLists = await recognizeUploadDiet();
-      console.log(dietLists);
 
       if (dietLists.length) {
         const params = {
