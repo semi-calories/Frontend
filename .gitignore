@@ -15,6 +15,10 @@ eas.json
 .env
 *.log
 .vscode/
+config
+version
+google-services.json
+semi-calories-5f4e539eaaf1.json
 
 # macOS
 .DS_Store
