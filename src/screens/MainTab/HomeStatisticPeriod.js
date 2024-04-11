@@ -22,7 +22,7 @@ import { Nutrition, Nutrition_ko } from '~/constants/food';
 import { dWidth, rWidth, rHeight, rFont } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
 
-import { getMonthStats, getWeekStats } from '~/apis/api/diet';
+import { getMonthStats, getWeekStats } from '~/apis/api/statistics';
 
 const HomeStatisticPeriod = ({ type, userInfo }) => {
   const refRBSheet = useRef();

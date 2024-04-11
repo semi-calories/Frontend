@@ -22,7 +22,7 @@ import { RecordType, UserInfoType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { fonts } from '~/styles/globalStyles';
 
-import { recognizeUpload } from '~/apis/api/diet';
+import { recognizeUpload } from '~/apis/api/recognizer';
 
 const AlbumScreen_new = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;

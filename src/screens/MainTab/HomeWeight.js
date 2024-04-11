@@ -21,16 +21,16 @@ import { colors, fonts } from '~/styles/globalStyles';
 import { UserState } from '~/atoms/UserAtom';
 
 import {
-  getInfo,
   getWeight,
   saveWeight,
   deleteWeight,
   getMonthRangeWeight,
-} from '~/apis/api/user';
+} from '~/apis/api/statistics';
+import { getInfo } from '~/apis/api/user';
 import {
   getStructedRangeWeight,
   getStructedPredictWeight,
-} from '~/apis/services/user';
+} from '~/apis/services/statistics';
 
 const FILTERPERIOD = ['최근 1개월', '3개월', '6개월', '1년'];
 
