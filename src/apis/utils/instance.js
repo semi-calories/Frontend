@@ -118,11 +118,11 @@ const useReissueToken = async () => {
 };
 
 // API 요청 함수
-export const fetchDataGet = async (endPoint, params) => {
+export const fetchDataGet = async (endPoint, config) => {
   try {
     const axiosInstance = await privateApi();
 
-    const response = await axiosInstance.get(endPoint, params);
+    const response = await axiosInstance.get(endPoint, config);
     return response;
   } catch (error) {
     console.error('API 요청 오류:', error);
@@ -130,11 +130,11 @@ export const fetchDataGet = async (endPoint, params) => {
   }
 };
 
-export const fetchDataPost = async (endPoint, data, params) => {
+export const fetchDataPost = async (endPoint, data, config) => {
   try {
     const axiosInstance = await privateApi();
 
-    const response = await axiosInstance.post(endPoint, data, params);
+    const response = await axiosInstance.post(endPoint, data, config);
     return response;
   } catch (error) {
     console.error('API 요청 오류:', error);

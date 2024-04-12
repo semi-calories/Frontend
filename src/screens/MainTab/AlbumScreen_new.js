@@ -22,7 +22,7 @@ import { RecordType, UserInfoType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { fonts } from '~/styles/globalStyles';
 
-import { recognizeUpload } from '~/apis/api/recognizer';
+import { recognizeUploadFoodImg } from '~/apis/api/recognizer';
 
 const AlbumScreen_new = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
@@ -50,27 +50,12 @@ const AlbumScreen_new = ({ navigation, route }) => {
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.5,
-      //base64: true,
+      quality: 0.8,
     });
 
-    await manipulateAsync(
-      result.assets[0].uri,
-      [
-        {
-          resize: {
-            width: result.assets[0].width / 4,
-            height: result.assets[0].height / 4,
-          },
-        },
-      ],
-      { base64: true, format: 'jpeg', compress: 0.5 }, // 원하는 형식 및 압축률 설정
-    ).then((data) => {
-      console.log('####', data);
       if (!result.canceled) {
-        setImage(data);
+      setImage(result.assets[0]);
       }
-    });
   };
 
   const uploadPictureHandler = async () => {
@@ -103,12 +88,12 @@ const AlbumScreen_new = ({ navigation, route }) => {
   const recognizeUploadDiet = async () => {
     const uploadInfo = {
       userCode: userInfo.userCode,
-      file: image.base64,
+      file: image.uri,
     };
 
     try {
-      const { dietLists } = await recognizeUpload(uploadInfo);
-      //console.log('recognizeUploadDiet dietLists', dietLists)
+      const { dietLists } = await recognizeUploadFoodImg(uploadInfo);
+      console.log('recognizeUploadDiet dietLists', dietLists);
 
       return dietLists;
     } catch (e) {

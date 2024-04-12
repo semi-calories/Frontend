@@ -1,6 +1,8 @@
+import { Platform } from 'react-native';
+
 import { fetchDataPost } from '~/apis/utils/instance';
 
-// 음식 인식 요청
+// 음식 인식 요청 (base64)
 export const recognizeUpload = async (uploadInfo) => {
   //console.log('recognizeUpload uploadInfo', uploadInfo)
 
@@ -20,12 +22,30 @@ export const recognizeUpload = async (uploadInfo) => {
 export const recognizeUploadFoodImg = async (uploadInfo) => {
   //console.log('recognizeUploadFormData uploadInfo', uploadInfo)
 
+  const formData = new FormData();
+
+  const uri =
+    Platform.OS === 'android'
+      ? uploadInfo.file
+      : uploadInfo.file.replace('file://', '');
+
+  formData.append('userCode', uploadInfo.userCode);
+  formData.append('file', {
+    uri,
+    name: 'foodImage.jpg',
+    type: 'image/jpg',
+  });
+
   try {
     const { data } = await fetchDataPost(
       '/recognizer/recognizerFoodImg',
-      uploadInfo,
+      formData,
+      {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      },
     );
-    //console.log('recognizeUploadFormData data', data)
 
     return data;
   } catch (err) {

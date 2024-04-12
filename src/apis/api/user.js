@@ -1,6 +1,8 @@
 //
 //user 관련 api 요청 및 응답
 //
+import { Platform } from 'react-native';
+
 import { fetchDataGet, fetchDataPost } from '~/apis/utils/instance';
 
 //유저 정보 조회
@@ -17,8 +19,36 @@ export const getInfo = async (userCode) => {
 export const updateInfo = async (userInfo) => {
   console.log('updateInfo userInfo', userInfo);
 
+  const formData = new FormData();
+
+  const uri =
+    Platform.OS === 'android'
+      ? userInfo.image
+      : userInfo.image.replace('file://', '');
+
+  formData.append('userCode', userInfo.userCode);
+  formData.append('email', userInfo.email);
+  formData.append('image', {
+    uri,
+    name: 'userImage.jpg',
+    type: 'image/jpg',
+  });
+  formData.append('name', userInfo.name);
+  formData.append('gender', userInfo.gender);
+  formData.append('age', userInfo.age);
+  formData.append('height', userInfo.height);
+  formData.append('weight', userInfo.weight);
+  formData.append('userActivity', userInfo.userActivity);
+  formData.append('goalWeight', userInfo.goalWeight);
+  formData.append('userGoal', userInfo.userGoal);
+
   try {
-    const { data } = await fetchDataPost(`/user/updateInfo`, userInfo);
+    const { data } = await fetchDataPost(`/user/updateInfo`, formData, {
+      headers: {
+        'Content-Type': 'multipart/form-data',
+      },
+    });
+
     return data;
   } catch (err) {
     console.error(err);
