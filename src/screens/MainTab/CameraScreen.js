@@ -9,6 +9,8 @@ import {
   Image,
   Text,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
@@ -29,11 +31,14 @@ const CameraScreen = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
 
   const cameraRef = useRef(null);
+
   const [type, setType] = useState(CameraType.back);
 
   const [capturedImage, setCapturedImage] = useState(null);
   console.log('capturedImage', capturedImage);
   const [previewVisible, setPreviewVisible] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -94,15 +99,21 @@ const CameraScreen = ({ navigation, route }) => {
   };
 
   const recognizeUploadDiet = async () => {
+    setLoading(true);
+
     const uploadInfo = {
       userCode: userInfo.userCode,
       file: capturedImage.uri,
     };
 
-    const { dietLists } = await recognizeUploadFoodImg(uploadInfo);
-    //console.log('recognizeUploadDiet dietLists', dietLists);
+    try {
+      const { dietLists } = await recognizeUploadFoodImg(uploadInfo);
+      //console.log('recognizeUploadDiet dietLists', dietLists);
 
-    return dietLists;
+      return dietLists;
+    } finally {
+      setLoading(false);
+    }
   };
 
   return previewVisible && capturedImage ? (
@@ -116,6 +127,16 @@ const CameraScreen = ({ navigation, route }) => {
           <Text style={styles.text}>완료</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 로딩 인디케이터 모달 */}
+      <Modal visible={loading} transparent>
+        <View style={styles.modalView}>
+          <View style={styles.modal}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={{ marginTop: 10 }}>잠시만 기다려주세요...</Text>
+          </View>
+        </View>
+      </Modal>
     </RootView>
   ) : (
     <RootView>
@@ -140,7 +161,7 @@ const CameraScreen = ({ navigation, route }) => {
             )
           }
         >
-          <AntDesign name="sync" size={rHeight(30)} color="black" />
+          <AntDesign name="sync" size={rHeight(30)} color={colors.black} />
         </TouchableOpacity>
       </View>
     </RootView>
@@ -186,5 +207,23 @@ const styles = StyleSheet.create({
 
     includeFontPadding: false,
     textAlignVertical: 'center',
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.modalBackground,
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    alignItems: 'center',
+
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });
