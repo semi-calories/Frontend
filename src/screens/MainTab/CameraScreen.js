@@ -9,6 +9,8 @@ import {
   Image,
   Text,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import { AntDesign } from '@expo/vector-icons';
@@ -23,17 +25,20 @@ import { UserInfoType, RecordType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
 
-import { recognizeUpload } from '~/apis/api/recognizer';
+import { recognizeUploadFoodImg } from '~/apis/api/recognizer';
 
 const CameraScreen = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
 
   const cameraRef = useRef(null);
+
   const [type, setType] = useState(CameraType.back);
 
   const [capturedImage, setCapturedImage] = useState(null);
   console.log('capturedImage', capturedImage);
   const [previewVisible, setPreviewVisible] = useState(false);
+
+  const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -52,20 +57,13 @@ const CameraScreen = ({ navigation, route }) => {
     if (!cameraRef.current) return;
 
     const options = {
-      quality: 0.5, // 이미지 품질 (0.0에서 1.0 사이의 값, 1.0이 최상의 품질)
-      // base64: true, // true로 설정하면 이미지를 base64 문자열로 반환
+      quality: 0.8,
     };
 
     const photo = await cameraRef.current.takePictureAsync(options);
 
-    await manipulateAsync(
-      photo.uri,
-      [{ resize: { width: photo.width / 4, height: photo.height / 4 } }],
-      { base64: true, format: 'jpeg', compress: 0.5 }, // 원하는 형식 및 압축률 설정
-    ).then((data) => {
-      setPreviewVisible(true);
-      setCapturedImage(data);
-    });
+    setPreviewVisible(true);
+    setCapturedImage(photo);
   };
 
   const retakePictureHandler = () => {
@@ -101,18 +99,20 @@ const CameraScreen = ({ navigation, route }) => {
   };
 
   const recognizeUploadDiet = async () => {
+    setLoading(true);
+
     const uploadInfo = {
       userCode: userInfo.userCode,
-      file: capturedImage.base64,
+      file: capturedImage.uri,
     };
 
     try {
-      const { dietLists } = await recognizeUpload(uploadInfo);
-      console.log('recognizeUploadDiet dietLists', dietLists);
+      const { dietLists } = await recognizeUploadFoodImg(uploadInfo);
+      //console.log('recognizeUploadDiet dietLists', dietLists);
 
       return dietLists;
-    } catch (error) {
-      console.error();
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -127,6 +127,16 @@ const CameraScreen = ({ navigation, route }) => {
           <Text style={styles.text}>완료</Text>
         </TouchableOpacity>
       </View>
+
+      {/* 로딩 인디케이터 모달 */}
+      <Modal visible={loading} transparent>
+        <View style={styles.modalView}>
+          <View style={styles.modal}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={{ marginTop: 10 }}>잠시만 기다려주세요...</Text>
+          </View>
+        </View>
+      </Modal>
     </RootView>
   ) : (
     <RootView>
@@ -151,7 +161,7 @@ const CameraScreen = ({ navigation, route }) => {
             )
           }
         >
-          <AntDesign name="sync" size={rHeight(30)} color="black" />
+          <AntDesign name="sync" size={rHeight(30)} color={colors.black} />
         </TouchableOpacity>
       </View>
     </RootView>
@@ -197,5 +207,23 @@ const styles = StyleSheet.create({
 
     includeFontPadding: false,
     textAlignVertical: 'center',
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.modalBackground,
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    alignItems: 'center',
+
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });

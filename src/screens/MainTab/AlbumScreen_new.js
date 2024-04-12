@@ -9,6 +9,8 @@ import {
   TouchableOpacity,
   Text,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import { manipulateAsync } from 'expo-image-manipulator';
@@ -20,9 +22,9 @@ import { BackHeader } from '~/components/header';
 import { RecordType, UserInfoType } from '~/constants/type';
 
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
-import { fonts } from '~/styles/globalStyles';
+import { colors, fonts } from '~/styles/globalStyles';
 
-import { recognizeUpload } from '~/apis/api/recognizer';
+import { recognizeUploadFoodImg } from '~/apis/api/recognizer';
 
 const AlbumScreen_new = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
@@ -30,6 +32,7 @@ const AlbumScreen_new = ({ navigation, route }) => {
 
   const [image, setImage] = useState(null);
   // console.log('AlbumScreen2 image', image);
+  const [loading, setLoading] = useState(false);
 
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -50,27 +53,12 @@ const AlbumScreen_new = ({ navigation, route }) => {
   const pickImage = async () => {
     const result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
-      quality: 0.5,
-      //base64: true,
+      quality: 0.8,
     });
 
-    await manipulateAsync(
-      result.assets[0].uri,
-      [
-        {
-          resize: {
-            width: result.assets[0].width / 4,
-            height: result.assets[0].height / 4,
-          },
-        },
-      ],
-      { base64: true, format: 'jpeg', compress: 0.5 }, // 원하는 형식 및 압축률 설정
-    ).then((data) => {
-      console.log('####', data);
-      if (!result.canceled) {
-        setImage(data);
-      }
-    });
+    if (!result.canceled) {
+      setImage(result.assets[0]);
+    }
   };
 
   const uploadPictureHandler = async () => {
@@ -101,18 +89,20 @@ const AlbumScreen_new = ({ navigation, route }) => {
   };
 
   const recognizeUploadDiet = async () => {
+    setLoading(true);
+
     const uploadInfo = {
       userCode: userInfo.userCode,
-      file: image.base64,
+      file: image.uri,
     };
 
     try {
-      const { dietLists } = await recognizeUpload(uploadInfo);
-      //console.log('recognizeUploadDiet dietLists', dietLists)
+      const { dietLists } = await recognizeUploadFoodImg(uploadInfo);
+      console.log('recognizeUploadDiet dietLists', dietLists);
 
       return dietLists;
-    } catch (e) {
-      console.error(e);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -134,6 +124,16 @@ const AlbumScreen_new = ({ navigation, route }) => {
           </View>
         </>
       )}
+
+      {/* 로딩 인디케이터 모달 */}
+      <Modal visible={loading} transparent>
+        <View style={styles.modalView}>
+          <View style={styles.modal}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={{ marginTop: 10 }}>잠시만 기다려주세요...</Text>
+          </View>
+        </View>
+      </Modal>
     </RootView>
   );
 };
@@ -160,5 +160,23 @@ const styles = StyleSheet.create({
 
     includeFontPadding: false,
     textAlignVertical: 'center',
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.modalBackground,
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    alignItems: 'center',
+
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });

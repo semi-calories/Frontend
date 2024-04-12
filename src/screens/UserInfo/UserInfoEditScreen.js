@@ -10,6 +10,8 @@ import {
   Pressable,
   ImageBackground,
   Alert,
+  Modal,
+  ActivityIndicator,
 } from 'react-native';
 
 import {
@@ -99,6 +101,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
   const { userInfo, infoType } = route.params;
   console.log('UserInfoEditScreen user', userInfo);
 
+  const actionSheetRef = useRef(null);
+
   const [image, setImage] = useState();
   const [name, setName] = useState();
   const [gender, setGender] = useState();
@@ -108,7 +112,7 @@ const UserInfoEditScreen = ({ navigation, route }) => {
   const [goalWeight, setGoalWeight] = useState();
   const [userActivity, setActivity] = useState();
 
-  const actionSheetRef = useRef(null);
+  const [loading, setLoading] = useState(false);
 
   const setUserState = useSetRecoilState(UserState);
 
@@ -214,6 +218,8 @@ const UserInfoEditScreen = ({ navigation, route }) => {
       return;
     }
 
+    setLoading(true);
+
     const user = {
       userCode: userInfo.userCode,
       email: userInfo.email,
@@ -239,21 +245,22 @@ const UserInfoEditScreen = ({ navigation, route }) => {
   };
 
   const handleSetUserInfo = async (user, userWeight) => {
+    // 초기 설정일 경우
     if (infoType === UserInfoType.init) {
       navigation.push('SetGoalScreen', {
         userInfo: user,
         infoType: UserInfoType.init,
       });
     } else if (infoType === UserInfoType.edit) {
+      // 수정일 경우
       try {
-        //await savePredictWeight(userWeight)
         await updateInfo(user);
         const userData = await getInfo({ userCode: userInfo.userCode });
         setUserState({ ...userData, userCode: userInfo.userCode });
 
         Alert.alert('사용자 정보 수정 완료!');
-      } catch (err) {
-        console.log(err);
+      } finally {
+        setLoading(false);
       }
     }
   };
@@ -414,6 +421,16 @@ const UserInfoEditScreen = ({ navigation, route }) => {
         //destructiveButtonIndex={1}
         onPress={(index) => onPressCameraMenu(index)}
       />
+
+      {/* 로딩 인디케이터 모달 */}
+      <Modal visible={loading} transparent>
+        <View style={styles.modalView}>
+          <View style={styles.modal}>
+            <ActivityIndicator size="small" color={colors.primary} />
+            <Text style={{ marginTop: 10 }}>잠시만 기다려주세요...</Text>
+          </View>
+        </View>
+      </Modal>
     </RootView>
   );
 };
@@ -528,5 +545,23 @@ const styles = StyleSheet.create({
   flexRow: {
     flexDirection: 'row',
     alignItems: 'center',
+  },
+  modalView: {
+    flex: 1,
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: colors.modalBackground,
+  },
+  modal: {
+    padding: 20,
+    backgroundColor: colors.white,
+    borderRadius: 10,
+    alignItems: 'center',
+
+    shadowColor: colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
+    elevation: 5,
   },
 });
