@@ -41,6 +41,7 @@ export const updateInfo = async (userInfo) => {
   formData.append('userActivity', userInfo.userActivity);
   formData.append('goalWeight', userInfo.goalWeight);
   formData.append('userGoal', userInfo.userGoal);
+  formData.append('period', userInfo.period);
 
   try {
     const { data } = await fetchDataPost(`/user/updateInfo`, formData, {
