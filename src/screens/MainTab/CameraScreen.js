@@ -16,6 +16,7 @@ import {
 import { AntDesign } from '@expo/vector-icons';
 import { Camera, CameraType, AutoFocus } from 'expo-camera';
 import { manipulateAsync } from 'expo-image-manipulator';
+import { useSetRecoilState } from 'recoil';
 
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
@@ -25,12 +26,17 @@ import { UserInfoType, RecordType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
 
+import { UserState } from '~/atoms/UserAtom';
+
 import { recognizeUploadFoodImg } from '~/apis/api/recognizer';
+import { saveUserImage, getInfo } from '~/apis/api/user';
 
 const CameraScreen = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
 
   const cameraRef = useRef(null);
+
+  const setUserState = useSetRecoilState(UserState);
 
   const [type, setType] = useState(CameraType.back);
 
@@ -87,10 +93,21 @@ const CameraScreen = ({ navigation, route }) => {
         Alert.alert('사진 인식이 되지 않습니다. 다시 촬영해주세요.');
       }
     } else {
-      const userData = { ...userInfo, image: capturedImage };
+      const user = {
+        userCode: userInfo.userCode,
+        image: capturedImage.uri,
+      };
+
+      await saveUserImage(user);
+      const userData = await getInfo({ userCode: userInfo.userCode });
+      setUserState({
+        ...userData,
+        userCode: user.userCode,
+        image: userData.image,
+      });
 
       const params = {
-        userInfo: userData,
+        userInfo: { ...userInfo, image: userData.image },
         infoType: UserInfoType.edit,
       };
 

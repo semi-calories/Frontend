@@ -111,9 +111,7 @@ const UserInfoMainScreen = ({ navigation }) => {
             navigation.push('UserInfoEditScreen', {
               userInfo: {
                 ...user,
-                image: {
-                  uri: user.image ? `${user.image}?${Date.now()}` : null,
-                },
+                image: user.image ? `${user.image}?${Date.now()}` : null,
               },
               infoType: UserInfoType.edit,
             })
