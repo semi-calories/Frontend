@@ -108,7 +108,7 @@ const SetGoalScreen = ({ navigation, route }) => {
     const user = {
       userCode: userInfo.userCode,
       email: userInfo.email,
-      image: userInfo.image,
+      // image: userInfo.image,
       name: userInfo.name,
       gender: userInfo.gender,
       age: userInfo.age,

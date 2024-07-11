@@ -21,18 +21,8 @@ export const updateInfo = async (userInfo) => {
 
   const formData = new FormData();
 
-  const uri =
-    Platform.OS === 'android'
-      ? userInfo.image
-      : userInfo.image.replace('file://', '');
-
   formData.append('userCode', userInfo.userCode);
   formData.append('email', userInfo.email);
-  formData.append('image', {
-    uri,
-    name: 'userImage.jpg',
-    type: 'image/jpg',
-  });
   formData.append('name', userInfo.name);
   formData.append('gender', userInfo.gender);
   formData.append('age', userInfo.age);
@@ -44,11 +34,32 @@ export const updateInfo = async (userInfo) => {
   formData.append('period', userInfo.period);
 
   try {
-    const { data } = await fetchDataPost(`/user/updateInfo`, formData, {
-      headers: {
-        'Content-Type': 'multipart/form-data',
-      },
-    });
+    const { data } = await fetchDataPost(`/user/updateInfo`, formData);
+    return data;
+  } catch (err) {
+    console.error(err);
+  }
+};
+
+//회원 이미지 저장
+export const saveUserImage = async (userInfo) => {
+  console.log('saveUserImage userImage', userInfo);
+  const formData = new FormData();
+
+  const uri =
+    Platform.OS === 'android'
+      ? userInfo.image
+      : userInfo.image.replace('file://', '');
+
+  formData.append('userCode', userInfo.userCode);
+  formData.append('image', {
+    uri,
+    name: 'userImage.jpg',
+    type: 'image/jpg',
+  });
+
+  try {
+    const { data } = await fetchDataPost(`/user/saveUserImage`, formData);
 
     return data;
   } catch (err) {

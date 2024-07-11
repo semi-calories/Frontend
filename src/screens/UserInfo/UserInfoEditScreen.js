@@ -218,13 +218,11 @@ const UserInfoEditScreen = ({ navigation, route }) => {
       return;
     }
 
-    setLoading(true);
-
     const user = {
       userCode: userInfo.userCode,
       email: userInfo.email,
       name,
-      image: image.base64 ? image.base64 : image.uri,
+      // image: image.base64 ? image.base64 : image.uri,
       gender,
       age,
       height,
@@ -254,9 +252,10 @@ const UserInfoEditScreen = ({ navigation, route }) => {
     } else if (infoType === UserInfoType.edit) {
       // 수정일 경우
       try {
+        setLoading(true);
         await updateInfo(user);
-        const userData = await getInfo({ userCode: userInfo.userCode });
-        setUserState({ ...userData, userCode: userInfo.userCode });
+        const userData = await getInfo({ userCode: user.userCode });
+        setUserState({ ...userData, userCode: user.userCode });
 
         Alert.alert('사용자 정보 수정 완료!');
       } finally {
@@ -279,9 +278,9 @@ const UserInfoEditScreen = ({ navigation, route }) => {
       >
         {infoType === UserInfoType.edit && (
           <View>
-            {image?.uri ? (
+            {image ? (
               <ImageBackground
-                source={{ uri: image.uri }}
+                source={{ uri: image }}
                 style={styles.imgBackground}
                 imageStyle={{ borderRadius: 100 }}
                 resizeMode="cover"

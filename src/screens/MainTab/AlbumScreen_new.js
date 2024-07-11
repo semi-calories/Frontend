@@ -15,6 +15,7 @@ import {
 
 import { manipulateAsync } from 'expo-image-manipulator';
 import * as ImagePicker from 'expo-image-picker';
+import { useSetRecoilState } from 'recoil';
 
 import { RootView } from '~/components/container';
 import { BackHeader } from '~/components/header';
@@ -24,11 +25,16 @@ import { RecordType, UserInfoType } from '~/constants/type';
 import { dWidth, rFont, rHeight, rWidth } from '~/styles/globalSizes';
 import { colors, fonts } from '~/styles/globalStyles';
 
+import { UserState } from '~/atoms/UserAtom';
+
 import { recognizeUploadFoodImg } from '~/apis/api/recognizer';
+import { saveUserImage, getInfo } from '~/apis/api/user';
 
 const AlbumScreen_new = ({ navigation, route }) => {
   const { nextScreen, userInfo } = route.params;
   console.log('AlbumScreen2 route.params', route.params);
+
+  const setUserState = useSetRecoilState(UserState);
 
   const [image, setImage] = useState(null);
   // console.log('AlbumScreen2 image', image);
@@ -77,10 +83,21 @@ const AlbumScreen_new = ({ navigation, route }) => {
         Alert.alert('사진 인식이 되지 않습니다. 다시 촬영해주세요.');
       }
     } else {
-      const userData = { ...userInfo, image };
+      const user = {
+        userCode: userInfo.userCode,
+        image: image.uri,
+      };
+
+      await saveUserImage(user);
+      const userData = await getInfo({ userCode: userInfo.userCode });
+      setUserState({
+        ...userData,
+        userCode: user.userCode,
+        image: userData.image,
+      });
 
       const params = {
-        userInfo: userData,
+        userInfo: { ...userInfo, image: userData.image },
         infoType: UserInfoType.edit,
       };
 
